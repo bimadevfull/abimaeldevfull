@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Central - Reserva de Salas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #0f3460;
+            --accent: #e94560;
+            --dark-bg: #16213e;
+            --card-bg: #1f2833;
+            --text-primary: #ffffff;
+            --text-secondary: #b8c1ec;
+            --text-muted: #8892b0;
+            --border: #2a2a4a;
+            --success: #4ecca3;
+            --warning: #ffbd39;
+            --error: #e94560;
+            --gradient-1: linear-gradient(135deg, #0f3460, #1a1a2e);
+            --gradient-2: linear-gradient(135deg, #e94560, #c70039);
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            --glow: 0 0 15px rgba(233, 69, 96, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary);
+            color: var(--text-primary);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(233, 69, 96, 0.3);
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 8px 15px;
+            border-radius: 8px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover:before, .nav-links a.active:before {
+            width: 100%;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+            background-color: rgba(233, 69, 96, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            padding: 2rem 0;
+            min-height: calc(100vh - 140px);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+
+        /* Home Page */
+        .hero {
+            background: linear-gradient(rgba(26, 26, 46, 0.8), rgba(15, 52, 96, 0.9)), url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--text-primary);
+            text-align: center;
+            padding: 120px 20px;
+            margin-bottom: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(233, 69, 96, 0.2) 0%, rgba(26, 26, 46, 0) 70%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero h1:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--gradient-2);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover:before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow);
+        }
+
+        .btn-accent {
+            background: var(--gradient-1);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .feature-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s;
+        }
+
+        .feature-card:hover:before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Rooms Page */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .page-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-header h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .room-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.4s, box-shadow 0.4s;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .room-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .room-image {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .room-image:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(26, 26, 46, 0.2), rgba(15, 52, 96, 0.8));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .room-card:hover .room-image:before {
+            opacity: 1;
+        }
+
+        .room-capacity {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .room-capacity i {
+            margin-right: 5px;
+        }
+
+        .room-details {
+            padding: 2rem;
+        }
+
+        .room-details h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .room-details p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .room-features {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            gap: 10px;
+        }
+
+        .room-feature {
+            background-color: rgba(233, 69, 96, 0.1);
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .room-feature i {
+            margin-right: 8px;
+            color: var(--accent);
+        }
+
+        /* Reservation Page */
+        .reservation-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+        }
+
+        .form-container {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .form-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-header p {
+            color: var(--text-secondary);
+        }
+
+        .form-header:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 1.05rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 1rem;
+        }
+
+        .time-slot {
+            padding: 12px 10px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-slot:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+
+        .time-slot:hover:not(.unavailable) {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .time-slot.selected {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.3);
+        }
+
+        .time-slot.unavailable {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .calendar {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .calendar-header h3 {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+        }
+
+        .calendar-header:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .month-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .month-nav button {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .month-nav button:hover {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .current-month {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-day-name {
+            text-align: center;
+            font-weight: 600;
+            padding: 10px 0;
+            color: var(--accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .calendar-day {
+            text-align: center;
+            padding: 12px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calendar-day:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+
+        .calendar-day:hover:not(.unavailable):not(.other-month) {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .calendar-day.selected {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.3);
+        }
+
+        .calendar-day.unavailable {
+            color: var(--text-muted);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .calendar-day.other-month {
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .calendar-day.today {
+            border: 2px solid var(--accent);
+            font-weight: bold;
+        }
+
+        /* Confirmation Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            animation: modalFadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-50px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .modal-header h3 {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+            background-color: rgba(233, 69, 96, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .reservation-details {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid var(--border);
+        }
+
+        .reservation-details p {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .reservation-details p:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .reservation-details strong {
+            color: var(--accent);
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: var(--success);
+            text-align: center;
+            display: block;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .modal-footer {
+            text-align: center;
+        }
+
+        /* Error message */
+        .error-message {
+            color: var(--error);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            display: none;
+            animation: shake 0.5s;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .error-message:before {
+            content: '\f071';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Ripple effect */
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .reservation-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background-color: var(--primary);
+                flex-direction: column;
+                padding: 2rem;
+                transition: left 0.3s;
+                z-index: 100;
+                box-shadow: var(--shadow);
+                border-right: 1px solid var(--border);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero {
+                padding: 80px 20px;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .page-header h2 {
+                font-size: 2rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-book-reader"></i>
+                    <span>Biblioteca Central</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link active" data-page="home">Início</a></li>
+                    <li><a href="#" class="nav-link" data-page="rooms">Salas</a></li>
+                    <li><a href="#" class="nav-link" data-page="reservation">Reservar</a></li>
+                </ul>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <div class="page active" id="home">
+        <div class="container">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Bem-vindo à Biblioteca Central</h1>
+                    <p>Espaço ideal para estudos, pesquisas e desenvolvimento acadêmico. Conheça nossas salas de estudo e faça sua reserva.</p>
+                    <a href="#" class="btn nav-trigger" data-page="reservation">Reservar Agora</a>
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-door-open"></i>
+                    <h3>Salas Modernas</h3>
+                    <p>Nossas salas de estudo são equipadas com tecnologia moderna e mobiliário confortável para garantir a melhor experiência.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-wifi"></i>
+                    <h3>Wi-Fi de Alta Velocidade</h3>
+                    <p>Conexão de internet rápida e estável em todas as salas para facilitar suas pesquisas e estudos online.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Horários Flexíveis</h3>
+                    <p>Disponibilidade de salas em diversos horários para atender às necessidades de todos os estudantes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rooms Page -->
+    <div class="page" id="rooms">
+        <div class="container">
+            <div class="page-header">
+                <h2>Nossas Salas de Estudo</h2>
+                <p>Conheça os espaços disponíveis para reserva na Biblioteca Central.</p>
+            </div>
+            
+            <div class="rooms-grid">
+                <!-- Room cards will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Page -->
+    <div class="page" id="reservation">
+        <div class="container">
+            <div class="page-header">
+                <h2>Reservar Sala de Estudo</h2>
+                <p>Preencha o formulário abaixo para reservar uma sala de estudo.</p>
+            </div>
+            
+            <div class="reservation-container">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h3>Dados da Reserva</h3>
+                        <p>Informe seus dados e preferências para a reserva</p>
+                    </div>
+                    <form id="reservation-form">
+                        <div class="form-group">
+                            <label for="name">Nome Completo</label>
+                            <input type="text" id="name" class="form-control" placeholder="Seu nome completo" required>
+                            <div class="error-message" id="name-error">Por favor, informe seu nome completo.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="matricula">Matrícula</label>
+                            <input type="text" id="matricula" class="form-control" placeholder="Número de matrícula" required>
+                            <div class="error-message" id="matricula-error">Por favor, informe uma matrícula válida.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="room">Sala</label>
+                            <select id="room" class="form-control" required>
+                                <option value="">Selecione uma sala</option>
+                                <!-- Room options will be generated by JavaScript -->
+                            </select>
+                            <div class="error-message" id="room-error">Por favor, selecione uma sala.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Data</label>
+                            <input type="date" id="date" class="form-control" required>
+                            <div class="error-message" id="date-error">Por favor, selecione uma data válida.</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Horário</label>
+                            <div class="time-slots" id="time-slots">
+                                <!-- Time slots will be generated by JavaScript -->
+                            </div>
+                            <div class="error-message" id="time-error">Por favor, selecione um horário.</div>
+                        </div>
+                        <button type="submit" class="btn">
+                            <span id="submit-text">Confirmar Reserva</span>
+                            <span id="loading-spinner" class="loading" style="display: none;"></span>
+                        </button>
+                    </form>
+                </div>
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <h3>Calendário</h3>
+                        <div class="month-nav">
+                            <button type="button" id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                            <button type="button" id="next-month"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="current-month" id="current-month">Maio 2023</div>
+                    <div class="calendar-days">
+                        <div class="calendar-day-name">Dom</div>
+                        <div class="calendar-day-name">Seg</div>
+                        <div class="calendar-day-name">Ter</div>
+                        <div class="calendar-day-name">Qua</div>
+                        <div class="calendar-day-name">Qui</div>
+                        <div class="calendar-day-name">Sex</div>
+                        <div class="calendar-day-name">Sáb</div>
+                        <!-- Calendar days will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Reserva Confirmada!</h3>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <i class="fas fa-check-circle success-icon"></i>
+                <p>Sua reserva foi realizada com sucesso!</p>
+                <div class="reservation-details">
+                    <p><strong>Nome:</strong> <span id="confirm-name"></span></p>
+                    <p><strong>Matrícula:</strong> <span id="confirm-matricula"></span></p>
+                    <p><strong>Sala:</strong> <span id="confirm-room"></span></p>
+                    <p><strong>Data:</strong> <span id="confirm-date"></span></p>
+                    <p><strong>Horário:</strong> <span id="confirm-time"></span></p>
+                </div>
+                <p>Um e-mail de confirmação foi enviado para o seu endereço cadastrado.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" id="close-modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinksContainer = document.querySelector('.nav-links');
+        const roomsGrid = document.querySelector('.rooms-grid');
+        const roomSelect = document.getElementById('room');
+        const timeSlots = document.getElementById('time-slots');
+        const calendarDays = document.querySelector('.calendar-days');
+        const currentMonthElement = document.getElementById('current-month');
+        const prevMonthButton = document.getElementById('prev-month');
+        const nextMonthButton = document.getElementById('next-month');
+        const reservationForm = document.getElementById('reservation-form');
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const modalClose = document.querySelector('.modal-close');
+        const closeModalButton = document.getElementById('close-modal');
+        const submitText = document.getElementById('submit-text');
+        const loadingSpinner = document.getElementById('loading-spinner');
+
+        // Data
+        const rooms = [
+            {
+                id: 1,
+                name: 'Sala Individual 1',
+                capacity: 1,
+                description: 'Sala individual ideal para estudos concentrados e leituras. Ambiente silencioso com iluminação ajustável.',
+                features: ['Silenciosa', 'Mesa ampla', 'Iluminação ajustável'],
+                image: 'https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+            },
+            {
+                id: 2,
+                name: 'Sala Individual 2',
+                capacity: 1,
+                description: 'Espaço reservado para estudos individuais com total privacidade. Equipada com tomadas USB e cadeira ergonômica.',
+                features: ['Silenciosa', 'Tomadas USB', 'Cadeira ergonômica'],
+                image: 'https://images.unsplash.com/photo-1519974719765-e6559eac2575?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+            },
+            {
+                id: 3,
+                name: 'Sala de Grupo Pequeno',
+                capacity: 4,
+                description: 'Sala para pequenos grupos realizarem trabalhos e discussões. Equipada com quadro branco e TV com conexão HDMI.',
+                features: ['Quadro branco', 'TV com HDMI', 'Mesa redonda'],
+                image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+            },
+            {
+                id: 4,
+                name: 'Sala de Grupo Médio',
+                capacity: 8,
+                description: 'Espaço ideal para grupos médios realizarem reuniões e trabalhos em equipe. Conta com projetor e mesas modulares.',
+                features: ['Projetor', 'Quadro branco', 'Mesas modulares'],
+                image: 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+            },
+            {
+                id: 5,
+                name: 'Sala Multimídia',
+                capacity: 6,
+                description: 'Sala equipada com recursos multimídia para apresentações e videoconferências. Projetor 4K e sistema de som de alta qualidade.',
+                features: ['Projetor 4K', 'Sistema de som', 'Webcam HD'],
+                image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+            },
+            {
+                id: 6,
+                name: 'Sala de Estudo Silenciosa',
+                capacity: 12,
+                description: 'Sala ampla para estudos individuais em ambiente compartilhado e silencioso. Baias individuais com iluminação natural.',
+                features: ['Silêncio absoluto', 'Baias individuais', 'Iluminação natural'],
+                image: 'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'
+            }
+        ];
+
+        // Simulated unavailable time slots (random generation)
+        const unavailableTimeSlots = {};
+        
+        // Current date and selected date
+        const today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+        let selectedDate = null;
+        let selectedTimeSlot = null;
+
+        // Initialize the application
+        function init() {
+            setupNavigation();
+            generateRoomCards();
+            populateRoomSelect();
+            generateTimeSlots();
+            generateCalendar();
+            setupFormValidation();
+            setupModal();
+            generateUnavailableTimeSlots();
+        }
+
+        // Setup navigation
+        function setupNavigation() {
+            // Navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetPage = link.getAttribute('data-page');
+                    
+                    // Update active link
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // Show target page with transition
+                    changePage(targetPage);
+                    
+                    // Close mobile menu if open
+                    navLinksContainer.classList.remove('active');
+                });
+            });
+            
+            // Mobile menu toggle
+            menuToggle.addEventListener('click', () => {
+                navLinksContainer.classList.toggle('active');
+            });
+            
+            // Navigation from other elements (buttons with data-page)
+            document.addEventListener('click', (e) => {
+                if (e.target.hasAttribute('data-page') && !e.target.classList.contains('nav-link')) {
+                    e.preventDefault();
+                    const targetPage = e.target.getAttribute('data-page');
+                    
+                    // Update active link
+                    navLinks.forEach(l => {
+                        l.classList.remove('active');
+                        if (l.getAttribute('data-page') === targetPage) {
+                            l.classList.add('active');
+                        }
+                    });
+                    
+                    // Show target page with transition
+                    changePage(targetPage);
+                }
+            });
+        }
+
+        // Change page with transition
+        function changePage(targetPage) {
+            // Hide current active page
+            const currentPage = document.querySelector('.page.active');
+            if (currentPage) {
+                currentPage.style.animation = 'fadeOut 0.3s forwards';
+                setTimeout(() => {
+                    currentPage.classList.remove('active');
+                    currentPage.style.animation = '';
+                    
+                    // Show target page
+                    const newPage = document.getElementById(targetPage);
+                    if (newPage) {
+                        newPage.classList.add('active');
+                        newPage.style.animation = 'fadeIn 0.5s forwards';
+                    }
+                }, 300);
+            }
+        }
+
+        // Generate room cards
+        function generateRoomCards() {
+            roomsGrid.innerHTML = '';
+            
+            rooms.forEach((room, index) => {
+                const roomCard = document.createElement('div');
+                roomCard.className = 'room-card';
+                roomCard.style.opacity = '0';
+                roomCard.style.transform = 'translateY(30px)';
+                
+                roomCard.innerHTML = `
+                    <div class="room-image" style="background-image: url('${room.image}')">
+                        <div class="room-capacity">
+                            <i class="fas fa-users"></i> ${room.capacity}
+                        </div>
+                    </div>
+                    <div class="room-details">
+                        <h3>${room.name}</h3>
+                        <p>${room.description}</p>
+                        <div class="room-features">
+                            ${room.features.map(feature => `
+                                <div class="room-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>${feature}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="btn room-reserve-btn" data-page="reservation" data-room="${room.id}">Reservar</button>
+                    </div>
+                `;
+                
+                roomsGrid.appendChild(roomCard);
+                
+                // Add animation on load
+                setTimeout(() => {
+                    roomCard.style.opacity = '1';
+                    roomCard.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+            
+            // Add event listeners to reservation buttons
+            document.querySelectorAll('.room-reserve-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const roomId = button.getAttribute('data-room');
+                    
+                    // Set the room in the select
+                    setTimeout(() => {
+                        roomSelect.value = roomId;
+                        
+                        // Highlight the room select
+                        roomSelect.style.borderColor = 'var(--accent)';
+                        setTimeout(() => {
+                            roomSelect.style.borderColor = '';
+                        }, 1000);
+                    }, 500);
+                });
+            });
+        }
+
+        // Populate room select
+        function populateRoomSelect() {
+            // Clear existing options except the first one
+            roomSelect.innerHTML = '<option value="">Selecione uma sala</option>';
+            
+            rooms.forEach(room => {
+                const option = document.createElement('option');
+                option.value = room.id;
+                option.textContent = `${room.name} (Capacidade: ${room.capacity})`;
+                roomSelect.appendChild(option);
+            });
+            
+            // Add change event to show room details
+            roomSelect.addEventListener('change', () => {
+                const selectedRoomId = roomSelect.value;
+                if (selectedRoomId) {
+                    document.getElementById('room-error').classList.remove('active');
+                }
+            });
+        }
+
+        // Generate time slots
+        function generateTimeSlots() {
+            timeSlots.innerHTML = '';
+            
+            const startHour = 8;
+            const endHour = 20;
+            
+            for (let hour = startHour; hour < endHour; hour++) {
+                const timeSlot = document.createElement('div');
+                timeSlot.className = 'time-slot';
+                timeSlot.setAttribute('data-time', `${hour}:00`);
+                timeSlot.textContent = `${hour}:00`;
+                
+                timeSlot.addEventListener('click', () => {
+                    if (!timeSlot.classList.contains('unavailable')) {
+                        // Add ripple effect
+                        const rect = timeSlot.getBoundingClientRect();
+                        const ripple = document.createElement('span');
+                        ripple.className = 'ripple';
+                        ripple.style.left = '50%';
+                        ripple.style.top = '50%';
+                        ripple.style.width = '10px';
+                        ripple.style.height = '10px';
+                        timeSlot.appendChild(ripple);
+                        
+                        // Remove ripple after animation
+                        setTimeout(() => {
+                            if (ripple.parentNode) {
+                                ripple.remove();
+                            }
+                        }, 600);
+                        
+                        document.querySelectorAll('.time-slot').forEach(slot => {
+                            slot.classList.remove('selected');
+                        });
+                        timeSlot.classList.add('selected');
+                        selectedTimeSlot = `${hour}:00`;
+                        document.getElementById('time-error').classList.remove('active');
+                    }
+                });
+                
+                timeSlots.appendChild(timeSlot);
+            }
+        }
+
+        // Generate calendar
+        function generateCalendar() {
+            updateCalendarHeader();
+            
+            // Clear previous days (keep day names)
+            const dayNames = calendarDays.querySelectorAll('.calendar-day-name');
+            calendarDays.innerHTML = '';
+            dayNames.forEach(dayName => calendarDays.appendChild(dayName));
+            
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            
+            // Add days from previous month
+            const firstDayOfWeek = firstDay.getDay();
+            const prevMonthLastDay = new Date(currentYear, currentMonth, 0).getDate();
+            
+            for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day other-month';
+                day.textContent = prevMonthLastDay - i;
+                calendarDays.appendChild(day);
+            }
+            
+            // Add days of current month
+            for (let i = 1; i <= lastDay.getDate(); i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day';
+                day.textContent = i;
+                
+                const currentDate = new Date(currentYear, currentMonth, i);
+                
+                // Mark today
+                if (currentDate.getDate() === today.getDate() && 
+                    currentDate.getMonth() === today.getMonth() && 
+                    currentDate.getFullYear() === today.getFullYear()) {
+                    day.classList.add('today');
+                }
+                
+                // Disable past dates
+                if (currentDate < new Date(today.getFullYear(), today.getMonth(), today.getDate())) {
+                    day.classList.add('unavailable');
+                } else {
+                    day.addEventListener('click', () => {
+                        // Add ripple effect
+                        const ripple = document.createElement('span');
+                        ripple.className = 'ripple';
+                        ripple.style.left = '50%';
+                        ripple.style.top = '50%';
+                        ripple.style.width = '10px';
+                        ripple.style.height = '10px';
+                        day.appendChild(ripple);
+                        
+                        // Remove ripple after animation
+                        setTimeout(() => {
+                            if (ripple.parentNode) {
+                                ripple.remove();
+                            }
+                        }, 600);
+                        
+                        document.querySelectorAll('.calendar-day').forEach(d => {
+                            d.classList.remove('selected');
+                        });
+                        day.classList.add('selected');
+                        selectedDate = new Date(currentYear, currentMonth, i);
+                        document.getElementById('date').valueAsDate = selectedDate;
+                        document.getElementById('date-error').classList.remove('active');
+                        
+                        // Update time slots availability
+                        updateTimeSlotsAvailability();
+                    });
+                }
+                
+                calendarDays.appendChild(day);
+            }
+            
+            // Add days from next month
+            const totalCells = 42; // 6 rows × 7 days
+            const cellsUsed = firstDayOfWeek + lastDay.getDate();
+            const remainingDays = totalCells - cellsUsed;
+            
+            for (let i = 1; i <= remainingDays; i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day other-month';
+                day.textContent = i;
+                calendarDays.appendChild(day);
+            }
+        }
+
+        // Setup calendar navigation
+        function setupCalendarNavigation() {
+            prevMonthButton.addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                generateCalendar();
+            });
+            
+            nextMonthButton.addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                generateCalendar();
+            });
+        }
+
+        // Update calendar header
+        function updateCalendarHeader() {
+            const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            currentMonthElement.textContent = `${months[currentMonth]} ${currentYear}`;
+        }
+
+        // Generate random unavailable time slots
+        function generateUnavailableTimeSlots() {
+            const startDate = new Date();
+            
+            for (let i = 0; i < 30; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                
+                const dateString = formatDate(currentDate);
+                unavailableTimeSlots[dateString] = [];
+                
+                // Generate 2-4 random unavailable time slots per day
+                const unavailableCount = Math.floor(Math.random() * 3) + 2;
+                
+                for (let j = 0; j < unavailableCount; j++) {
+                    const hour = Math.floor(Math.random() * 12) + 8; // 8:00 - 19:00
+                    const timeSlot = `${hour}:00`;
+                    
+                    if (!unavailableTimeSlots[dateString].includes(timeSlot)) {
+                        unavailableTimeSlots[dateString].push(timeSlot);
+                    }
+                }
+            }
+        }
+
+        // Update time slots availability based on selected date
+        function updateTimeSlotsAvailability() {
+            if (!selectedDate) return;
+            
+            const dateString = formatDate(selectedDate);
+            const unavailableSlots = unavailableTimeSlots[dateString] || [];
+            
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                const timeSlot = slot.getAttribute('data-time');
+                
+                slot.classList.remove('unavailable');
+                slot.classList.remove('selected');
+                
+                if (unavailableSlots.includes(timeSlot)) {
+                    slot.classList.add('unavailable');
+                }
+            });
+            
+            selectedTimeSlot = null;
+        }
+
+        // Format date to YYYY-MM-DD
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            
+            return `${year}-${month}-${day}`;
+        }
+
+        // Format date to DD/MM/YYYY
+        function formatDateBR(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            
+            return `${day}/${month}/${year}`;
+        }
+
+        // Setup form validation
+        function setupFormValidation() {
+            reservationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                let isValid = true;
+                
+                // Validate name
+                const nameInput = document.getElementById('name');
+                const nameError = document.getElementById('name-error');
+                
+                if (!nameInput.value.trim() || nameInput.value.trim().length < 5) {
+                    nameError.classList.add('active');
+                    nameInput.style.borderColor = 'var(--error)';
+                    isValid = false;
+                } else {
+                    nameError.classList.remove('active');
+                    nameInput.style.borderColor = '';
+                }
+                
+                // Validate matricula
+                const matriculaInput = document.getElementById('matricula');
+                const matriculaError = document.getElementById('matricula-error');
+                
+                if (!matriculaInput.value.trim() || !/^\d{5,10}$/.test(matriculaInput.value.trim())) {
+                    matriculaError.classList.add('active');
+                    matriculaInput.style.borderColor = 'var(--error)';
+                    isValid = false;
+                } else {
+                    matriculaError.classList.remove('active');
+                    matriculaInput.style.borderColor = '';
+                }
+                
+                // Validate room
+                const roomInput = document.getElementById('room');
+                const roomError = document.getElementById('room-error');
+                
+                if (!roomInput.value) {
+                    roomError.classList.add('active');
+                    roomInput.style.borderColor = 'var(--error)';
+                    isValid = false;
+                } else {
+                    roomError.classList.remove('active');
+                    roomInput.style.borderColor = '';
+                }
+                
+                // Validate date
+                const dateInput = document.getElementById('date');
+                const dateError = document.getElementById('date-error');
+                
+                if (!dateInput.value) {
+                    dateError.classList.add('active');
+                    dateInput.style.borderColor = 'var(--error)';
+                    isValid = false;
+                } else {
+                    const selectedDate = new Date(dateInput.value);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    if (selectedDate < today) {
+                        dateError.textContent = 'A data selecionada não pode ser no passado.';
+                        dateError.classList.add('active');
+                        dateInput.style.borderColor = 'var(--error)';
+                        isValid = false;
+                    } else {
+                        dateError.classList.remove('active');
+                        dateInput.style.borderColor = '';
+                    }
+                }
+                
+                // Validate time slot
+                const timeError = document.getElementById('time-error');
+                
+                if (!selectedTimeSlot) {
+                    timeError.classList.add('active');
+                    isValid = false;
+                } else {
+                    timeError.classList.remove('active');
+                }
+                
+                // If valid, show confirmation
+                if (isValid) {
+                    // Show loading spinner
+                    submitText.style.display = 'none';
+                    loadingSpinner.style.display = 'inline-block';
+                    
+                    // Simulate server request
+                    setTimeout(() => {
+                        submitText.style.display = 'inline-block';
+                        loadingSpinner.style.display = 'none';
+                        showConfirmation();
+                    }, 1500);
+                }
+            });
+            
+            // Date input change event
+            document.getElementById('date').addEventListener('change', (e) => {
+                const selectedDateFromInput = new Date(e.target.value);
+                
+                if (selectedDateFromInput) {
+                    currentMonth = selectedDateFromInput.getMonth();
+                    currentYear = selectedDateFromInput.getFullYear();
+                    selectedDate = selectedDateFromInput;
+                    
+                    generateCalendar();
+                    
+                    // Find and select the day in the calendar
+                    setTimeout(() => {
+                        document.querySelectorAll('.calendar-day').forEach(day => {
+                            if (!day.classList.contains('other-month') && 
+                                parseInt(day.textContent) === selectedDateFromInput.getDate()) {
+                                day.classList.add('selected');
+                            }
+                        });
+                    }, 100);
+                    
+                    // Update time slots availability
+                    updateTimeSlotsAvailability();
+                }
+            });
+        }
+
+        // Show confirmation modal
+        function showConfirmation() {
+            // Get form values
+            const name = document.getElementById('name').value;
+            const matricula = document.getElementById('matricula').value;
+            const roomId = document.getElementById('room').value;
+            const date = new Date(document.getElementById('date').value);
+            
+            // Get room name
+            const room = rooms.find(r => r.id == roomId);
+            
+            // Update confirmation details
+            document.getElementById('confirm-name').textContent = name;
+            document.getElementById('confirm-matricula').textContent = matricula;
+            document.getElementById('confirm-room').textContent = room.name;
+            document.getElementById('confirm-date').textContent = formatDateBR(date);
+            document.getElementById('confirm-time').textContent = selectedTimeSlot;
+            
+            // Show modal
+            confirmationModal.classList.add('active');
+            
+            // Add this time slot to unavailable slots
+            const dateString = formatDate(date);
+            
+            if (!unavailableTimeSlots[dateString]) {
+                unavailableTimeSlots[dateString] = [];
+            }
+            
+            unavailableTimeSlots[dateString].push(selectedTimeSlot);
+            
+            // Reset form
+            reservationForm.reset();
+            selectedDate = null;
+            selectedTimeSlot = null;
+            
+            // Reset time slots
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            
+            // Reset calendar
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.classList.remove('selected');
+            });
+        }
+
+        // Setup modal
+        function setupModal() {
+            modalClose.addEventListener('click', () => {
+                confirmationModal.classList.remove('active');
+            });
+            
+            closeModalButton.addEventListener('click', () => {
+                confirmationModal.classList.remove('active');
+            });
+            
+            // Close modal when clicking outside
+            confirmationModal.addEventListener('click', (e) => {
+                if (e.target === confirmationModal) {
+                    confirmationModal.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+            setupCalendarNavigation();
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas Profissional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="app-header">
+            <h1>Gerenciador de Tarefas</h1>
+            <p>Organize suas tarefas de forma eficiente</p>
+        </div>
+        
+        <div id="authContainer" class="card">
+            <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" placeholder="Nome de usuário">
+            </div>
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Senha">
+            </div>
+            <button onclick="authenticate()"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+            <div class="auth-links">
+                <p>Não tem uma conta? <a href="#" onclick="showRegister()">Registre-se</a></p>
+            </div>
+        </div>
+
+        <div id="registerContainer" class="card" style="display: none;">
+            <h2><i class="fas fa-user-plus"></i> Registro</h2>
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="newUsername" placeholder="Novo nome de usuário">
+            </div>
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="newPassword" placeholder="Nova senha">
+            </div>
+            <div class="form-group">
+                <i class="fas fa-check-circle"></i>
+                <input type="password" id="confirmPassword" placeholder="Confirme a senha">
+            </div>
+            <button onclick="register()"><i class="fas fa-user-plus"></i> Registrar</button>
+            <div class="auth-links">
+                <p>Já tem uma conta? <a href="#" onclick="showLogin()">Faça login</a></p>
+            </div>
+        </div>
+
+        <div id="taskContainer" style="display: none;">
+            <div class="card">
+                <h2><i class="fas fa-plus-circle"></i> Nova Tarefa</h2>
+                <div class="form-group">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchTask" placeholder="Pesquisar tarefas">
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-tasks"></i>
+                    <input type="text" id="taskInput" placeholder="Descreva sua tarefa">
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-flag"></i>
+                    <select id="taskPriority">
+                        <option value="baixa">Prioridade Baixa</option>
+                        <option value="media">Prioridade Média</option>
+                        <option value="alta">Prioridade Alta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-calendar"></i>
+                    <input type="date" id="taskDueDate">
+                </div>
+                <button onclick="addTask()"><i class="fas fa-plus"></i> Adicionar Tarefa</button>
+            </div>
+
+            <div class="filters">
+                <button onclick="filterTasks('all')" class="active" id="filter-all"><i class="fas fa-list"></i> Todas</button>
+                <button onclick="filterTasks('active')" id="filter-active"><i class="fas fa-clock"></i> Pendentes</button>
+                <button onclick="filterTasks('completed')" id="filter-completed"><i class="fas fa-check-circle"></i> Concluídas</button>
+                <button onclick="sortTasks('priority')" id="sort-priority"><i class="fas fa-sort"></i> Por Prioridade</button>
+                <button onclick="sortTasks('date')" id="sort-date"><i class="fas fa-calendar-alt"></i> Por Data</button>
+            </div>
+
+            <ul id="taskList" class="task-list"></ul>
+
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <i class="fas fa-clipboard-list"></i>
+                <p>Você não tem tarefas no momento</p>
+                <button onclick="focusTaskInput()"><i class="fas fa-plus"></i> Adicionar Tarefa</button>
+            </div>
+
+            <div class="task-stats">
+                <div class="stat-card total">
+                    <h3 id="totalTasks">0</h3>
+                    <p>Total de Tarefas</p>
+                </div>
+                <div class="stat-card completed">
+                    <h3 id="completedTasks">0</h3>
+                    <p>Tarefas Concluídas</p>
+                </div>
+                <div class="stat-card pending">
+                    <h3 id="pendingTasks">0</h3>
+                    <p>Tarefas Pendentes</p>
+                </div>
+            </div>
+
+            <div class="logout-container">
+                <button onclick="logout()" class="logout-btn btn-danger"><i class="fas fa-sign-out-alt"></i> Sair</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulação de banco de dados de usuários
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let currentUser = null;
+        let tasks = [];
+        let currentFilter = 'all';
+        let currentSort = null;
+
+        function showRegister() {
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
+            document.getElementById('newUsername').focus();
+        }
+
+        function showLogin() {
+            document.getElementById('authContainer').style.display = 'block';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('username').focus();
+        }
+
+        function register() {
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!username) {
+                showNotification('Por favor, insira um nome de usuário.', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showNotification('A senha deve ter pelo menos 6 caracteres.', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showNotification('As senhas não coincidem.', 'error');
+                return;
+            }
+
+            if (users.some(user => user.username === username)) {
+                showNotification('Nome de usuário já existe.', 'error');
+                return;
+            }
+
+            users.push({ username, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            showNotification('Registro bem-sucedido! Faça login agora.', 'success');
+            showLogin();
+        }
+
+        function authenticate() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (!username || !password) {
+                showNotification('Por favor, preencha todos os campos.', 'error');
+                return;
+            }
+            
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                document.getElementById('authContainer').style.display = 'none';
+                document.getElementById('taskContainer').style.display = 'block';
+                loadTasks();
+                updateTaskStats();
+                showNotification(`Bem-vindo, ${username}!`, 'success');
+            } else {
+                showNotification('Usuário ou senha inválidos.', 'error');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            document.getElementById('authContainer').style.display = 'block';
+            document.getElementById('taskContainer').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            resetFilters();
+        }
+
+        function loadTasks() {
+            const storedTasks = localStorage.getItem(`tasks_${currentUser.username}`);
+            tasks = storedTasks ? JSON.parse(storedTasks) : [];
+            renderTasks();
+        }
+
+        function saveTasks() {
+            localStorage.setItem(`tasks_${currentUser.username}`, JSON.stringify(tasks));
+            updateTaskStats();
+            checkEmptyState();
+        }
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskText = taskInput.value.trim();
+            const priority = document.getElementById('taskPriority').value;
+            const dueDate = document.getElementById('taskDueDate').value;
+            
+            if (!taskText) {
+                showNotification('Por favor, insira uma descrição para a tarefa.', 'error');
+                return;
+            }
+            
+            tasks.push({ 
+                id: Date.now(), 
+                text: taskText, 
+                completed: false, 
+                priority: priority, 
+                dueDate: dueDate,
+                createdAt: new Date().toISOString()
+            });
+            
+            taskInput.value = '';
+            document.getElementById('taskPriority').value = 'baixa';
+            document.getElementById('taskDueDate').value = '';
+            
+            showNotification('Tarefa adicionada com sucesso!', 'success');
+            saveTasks();
+            renderTasks();
+            taskInput.focus(); 
+        }
+
+        function deleteTask(id) {
+            if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+                tasks = tasks.filter(task => task.id !== id);
+                showNotification('Tarefa excluída com sucesso!', 'success');
+                saveTasks();
+                renderTasks();
+            }
+        }
+
+        function toggleTask(id) {
+            const task = tasks.find(task => task.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                showNotification(task.completed ? 'Tarefa concluída!' : 'Tarefa marcada como pendente.', 'success');
+                saveTasks();
+                renderTasks();
+            }
+        }
+
+        function editTask(id) {
+            const task = tasks.find(task => task.id === id);
+            if (task) {
+                const newText = prompt('Editar tarefa:', task.text);
+                if (newText !== null && newText.trim() !== '') {
+                    task.text = newText.trim();
+                    showNotification('Tarefa atualizada com sucesso!', 'success');
+                    saveTasks();
+                    renderTasks();
+                }
+            }
+        }
+
+        function filterTasks(filter) {
+            currentFilter = filter;
+            resetFilterButtons();
+            document.getElementById(`filter-${filter}`).classList.add('active');
+            renderTasks();
+        }
+
+        function sortTasks(sortBy) {
+            currentSort = sortBy;
+            resetSortButtons();
+            document.getElementById(`sort-${sortBy}`).classList.add('active');
+            renderTasks();
+        }
+
+        function resetFilterButtons() {
+            document.getElementById('filter-all').classList.remove('active');
+            document.getElementById('filter-active').classList.remove('active');
+            document.getElementById('filter-completed').classList.remove('active');
+        }
+
+        function resetSortButtons() {
+            document.getElementById('sort-priority').classList.remove('active');
+            document.getElementById('sort-date').classList.remove('active');
+        }
+
+        function resetFilters() {
+            currentFilter = 'all';
+            currentSort = null;
+            resetFilterButtons();
+            resetSortButtons();
+            document.getElementById('filter-all').classList.add('active');
+        }
+
+        function renderTasks() {
+            const taskList = document.getElementById('taskList');
+            const searchQuery = document.getElementById('searchTask').value.toLowerCase();
+            taskList.innerHTML = '';
+            
+            let filteredTasks = [...tasks];
+            
+            // Aplicar filtro
+            if (currentFilter === 'active') {
+                filteredTasks = filteredTasks.filter(task => !task.completed);
+            } else if (currentFilter === 'completed') {
+                filteredTasks = filteredTasks.filter(task => task.completed);
+            }
+            
+            // Aplicar pesquisa
+            if (searchQuery) {
+                filteredTasks = filteredTasks.filter(task => 
+                    task.text.toLowerCase().includes(searchQuery)
+                );
+            }
+            
+            // Aplicar ordenação
+            if (currentSort === 'priority') {
+                const priorityOrder = { alta: 1, media: 2, baixa: 3 };
+                filteredTasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+            } else if (currentSort === 'date') {
+                filteredTasks.sort((a, b) => {
+                    if (!a.dueDate) return 1;
+                    if (!b.dueDate) return -1;
+                    return new Date(a.dueDate) - new Date(b.dueDate);
+                });
+            }
+            
+            filteredTasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = `task-item priority-${task.priority} ${task.completed ? 'task-completed' : ''}`;
+                
+                const priorityLabel = {
+                    alta: 'Alta',
+                    media: 'Média',
+                    baixa: 'Baixa'
+                };
+                
+                const priorityIcon = {
+                    alta: 'fas fa-exclamation-circle',
+                    media: 'fas fa-exclamation',
+                    baixa: 'fas fa-arrow-down'
+                };
+                
+                const formattedDate = task.dueDate ? new Date(task.dueDate).toLocaleDateString('pt-BR') : 'Não definido';
+                
+                li.innerHTML = `
+                    <div class="task-content">
+                        <div class="task-text">${task.text}</div>
+                        <div class="task-meta">
+                            <span><i class="${priorityIcon[task.priority]}"></i> ${priorityLabel[task.priority]}</span>
+                            <span><i class="fas fa-calendar-day"></i> ${formattedDate}</span>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button onclick="toggleTask(${task.id})" class="btn-complete" title="${task.completed ? 'Marcar como pendente' : 'Marcar como concluída'}">
+                            <i class="fas ${task.completed ? 'fa-undo' : 'fa-check'}"></i>
+                            }AZSWED
+                        </button>
+                        <button onclick="editTask(${task.id})" class="btn-edit" title="Editar tarefa">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteTask(${task.id})" class="btn-delete" title="Excluir tarefa">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+                
+                taskList.appendChild(li);
+            });
+            
+            checkEmptyState();
+        }
+
+        function updateTaskStats() {
+            const totalTasks = tasks.length;
+            const completedTasks = tasks.filter(task => task.completed).length;
+            const pendingTasks = totalTasks - completedTasks;
+
+            document.getElementById('totalTasks').textContent = totalTasks;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            document.getElementById('pendingTasks').textContent = pendingTasks;
+        }
+
+        function checkEmptyState() {
+            const taskList = document.getElementById('taskList');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (tasks.length === 0) {
+                taskList.style.display = 'none';
+                emptyState.style.display = 'block';
+            } else {
+                taskList.style.display = 'block';
+                emptyState.style.display = 'none';s
+            }
+        }
+
+        function focusTaskInput() {
+            document.getElementById('taskInput').focus();
+        }
+
+        function showNotification(message, type) {
+            // Implementação simples de notificação com alert
+            // Em uma aplicação real, você poderia implementar um sistema de notificações mais elegante
+            alert(message);
+        }
+
+        // Event listeners
+        document.getElementById('searchTask').addEventListener('input', () => renderTasks());
+        
+        document.getElementById('taskInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+        
+        document.getElementById('username').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('password').focus();
+            }
+        });
+        
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                authenticate();
+            }
+        });
+
+
+        // Verificar se há um usuário logado ao carregar a página
+        window.onload = function() {
+            const storedUser = localStorage.getItem('currentUser');
+            if (storedUser) {
+                currentUser = JSON.parse(storedUser);
+                document.getElementById('authContainer').style.display = 'none';
+                document.getElementById('taskContainer').style.display = 'block';
+                loadTasks();
+                updateTaskStats();
+            }
+        };
+    </script>
+</body>
+</html>
+
+
+<style>
+    :root {
+        --bg-color: #121212;
+        --card-bg: #1e1e1e;
+        --input-bg: #2d2d2d;
+        --text-color: #e0e0e0;
+        --text-secondary: #a0a0a0;
+        --accent-color: #6366f1;
+        --accent-hover: #4f46e5;
+        --danger-color: #ef4444;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --border-radius: 12px;
+        --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --transition: all 0.3s ease;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body, html {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        min-height: 100vh;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .app-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .app-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(to right, var(--accent-color), #8b5cf6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .app-header p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+    }
+
+    .card {
+        background-color: var(--card-bg);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .card h2 i {
+        color: var(--accent-color);
+    }
+
+    .form-group {
+        margin-bottom: 1.25rem;
+        position: relative;
+    }
+
+    .form-group i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+    }
+
+    input, select, button {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.75rem;
+        border: none;
+        border-radius: var(--border-radius);
+        background-color: var(--input-bg);
+        color: var(--text-color);
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        transition: var(--transition);
+    }
+
+    input[type="date"] {
+        padding-left: 2.75rem;
+    }
+
+    input:focus, select:focus {
+        outline: 2px solid var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    button {
+        background-color: var(--accent-color);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0.75rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    button:hover {
+        background-color: var(--accent-hover);
+    }
+
+    button i {
+        font-size: 1rem;
+    }
+
+    .btn-danger {
+        background-color: var(--danger-color);
+    }
+
+    .btn-danger:hover {
+        background-color: #dc2626;
+    }
+
+    .btn-success {
+        background-color: var(--success-color);
+    }
+
+    .btn-success:hover {
+        background-color: #059669;
+    }
+
+    .btn-warning {
+        background-color: var(--warning-color);
+    }
+
+    .btn-warning:hover {
+        background-color: #d97706;
+    }
+
+    .auth-links {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .auth-links a {
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+
+    .filters {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .filters button {
+        width: auto;
+        padding: 0.5rem 1.25rem;
+        border-radius: 50px;
+        background-color: var(--card-bg);
+        color: var(--text-color);
+    }
+
+    .filters button.active {
+        background-color: var(--accent-color);
+        color: white;
+    }
+
+    .task-list {
+        list-style-type: none;
+    }
+
+    .task-item {
+        background-color: var(--input-bg);
+        margin-bottom: 1rem;
+        padding: 1.25rem;
+        border-radius: var(--border-radius);
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 1rem;
+        transition: var(--transition);
+        border-left: 4px solid var(--accent-color);
+    }
+
+    .task-item:hover {
+        transform: translateX(5px);
+    }
+
+    .task-item.priority-alta {
+        border-left-color: var(--danger-color);
+    }
+
+    .task-item.priority-media {
+        border-left-color: var(--warning-color);
+    }
+
+    .task-item.priority-baixa {
+        border-left-color: var(--success-color);
+    }
+
+    .task-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .task-text {
+        font-size: 1.1rem;
+        font-weight: 500;
+        word-break: break-word;
+    }
+
+    .task-completed .task-text {
+        text-decoration: line-through;
+        color: var(--text-secondary);
+    }
+
+    .task-meta {
+        display: flex;
+        gap: 1rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        flex-wrap: wrap;
+    }
+
+    .task-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .task-actions {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .task-actions button {
+        width: auto;
+        padding: 0.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--card-bg);
+        color: var(--text-color);
+    }
+
+    .task-actions button i {
+        font-size: 1rem;
+    }
+
+    .task-actions .btn-complete {
+        color: var(--success-color);
+    }
+
+    .task-actions .btn-edit {
+        color: var(--warning-color);
+    }
+
+    .task-actions .btn-delete {
+        color: var(--danger-color);
+    }
+
+    .task-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .stat-card {
+        background-color: var(--card-bg);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: var(--box-shadow);
+    }
+
+    .stat-card h3 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--accent-color);
+    }
+
+    .stat-card p {
+        color: var(--text-secondary);
+        font-size: 1rem;
+    }
+
+    .stat-card.completed h3 {
+        color: var(--success-color);
+    }
+
+    .stat-card.pending h3 {
+        color: var(--warning-color);
+    }
+
+    .logout-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .logout-btn {
+        width: auto;
+        padding: 0.75rem 2rem;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+        }
+        
+        .task-item {
+            grid-template-columns: 1fr;
+        }
+        
+        .task-actions {
+            justify-content: flex-end;
+        }
+    }
+
+    /* Animações */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card, .task-item, .stat-card {
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-secondary);
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .empty-state p {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+</style>

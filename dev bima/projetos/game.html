@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏴‍☠️ Caça ao Tesouro Pirata</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Pirata+One&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pirata One', cursive;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #87ceeb 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animação de ondas do mar */
+        body::before {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" fill="%23ffffff20"/></svg>');
+            animation: wave 3s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-50px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        }
+
+        .title {
+            font-family: 'Creepster', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700, 0 0 40px #ffd700; }
+            to { text-shadow: 0 0 30px #ffd700, 0 0 40px #ffd700, 0 0 50px #ffd700; }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .game-panel {
+            background: rgba(139, 69, 19, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 3px solid #ffd700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,215,0,0.1), transparent);
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            color: #ffd700;
+            font-size: 1.1rem;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,215,0,0.3);
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255,215,0,0.3);
+        }
+
+        .hint-display {
+            background: rgba(0,0,0,0.7);
+            color: #ffd700;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            border: 2px solid #ffd700;
+            position: relative;
+            z-index: 2;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(45deg, #d2b48c, #daa520);
+            border-radius: 15px;
+            border: 5px solid #8b4513;
+            overflow: hidden;
+            cursor: crosshair;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.3);
+        }
+
+        .map-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(139,69,19,0.3) 2px, transparent 2px),
+                radial-gradient(circle at 80% 70%, rgba(139,69,19,0.3) 2px, transparent 2px),
+                radial-gradient(circle at 60% 20%, rgba(139,69,19,0.3) 1px, transparent 1px);
+            background-size: 50px 50px, 30px 30px, 20px 20px;
+        }
+
+        .island {
+            position: absolute;
+            background: #228b22;
+            border-radius: 50%;
+            border: 2px solid #006400;
+        }
+
+        .island1 {
+            width: 80px;
+            height: 60px;
+            top: 15%;
+            left: 20%;
+            transform: rotate(-15deg);
+        }
+
+        .island2 {
+            width: 60px;
+            height: 50px;
+            top: 60%;
+            right: 25%;
+            transform: rotate(20deg);
+        }
+
+        .island3 {
+            width: 40px;
+            height: 35px;
+            bottom: 20%;
+            left: 15%;
+            transform: rotate(-30deg);
+        }
+
+        .click-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: markerPulse 1s ease-out;
+            z-index: 10;
+        }
+
+        @keyframes markerPulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .treasure-chest {
+            position: absolute;
+            width: 40px;
+            height: 30px;
+            background: #ffd700;
+            border: 3px solid #b8860b;
+            border-radius: 5px;
+            transform: translate(-50%, -50%);
+            animation: treasureGlow 2s ease-in-out infinite;
+            z-index: 15;
+        }
+
+        .treasure-chest::before {
+            content: '💎';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+        }
+
+        @keyframes treasureGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px #ffd700;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                box-shadow: 0 0 40px #ffd700, 0 0 60px #ffd700;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-family: 'Pirata One', cursive;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .victory-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .victory-content {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            color: #8b4513;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: victoryBounce 0.6s ease-out;
+            border: 5px solid #b8860b;
+        }
+
+        @keyframes victoryBounce {
+            0% {
+                transform: scale(0.3) rotate(-10deg);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .victory-title {
+            font-family: 'Creepster', cursive;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: fireworkExplode 1s ease-out forwards;
+        }
+
+        @keyframes fireworkExplode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .compass {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            border-radius: 50%;
+            border: 3px solid #8b4513;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: compassSpin 10s linear infinite;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        @keyframes compassSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .map-container {
+                height: 400px;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .compass {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🏴‍☠️ CAÇA AO TESOURO PIRATA</h1>
+            <p class="subtitle">Encontre o tesouro perdido do Capitão Barba Negra!</p>
+        </div>
+
+        <div class="game-panel">
+            <div class="stats">
+                <div class="stat-item">
+                    <div>⚔️ Tentativas</div>
+                    <div id="attempts">0</div>
+                </div>
+                <div class="stat-item">
+                    <div>🏆 Melhor Score</div>
+                    <div id="best-score">-</div>
+                </div>
+                <div class="stat-item">
+                    <div>💰 Tesouros Encontrados</div>
+                    <div id="treasures-found">0</div>
+                </div>
+            </div>
+
+            <div class="hint-display" id="hint">
+                🗺️ Clique no mapa para começar sua aventura pirata!
+            </div>
+
+            <div class="map-container" id="map">
+                <div class="compass">🧭</div>
+                <div class="island island1"></div>
+                <div class="island island2"></div>
+                <div class="island island3"></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn" id="new-game">🎮 Novo Jogo</button>
+                <button class="btn" id="hint-btn">💡 Dica Especial</button>
+                <button class="btn" id="reset-stats">🔄 Reset Stats</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="victory-modal" id="victory-modal">
+        <div class="victory-content">
+            <h2 class="victory-title">🎉 TESOURO ENCONTRADO! 🎉</h2>
+            <p>Parabéns, bravo pirata!</p>
+            <p>Você encontrou o tesouro em <span id="final-attempts">0</span> tentativas!</p>
+            <div style="margin: 20px 0; font-size: 3rem;">💰💎🏆</div>
+            <button class="btn" id="play-again">⚔️ Nova Aventura</button>
+        </div>
+    </div>
+
+    <div class="fireworks" id="fireworks"></div>
+
+    <script>
+        class TreasureHuntGame {
+            constructor() {
+                this.attempts = 0;
+                this.treasureX = 0;
+                this.treasureY = 0;
+                this.gameActive = false;
+                this.treasuresFound = parseInt(localStorage.getItem('treasuresFound') || '0');
+                this.bestScore = parseInt(localStorage.getItem('bestScore') || '0');
+                this.hintsUsed = 0;
+                
+                this.initElements();
+                this.initGame();
+                this.updateStats();
+            }
+
+            initElements() {
+                this.map = document.getElementById('map');
+                this.hintDisplay = document.getElementById('hint');
+                this.attemptsDisplay = document.getElementById('attempts');
+                this.bestScoreDisplay = document.getElementById('best-score');
+                this.treasuresFoundDisplay = document.getElementById('treasures-found');
+                this.victoryModal = document.getElementById('victory-modal');
+                this.finalAttemptsDisplay = document.getElementById('final-attempts');
+                this.fireworksContainer = document.getElementById('fireworks');
+
+                // Event listeners
+                this.map.addEventListener('click', (e) => this.handleMapClick(e));
+                document.getElementById('new-game').addEventListener('click', () => this.initGame());
+                document.getElementById('hint-btn').addEventListener('click', () => this.useSpecialHint());
+                document.getElementById('reset-stats').addEventListener('click', () => this.resetStats());
+                document.getElementById('play-again').addEventListener('click', () => this.closeVictoryModal());
+            }
+
+            initGame() {
+                this.attempts = 0;
+                this.hintsUsed = 0;
+                this.gameActive = true;
+                
+                // Clear previous markers and treasure
+                this.clearMap();
+                
+                // Generate random treasure position
+                this.treasureX = Math.random() * 0.8 + 0.1; // 10% margin from edges
+                this.treasureY = Math.random() * 0.8 + 0.1;
+                
+                this.updateDisplay();
+                this.hintDisplay.textContent = '🗺️ Clique no mapa para começar sua aventura pirata!';
+                
+                console.log('Tesouro em:', this.treasureX, this.treasureY);
+            }
+
+            clearMap() {
+                const markers = this.map.querySelectorAll('.click-marker, .treasure-chest');
+                markers.forEach(marker => marker.remove());
+            }
+
+            handleMapClick(e) {
+                if (!this.gameActive) return;
+
+                const rect = this.map.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+
+                this.attempts++;
+                this.updateDisplay();
+
+                const distance = this.calculateDistance(x, y, this.treasureX, this.treasureY);
+                const hint = this.getHint(distance);
+
+                this.addMarker(x, y, hint);
+                this.displayHint(hint, distance);
+
+                if (distance < 0.05) {
+                    this.foundTreasure();
+                }
+            }
+
+            calculateDistance(x1, y1, x2, y2) {
+                return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            }
+
+            getHint(distance) {
+                if (distance < 0.05) return 'treasure';
+                if (distance < 0.1) return 'fervendo';
+                if (distance < 0.2) return 'muito-quente';
+                if (distance < 0.3) return 'quente';
+                if (distance < 0.5) return 'morno';
+                if (distance < 0.7) return 'frio';
+                return 'muito-frio';
+            }
+
+            getHintText(hint) {
+                const hints = {
+                    'muito-frio': '🧊 Muito frio! Você está bem longe do tesouro!',
+                    'frio': '❄️ Frio! Ainda está distante, mas continue procurando!',
+                    'morno': '🌡️ Morno! Você está se aproximando, pirata!',
+                    'quente': '🔥 Quente! O tesouro está próximo!',
+                    'muito-quente': '🌋 Muito quente! Você está quase lá!',
+                    'fervendo': '⚡ FERVENDO! O tesouro está bem aqui!'
+                };
+                return hints[hint] || '';
+            }
+
+            getMarkerColor(hint) {
+                const colors = {
+                    'muito-frio': '#00bfff',
+                    'frio': '#4169e1',
+                    'morno': '#ffa500',
+                    'quente': '#ff4500',
+                    'muito-quente': '#ff0000',
+                    'fervendo': '#ff1493'
+                };
+                return colors[hint] || '#666';
+            }
+
+            addMarker(x, y, hint) {
+                const marker = document.createElement('div');
+                marker.className = 'click-marker';
+                marker.style.left = (x * 100) + '%';
+                marker.style.top = (y * 100) + '%';
+                marker.style.backgroundColor = this.getMarkerColor(hint);
+                marker.style.boxShadow = `0 0 20px ${this.getMarkerColor(hint)}`;
+                
+                this.map.appendChild(marker);
+            }
+
+            displayHint(hint, distance) {
+                const hintText = this.getHintText(hint);
+                this.hintDisplay.textContent = hintText;
+                
+                // Add visual feedback
+                this.hintDisplay.style.animation = 'none';
+                setTimeout(() => {
+                    this.hintDisplay.style.animation = 'pulse 0.5s ease-in-out';
+                }, 10);
+            }
+
+            foundTreasure() {
+                this.gameActive = false;
+                
+                // Add treasure chest to map
+                const treasure = document.createElement('div');
+                treasure.className = 'treasure-chest';
+                treasure.style.left = (this.treasureX * 100) + '%';
+                treasure.style.top = (this.treasureY * 100) + '%';
+                this.map.appendChild(treasure);
+
+                // Update stats
+                this.treasuresFound++;
+                if (this.bestScore === 0 || this.attempts < this.bestScore) {
+                    this.bestScore = this.attempts;
+                }
+                
+                this.saveStats();
+                this.updateStats();
+                
+                // Show victory
+                setTimeout(() => {
+                    this.showVictory();
+                }, 1000);
+            }
+
+            showVictory() {
+                this.finalAttemptsDisplay.textContent = this.attempts;
+                this.victoryModal.style.display = 'flex';
+                this.createFireworks();
+            }
+
+            createFireworks() {
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        const firework = document.createElement('div');
+                        firework.className = 'firework';
+                        firework.style.left = Math.random() * 100 + '%';
+                        firework.style.top = Math.random() * 100 + '%';
+                        firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                        
+                        this.fireworksContainer.appendChild(firework);
+                        
+                        setTimeout(() => {
+                            firework.remove();
+                        }, 1000);
+                    }, i * 100);
+                }
+            }
+
+            closeVictoryModal() {
+                this.victoryModal.style.display = 'none';
+                this.initGame();
+            }
+
+            useSpecialHint() {
+                if (!this.gameActive || this.hintsUsed >= 3) {
+                    this.hintDisplay.textContent = '💡 Você já usou todas as dicas especiais!';
+                    return;
+                }
+
+                this.hintsUsed++;
+                const mapRect = this.map.getBoundingClientRect();
+                const treasurePixelX = this.treasureX * mapRect.width;
+                const treasurePixelY = this.treasureY * mapRect.height;
+
+                let hintText = '';
+                if (this.hintsUsed === 1) {
+                    hintText = treasurePixelX < mapRect.width / 2 ? 
+                        '🧭 O tesouro está na metade ESQUERDA do mapa!' : 
+                        '🧭 O tesouro está na metade DIREITA do mapa!';
+                } else if (this.hintsUsed === 2) {
+                    hintText = treasurePixelY < mapRect.height / 2 ? 
+                        '🧭 O tesouro está na metade SUPERIOR do mapa!' : 
+                        '🧭 O tesouro está na metade INFERIOR do mapa!';
+                } else {
+                    hintText = '🧭 DICA FINAL: O tesouro está próximo a uma das ilhas!';
+                }
+
+                this.hintDisplay.textContent = hintText;
+                this.attempts += 2; // Penalty for using hint
+                this.updateDisplay();
+            }
+
+            updateDisplay() {
+                this.attemptsDisplay.textContent = this.attempts;
+            }
+
+            updateStats() {
+                this.bestScoreDisplay.textContent = this.bestScore || '-';
+                this.treasuresFoundDisplay.textContent = this.treasuresFound;
+            }
+
+            saveStats() {
+                localStorage.setItem('treasuresFound', this.treasuresFound.toString());
+                localStorage.setItem('bestScore', this.bestScore.toString());
+            }
+
+            resetStats() {
+                if (confirm('Tem certeza que deseja resetar todas as estatísticas?')) {
+                    this.treasuresFound = 0;
+                    this.bestScore = 0;
+                    localStorage.removeItem('treasuresFound');
+                    localStorage.removeItem('bestScore');
+                    this.updateStats();
+                }
+            }
+        }
+
+        // Initialize game when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new TreasureHuntGame();
+        });
+    </script>
+</body>
+</html>
