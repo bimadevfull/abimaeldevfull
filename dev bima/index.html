@@ -1,982 +1,1104 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Abimael Dev Full-Stack</title>
-  <meta name="description" content="Portfólio profissional de Abimael, desenvolvedor full-stack especializado em soluções inovadoras.">
+  <meta
+    name="description"
+    content="Portfólio profissional de Abimael, desenvolvedor full-stack especializado em soluções inovadoras. Em busca de oportunidades em equipe e atuando como freelancer."
+  />
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="img/amt2.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="img/amt2.png" type="image/x-icon" />
 </head>
 <body>
   <!-- Loading Screen -->
   <div class="loader" id="loader">
-      <div class="loader-content">
-          <div class="cyber-loader">
-          </div>
-          <h2 class="loader-text">INICIALIZANDO SISTEMA...</h2>
-          <div class="loading-bar">
-              <div class="loading-progress"></div>
-          </div>
+    <div class="loader-content">
+      <div class="cyber-loader"></div>
+      <h2 class="loader-text">INICIALIZANDO SISTEMA...</h2>
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
       </div>
+    </div>
   </div>
   <!-- Particles Background -->
-  
   <div id="particles-js"></div>
   <!-- Header -->
   <header class="header" id="header">
-      <nav class="nav">
-          <div class="nav__logo">
-              <span class="logo-glitch" data-text="">BIMA DEV</span>
-          </div>
-          <div class="nav__menu" id="nav-menu">
-              <ul class="nav__list">
-                  <li class="nav__item">
-                      <a href="#home" class="nav__link active-link">
-                          <i class="fas fa-home"></i>
-                          <span>INÍCIO</span>
-                      </a>
-                  </li>
-                  <li class="nav__item">
-                      <a href="#about" class="nav__link">
-                          <i class="fas fa-user"></i>
-                          <span>SOBRE</span>
-                      </a>
-                  </li>
-                  <li class="nav__item">
-                      <a href="#education" class="nav__link">
-                          <i class="fas fa-graduation-cap"></i>
-                          <span>FORMAÇÕES</span>
-                      </a>
-                  </li>
-                  <li class="nav__item">
-                      <a href="#skills" class="nav__link">
-                          <i class="fas fa-code"></i>
-                          <span>HABILIDADES</span>
-                      </a>
-                  </li>
-                  <li class="nav__item">
-                      <a href="#projects" class="nav__link">
-                          <i class="fas fa-rocket"></i>
-                          <span>PROJETOS</span>
-                      </a>
-                  </li>
-                  <li class="nav__item">
-                      <a href="#services" class="nav__link">
-                          <i class="fas fa-cogs"></i>
-                          <span>SERVIÇOS</span>
-                      </a>
-                  </li>
-                  <li class="nav__item">
-                      <a href="#contact" class="nav__link">
-                          <i class="fas fa-envelope"></i>
-                          <span>CONTATO</span>
-                      </a>
-                  </li>
-              </ul>
-              <div class="nav__close" id="nav-close">
-                  <i class="fas fa-times"></i>
-              </div>
-          </div>
-          <div class="nav__toggle" id="nav-toggle">
-              <span></span>
-              <span></span>
-              <span></span>
-          </div>
-      </nav>
+    <nav class="nav">
+      <div class="nav__logo">
+        <span class="logo-glitch" data-text="BIMA DEV">BIMA DEV</span>
+      </div>
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a href="#home" class="nav__link active-link">
+              <i class="fas fa-home"></i>
+              <span>INÍCIO</span>
+            </a>
+          </li>
+          <li class="nav__item">
+            <a href="#about" class="nav__link">
+               <img src="img/amt2.png" width="28">
+              <span>ABTECH</span>
+            </a>
+          </li>
+          <li class="nav__item">
+            <a href="#services" class="nav__link">
+              <i class="fas fa-cogs"></i>
+              <span>SERVIÇOS</span>
+            </a>
+          </li>
+          <li class="nav__item">
+            <a href="#education" class="nav__link">
+              <i class="fas fa-graduation-cap"></i>
+              <span>FORMAÇÕES</span>
+            </a>
+          </li>
+          <li class="nav__item">
+            <a href="#skills" class="nav__link">
+              <i class="fas fa-code"></i>
+              <span>HABILIDADES</span>
+            </a>
+          </li>
+          <li class="nav__item">
+            <a href="#projects" class="nav__link">
+              <i class="fas fa-rocket"></i>
+              <span>PROJETOS</span>
+            </a>
+          </li>
+          
+          <li class="nav__item">
+            <a href="#contact" class="nav__link">
+              <i class="fas fa-envelope"></i>
+              <span>CONTATO</span>
+            </a>
+          </li>
+        </ul>
+        <div class="nav__close" id="nav-close">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+      <div class="nav__toggle" id="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
   </header>
   <!-- Main -->
   <main class="main">
-      <!-- Home -->
-      <section class="home section" id="home">
-          <div class="home__container">
-              <div class="home__content">
-                  <div class="home__data">
-                      <h1 class="home__name">
-                          <span class="name-part">ABIMAEL</span>
-                      </h1>
-                      <div class="home__profession">
-                          <span class="profession-text" id="profession-text"></span>
-                          <span class="cursor-blink">|</span>
-                      </div>
-                      <p class="home__description">
-                          Sou um Desenvolvedor júnior tenho 18 anos atualmente estou 
-                          focado em criar soluções e projetos para a web, com experiência em 
-                          tecnologias front-end e back-end. Estou sempre em busca de novos 
-                          desafios para aprender e crescer na área web e de Software.
-                      </p>
-                      <div class="home__buttons">
-                          <a href="#contact" class="btn btn-primary">
-                              <span>ENTRE EM CONTATO</span>
-                              <i class="fas fa-arrow-right"></i>
-                          </a>
-                          <a href="#projects" class="btn btn-secondary">
-                              <span>VER PROJETOS</span>
-                              <i class="fas fa-eye"></i>
-                          </a>
-                      </div>
-                      <div class="home__social">
-                          <a href="https://www.linkedin.com/in/abimael-de-menezes-pedro-440987364/" class="social-link" target="_blank">
-                              <i class="fab fa-linkedin-in"></i>
-                              <span>LinkedIn</span>
-                          </a>
-                          <a href="https://www.instagram.com/bima.script/" class="social-link" target="_blank">
-                              <i class="fab fa-instagram"></i>
-                              <span>Instagram</span>
-                          </a>
-                          <a href="mailto:abimaeldevfull.stack@gmail.com" class="social-link">
-                              <i class="fas fa-envelope"></i>
-                              <span>Email</span>
-                          </a>
-                      </div>
-                      <!-- Ícones de tecnologias -->
-                      <div class="home__tech-icons">
-                          <div class="tech-icon">
-                              <i class="fab fa-html5"></i>
-                          </div>
-                          <div class="tech-icon">
-                              <i class="fab fa-css3-alt"></i>
-                          </div>
-                          <div class="tech-icon">
-                              <i class="fab fa-js-square"></i>
-                          </div>
-                          <div class="tech-icon">
-                              <i class="fab fa-react"></i>
-                          </div>
-                          <div class="tech-icon">
-                              <i class="fab fa-node-js"></i>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="home__image">
-                      <div class="image-container">
-                          <div class="hologram-effect">
-                              <img src="img/bima.png" alt="Abimael Dev" class="profile-img">
-                              <div class="hologram-lines"></div>
-                              <div class="hologram-grid"></div>
-                          </div>
-                          <div class="floating-elements">
-                              <div class="floating-icon" style="--delay: 0s">
-                                  <i class="fab fa-react"></i>
-                              </div>
-                              <div class="floating-icon" style="--delay: 1s">
-                                  <i class="fab fa-node-js"></i>
-                              </div>
-                              <div class="floating-icon" style="--delay: 2s">
-                                  <i class="fab fa-python"></i>
-                              </div>
-                              <div class="floating-icon" style="--delay: 3s">
-                                  <i class="fas fa-database"></i>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </section>
-      <!-- About -->
-      <section class="about section" id="about">
-          <div class="container">
-              <div class="section-header">
-                  <h2 class="section__title">MINHA MARCA</h2>
-                  <div class="section__line"></div>
-              </div>
-              <div class="about__container">
-                  <div class="about__content">
-                      <div class="about__text">
-                          <h3 class="about__subtitle">ABTECH SOLUTIONS</h3>
-                          <p class="about__description">
-                             Na ABTech Solutions , sou movido pela inovação, eficiência e impacto. Com apenas 18 anos, já desenvolvi mais de 15 projetos entregues com sucesso a clientes satisfeitos. A marca nasceu da paixão por tecnologia e do desejo de transformar ideias em soluções reais e funcionais.
-A ABTech Solutions é minha identidade como desenvolvedor Full-Stack, onde cada linha de código é pensada para resolver problemas e facilitar a vida de pessoas e empresas. Utilizo as tecnologias mais modernas do mercado, sempre buscando excelência em cada detalhe — do visual à performance.
-                          </p>
-                          <p class="about__description">
-                             Acredito que tecnologia de verdade é aquela que faz a diferença na vida das pessoas, e é isso que ofereço em cada projeto: entrega de alto impacto, com foco humano e visão de futuro.
-                          </p>
-                          <div class="about__stats">
-                              <div class="stat-item">
-                                  <div class="stat-number" data-target="15">0</div>
-                                  <div class="stat-label">PROJETOS CONCLUÍDOS COM CLIENTES SATISFEITOS</div>
-                              </div>
-                              <a href="#contact" class="btn btn-outline">
-                                  <span>VAMOS CONVERSAR</span>
-                                  <i class="fas fa-comments"></i>
-                              </a>
-                          </div>
-                      </div>
-                      <div class="about__image">
-                          <div class="image-frame">
-                              <img src="img/amt2.png" alt="Desenvolvedor trabalhando" class="about__img">
-                              <div class="frame-decoration"></div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </section>
-      <!-- Education/Formações -->
-      <section class="education section" id="education">
-          <div class="container">
-              <div class="section-header">
-                  <h2 class="section__title">FORMAÇÕES</h2>
-                  <div class="section__line"></div>
-              </div>
-              <div class="education__container">
-                  <div class="timeline">
-                      <div class="timeline__item">
-                          <div class="timeline__marker"></div>
-                          <div class="timeline__content">
-                              <div class="timeline__date">2025 - 2028</div>
-                              <h3 class="timeline__title">BACHARELADO EM ENGENHARIA DE SOFTWARE</h3>
-                              <h4 class="timeline__company">Centro Universitário Internacional</h4>
-                              <p class="timeline__description">
-                                  Cursando Bacharelado em Engenharia de Software, estou me capacitando para projetar, desenvolver e manter aplicações com foco em qualidade, eficiência e inovação.
-                              </p>
-                              <div class="timeline__skills">
-                                  <span>Arquitetura de Software</span>
-                                  <span>Gestão de Projetos</span>
-                                  <span>Desenvolvimento Ágil</span>
-                                  <span>Qualidade de Software</span>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="timeline__item">
-                          <div class="timeline__marker"></div>
-                          <div class="timeline__content">
-                              <div class="timeline__date">2022 - 2024</div>
-                              <h3 class="timeline__title">ETEC - Escola Técnica Estadual</h3>
-                              <h4 class="timeline__company">Centro Paula Souza</h4>
-                              <p class="timeline__description">
-                                  Capacitado para desenvolver, implantar e manter sites, sistemas web e 
-                                  aplicações digitais, com foco em programação, design e banco de dados. 
-                                  Curso Técnico em Informática para internet.
-                              </p>
-                              <div class="timeline__skills">
-                                  <span>Desenvolvimento Web</span>
-                                  <span>Banco de Dados</span>
-                                  <span>UX/UI</span>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="timeline__item">
-                          <div class="timeline__marker"></div>
-                          <div class="timeline__content">
-                              <div class="timeline__date">2024</div>
-                              <h3 class="timeline__title">DevMedia - Desenvolvedor web</h3>
-                              <h4 class="timeline__company">DevMedia</h4>
-                              <p class="timeline__description">
-                                  Mobile e Front-end desenvolvimento de aplicações Mobile e Front-end com 
-                                  design responsivo e tecnologias modernas.
-                              </p>
-                              <div class="timeline__skills">
-                                  <span>Front-end</span>
-                                  <span>Mobile</span>
-                                  <span>Responsive Design</span>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </section>
-      <!-- Skills/Habilidades -->
-      <section class="skills section" id="skills">
-          <div class="container">
-              <div class="section-header">
-                  <h2 class="section__title">HABILIDADES TÉCNICAS</h2>
-                  <div class="section__line"></div>
-              </div>
-              <div class="skills__container">
-                  <!-- Linguagens de Marcação -->
-                  <div class="skills__category">
-                      <h3 class="category__title">
-                          <i class="fas fa-code"></i>
-                          LINGUAGENS DE MARCAÇÃO
-                      </h3>
-                      <div class="skills__grid">
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fab fa-html5"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>HTML5</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="100%"></div>
-                                  </div>
-                                  <span class="skill__percentage">100%</span>
-                              </div>
-                          </div>
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fab fa-css3-alt"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>CSS3</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="100%"></div>
-                                  </div>
-                                  <span class="skill__percentage">100%</span>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- Linguagens de Programação -->
-                  <div class="skills__category">
-                      <h3 class="category__title">
-                          <i class="fas fa-laptop-code"></i>
-                          LINGUAGENS DE PROGRAMAÇÃO
-                      </h3>
-                      <div class="skills__grid">
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fab fa-js-square"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>JavaScript</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="98%"></div>
-                                  </div>
-                                  <span class="skill__percentage">98%</span>
-                              </div>
-                          </div>
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fab fa-python"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>Python</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="30%"></div>
-                                  </div>
-                                  <span class="skill__percentage">30%</span>
-                              </div>
-                          </div>
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fab fa-java"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>Java</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="30%"></div>
-                                  </div>
-                                  <span class="skill__percentage">30%</span>
-                              </div>
-                          </div>
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fab fa-php"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>PHP</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="90%"></div>
-                                  </div>
-                                  <span class="skill__percentage">90%</span>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- Banco de Dados -->
-                  <div class="skills__category">
-                      <h3 class="category__title">
-                          <i class="fas fa-database"></i>
-                          BANCO DE DADOS
-                      </h3>
-                      <div class="skills__grid">
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fas fa-database"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>MySQL</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="95%"></div>
-                                  </div>
-                                  <span class="skill__percentage">90%</span>
-                              </div>
-                          </div>
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fas fa-database"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>PostgreSQL</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="50%"></div>
-                                  </div>
-                                  <span class="skill__percentage">50%</span>
-                              </div>
-                          </div>
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fas fa-database"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>MongoDB</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="50%"></div>
-                                  </div>
-                                  <span class="skill__percentage">50%</span>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- Frameworks e Bibliotecas -->
-                  <div class="skills__category">
-                      <h3 class="category__title">
-                          <i class="fas fa-cogs"></i>
-                          FRAMEWORKS & BIBLIOTECAS
-                      </h3>
-                      <div class="skills__grid">
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fab fa-react"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>React</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="85%"></div>
-                                  </div>
-                                  <span class="skill__percentage">85%</span>
-                              </div>
-                          </div>
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fab fa-node-js"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>Node.js</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="70%"></div>
-                                  </div>
-                                  <span class="skill__percentage">70%</span>
-                              </div>
-                          </div>
-                          <div class="skill__item">
-                              <div class="skill__icon">
-                                  <i class="fab fa-bootstrap"></i>
-                              </div>
-                              <div class="skill__info">
-                                  <h4>Bootstrap</h4>
-                                  <div class="skill__bar">
-                                      <div class="skill__progress" data-width="90%"></div>
-                                  </div>
-                                  <span class="skill__percentage">90%</span>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </section>
-   <!-- New Tools and Workflow Section -->
-        <!-- New Tools and Workflow Section -->
-        <section class="tools-workflow section" id="tools-workflow">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section__title">MINHAS FERRAMENTAS E FLUXO DE TRABALHO</h2>
-                    <div class="section__line"></div>
-                </div>
-                <div class="tools-workflow__container">
-                    <div class="workflow__category">
-                        <h3 class="category__title">
-                            <i class="fas fa-desktop"></i>
-                            AMBIENTE DE DESENVOLVIMENTO
-                        </h3>
-                        <div class="tools__grid">
-                            <div class="tool__item">
-                                <div class="tool__icon"><i class="fas fa-code"></i></div>
-                                <div class="tool__info">
-                                    <h4>VS Code</h4>
-                                    <p>Meu editor de código principal, com extensões para produtividade e depuração.</p>
-                                </div>
-                            </div>
-                            <div class="tool__item">
-                                <div class="tool__icon"><i class="fas fa-terminal"></i></div>
-                                <div class="tool__info">
-                                    <h4>Terminal (Zsh/Oh My Zsh)</h4>
-                                    <p>Para linha de comando eficiente e scripts personalizados.</p>
-                                </div>
-                            </div>
-                            <div class="tool__item">
-                                <div class="tool__icon"><i class="fab fa-git-alt"></i></div>
-                                <div class="tool__info">
-                                    <h4>Git & GitHub Desktop</h4>
-                                    <p>Controle de versão e colaboração em projetos.</p>
-                                </div>
-                            </div>
-                            <div class="tool__item">
-                                <div class="tool__icon"><i class="fas fa-server"></i></div>
-                                <div class="tool__info">
-                                
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="workflow__category">
-                        <h3 class="category__title">
-                            <i class="fas fa-project-diagram"></i>
-                            PROCESSO DE DESENVOLVIMENTO
-                        </h3>
-                        <div class="tools__grid">
-                            <div class="tool__item">
-                                <div class="tool__icon"><i class="fas fa-lightbulb"></i></div>
-                                <div class="tool__info">
-                                    <h4>Concepção e Planejamento</h4>
-                                    <p>Início com brainstorming, wireframes (Figma) e definição de requisitos.</p>
-                                </div>
-                            </div>
-                            <div class="tool__item">
-                                <div class="tool__icon"><i class="fas fa-pencil-ruler"></i></div>
-                                <div class="tool__info">
-                                    <h4>Design e Prototipagem</h4>
-                                    <p>Criação de interfaces no Figma e prototipagem de componentes.</p>
-                                </div>
-                            </div>
-                            <div class="tool__item">
-                                <div class="tool__icon"><i class="fas fa-laptop-code"></i></div>
-                                <div class="tool__info">
-                                    <h4>Desenvolvimento Ágil</h4>
-                                    <p>Iterações rápidas, testes contínuos e integração de feedback.</p>
-                                </div>
-                            </div>
-                            <div class="tool__item">
-                                <div class="tool__icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                                <div class="tool__info">
-                                    <h4>Deploy e Manutenção</h4>
-                                    <p>Implantação em plataformas como Vercel/AWS e monitoramento pós-lançamento.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Home -->
+    <section class="home section" id="home">
+      <div class="home__container">
+        <div class="home__content">
+          <div class="home__data">
+            <h1 class="home__name">
+              <span class="name-part">ABIMAEL</span>
+            </h1>
+            <div class="home__profession">
+              <span class="profession-text" id="profession-text"></span>
+              <span class="cursor-blink">|</span>
             </div>
-        </section>
-
-    
-      <section class="services section" id="services">
-          <div class="container">
-              <div class="section-header">
-                  <h2 class="section__title">SERVIÇOS</h2>
-                  <div class="section__line"></div>
+            <p class="home__description">
+             Sou um Desenvolvedor júnior tenho 18 anos atualmente estou focado em criar soluções e projetos para a web, com experiência em tecnologias front-end e back-end. Estou sempre em busca de novos desafios para aprender e crescer na área web e de Software.
+            </p>
+            <div class="home__buttons">
+              <a href="#contact" class="btn btn-primary">
+                <span>ENTRE EM CONTATO</span>
+                <i class="fas fa-arrow-right"></i>
+              </a>
+              <a href="#projects" class="btn btn-secondary">
+                <span>VER PROJETOS</span>
+                <i class="fas fa-eye"></i>
+              </a>
+            </div>
+            <div class="home__social">
+              <a
+                href="https://www.linkedin.com/in/abimael-de-menezes-pedro-440987364/"
+                class="social-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fab fa-linkedin-in"></i>
+                <span>LinkedIn</span>
+              </a>
+              <a
+                href="https://www.instagram.com/bima.script/"
+                class="social-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i class="fab fa-instagram"></i>
+                <span>Instagram</span>
+              </a>
+              <a href="mailto:abimaeldevfull.stack@gmail.com" class="social-link">
+                <i class="fas fa-envelope"></i>
+                <span>Email</span>
+              </a>
+            </div>
+            <!-- Ícones de tecnologias -->
+            <div class="home__tech-icons">
+              <div class="tech-icon">
+                <i class="fab fa-html5"></i>
               </div>
-              <div class="services__container">
-                  <div class="service__card">
-                      <div class="service__icon">
-                          <i class="fas fa-laptop-code"></i>
-                      </div>
-                      <h3 class="service__title">Desenvolvimento Web</h3>
-                      <p class="service__description">
-                          Criação de sites responsivos e aplicações web modernas, utilizando as 
-                          mais recentes tecnologias e melhores práticas do mercado. Foco em 
-                          performance e experiência do usuário.
-                      </p>
-                      <ul class="service__features">
-                          <li><i class="fas fa-check"></i> Sites Responsivos</li>
-                          <li><i class="fas fa-check"></i> Aplicações Web</li>
-                          <li><i class="fas fa-check"></i> E-commerce</li>
-                          <li><i class="fas fa-check"></i> Landing Pages</li>
-                      </ul>
-                      <a href="#contact" class="btn btn-outline">
-                          <span>SOLICITAR ORÇAMENTO</span>
-                          <i class="fas fa-arrow-right"></i>
-                      </a>
-                  </div>
-                  <div class="service__card">
-                      <div class="service__icon">
-                          <i class="fas fa-tools"></i>
-                      </div>
-                      <h3 class="service__title">Consultoria Tech</h3>
-                      <p class="service__description">
-                          Consultoria especializada em tecnologia, arquitetura de projetos 
-                          e otimização de sistemas existentes.
-                      </p>
-                      <ul class="service__features">
-                          <li><i class="fas fa-check"></i> Análise de Projetos</li>
-                          <li><i class="fas fa-check"></i> Otimização de Código</li>
-                          <li><i class="fas fa-check"></i> Escolha de Tecnologias</li>
-                          <li><i class="fas fa-check"></i> Code Review</li>
-                          <li><i class="fas fa-check"></i> Mentoria Técnica</li>
-                      </ul>
-                      <a href="#contact" class="btn btn-outline">
-                          <span>SOLICITAR ORÇAMENTO</span>
-                          <i class="fas fa-arrow-right"></i>
-                      </a>
-                  </div>
+              <div class="tech-icon">
+                <i class="fab fa-css3-alt"></i>
               </div>
+              <div class="tech-icon">
+                <i class="fab fa-js-square"></i>
+              </div>
+              <div class="tech-icon">
+                <i class="fab fa-react"></i>
+              </div>
+              <div class="tech-icon">
+                <i class="fab fa-node-js"></i>
+              </div>
+            </div>
           </div>
-      </section>
-      <!-- Projects -->
-      <section class="projects section" id="projects">
-          <div class="container">
-              <div class="section-header">
-                  <h2 class="section__title">PROJETOS PARA DEMONSTRAÇÃO</h2>
-                  <div class="section__line"></div>
+          <div class="home__image">
+            <div class="image-container">
+              <div class="hologram-effect">
+                <img src="img/bima.png" alt="Abimael Dev" class="profile-img" />
+                <div class="hologram-lines"></div>
+                <div class="hologram-grid"></div>
               </div>
-              <div class="projects__container">
-                  <!-- AMETHYSA -->
-                  <div class="project__card">
-                      <div class="project__image">
-                          <img src="img/amhtome.jpeg" alt="AMETHYSA">
-                          <div class="project__overlay">
-                              <div class="project__links">
-                                  <a href="#" class="project__link" target="_blank">
-                                      <i class="fas fa-external-link-alt"></i>
-                                  </a>
-                                  <a href="#" class="project__link" target="_blank">
-                                      <i class="fab fa-github"></i>
-                                  </a>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="project__content">
-                          <div class="project__category">PLATAFORMA MUSICAL</div>
-                          <h3 class="project__title">AMETHYSA</h3>
-                          <p class="project__description">
-                              AMETHYSA é uma plataforma online que ajuda artistas independentes a divulgar 
-                              músicas, organizá-las em rankings e interagir com o público. Focada em 
-                              visibilidade e engajamento, oferece envio rápido e categorias como músicas mais 
-                              ouvidas. (TCC ETEC DE PRAIA GRANDE EQUIPE AMT TEAM)
-                          </p>
-                          <div class="project__tech">
-                              <span class="tech-tag">HTML5</span>
-                              <span class="tech-tag">CSS3</span>
-                              <span class="tech-tag">JavaScript</span>
-                              <span class="tech-tag">Node.js</span>
-                              <span class="tech-tag">PHP</span>
-                              <span class="tech-tag">MySQL</span>
-                              <span class="tech-tag">Amazon Cloud</span>
-                          </div>
-                          <div class="project__date">
-                              <span>Software em reestruturação: novidades em breve.</span>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- Gerenciamento de Tarefas -->
-                  <div class="project__card">
-                      <div class="project__image">
-                          <img src="img/taf.jpeg" alt="Gerenciamento de Tarefas">
-                          <div class="project__overlay">
-                              <div class="project__links">
-                                  <a href="projetos/grtatarefas.html" class="project__link" target="_blank">
-                                      <i class="fas fa-external-link-alt"></i>
-                                  </a>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="project__content">
-                          <div class="project__category">SISTEMA WEB</div>
-                          <h3 class="project__title">Gerenciamento de Tarefas com Autenticação</h3>
-                          <p class="project__description">
-                              Um sistema de tarefas onde usuários podem gerenciar suas atividades com 
-                              autenticação via JWT. O front-end é feito em HTML, CSS e JavaScript, enquanto o 
-                              back-end em Node.js usa MySQL para armazenar as tarefas.
-                          </p>
-                          <div class="project__tech">
-                              <span class="tech-tag">HTML5</span>
-                              <span class="tech-tag">CSS3</span>
-                              <span class="tech-tag">JavaScript</span>
-                              <span class="tech-tag">Node.js</span>
-                              <span class="tech-tag">MySQL</span>
-                              <span class="tech-tag">JWT</span>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- Loja Virtual Simples -->
-                  <div class="project__card">
-                      <div class="project__image">
-                          <img src="img/loja.jpeg" alt="Loja Virtual Simples">
-                          <div class="project__overlay">
-                              <div class="project__links">
-                                  <a href="projetos/loja.html" class="project__link" target="_blank">
-                                      <i class="fas fa-external-link-alt"></i>
-                                  </a>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="project__content">
-                          <div class="project__category">E-COMMERCE</div>
-                          <h3 class="project__title">Loja Virtual Simples</h3>
-                          <p class="project__description">
-                              Uma loja online onde produtos são listados e os usuários podem adicionar 
-                              itens ao carrinho. O back-end em PHP gerencia o estoque, processa pedidos e 
-                              armazena dados dos clientes no MySQL. O front-end é feito com HTML, CSS e 
-                              JavaScript.
-                          </p>
-                          <div class="project__tech">
-                              <span class="tech-tag">HTML5</span>
-                              <span class="tech-tag">CSS3</span>
-                              <span class="tech-tag">JavaScript</span>
-                              <span class="tech-tag">PHP</span>
-                              <span class="tech-tag">MySQL</span>
-                              <span class="tech-tag">Node.js</span>
-                              <span class="tech-tag">CORDOVA</span>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- Caça ao Tesouro -->
-                  <div class="project__card">
-                      <div class="project__image">
-                          <img src="img/game.png" alt="Caça ao Tesouro">
-                          <div class="project__overlay">
-                              <div class="project__links">
-                                  <a href="projetos/game.html" class="project__link" target="_blank">
-                                      <i class="fas fa-external-link-alt"></i>
-                                  </a>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="project__content">
-                          <div class="project__category">JOGO WEB</div>
-                          <h3 class="project__title">Caça ao Tesouro (Treasure Hunt)</h3>
-                          <p class="project__description">
-                              Jogo interativo de caça ao tesouro pirata, onde os jogadores buscam o tesouro do 
-                              Capitão Barba Negra em um mapa. Feito com HTML5, CSS3 (com animações) e 
-                              JavaScript puro. Possui sistema de dicas por proximidade, efeitos visuais, 
-                              salvamento de progresso com localStorage e animação de vitória com fogos de artifício.
-                          </p>
-                          <div class="project__tech">
-                              <span class="tech-tag">HTML5</span>
-                              <span class="tech-tag">CSS3</span>
-                              <span class="tech-tag">JavaScript ES6+</span>
-                              <span class="tech-tag">Node.js</span>
-                              <span class="tech-tag">React.js</span>
-                             <span class="tech-tag">Java (Para estudos em jogos e sistemas Win 11, Kali Linux).</span>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- Biblioteca Central -->
-                  <div class="project__card">
-                      <div class="project__image">
-                          <img src="img/bli.png" alt="Biblioteca Central">
-                          <div class="project__overlay">
-                              <div class="project__links">
-                                  <a href="projetos/bli.html" class="project__link" target="_blank">
-                                      <i class="fas fa-external-link-alt"></i>
-                                  </a>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="project__content">
-                          <div class="project__category">SISTEMA ACADÊMICO</div>
-                          <h3 class="project__title">Biblioteca Central</h3>
-                          <p class="project__description">
-                              Um sistema de reservas de salas de estudo que permite aos usuários 
-                              organizarem seu ambiente acadêmico de forma eficiente. O front-end foi 
-                              desenvolvido com HTML, CSS e JavaScript, proporcionando uma interface intuitiva e 
-                              responsiva, permitindo a criação de hábitos personalizados, rastreamento de progresso e visualização 
-                              de estatísticas.
-                          </p>
-                          <div class="project__tech">
-                              <span class="tech-tag">HTML5</span>
-                              <span class="tech-tag">CSS3</span>
-                              <span class="tech-tag">JavaScript ES6+</span>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- Dashboard de Hábitos -->
-                  <div class="project__card">
-                      <div class="project__image">
-                          <img src="img/hab.png" alt="Dashboard de Hábitos">
-                          <div class="project__overlay">
-                              <div class="project__links">
-                                  <a href="projetos/hab.html" class="project__link" target="_blank">
-                                      <i class="fas fa-external-link-alt"></i>
-                                  </a>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="project__content">
-                          <div class="project__category">PRODUTIVIDADE</div>
-                          <h3 class="project__title">Dashboard de Hábitos</h3>
-                          <p class="project__description">
-                              Um sistema de gerenciamento de hábitos que permite aos usuários acompanharem 
-                              suas atividades diárias de forma eficiente. O front-end foi desenvolvido com HTML, 
-                              CSS e JavaScript, proporcionando uma interface intuitiva e responsiva, permitindo 
-                              a criação de hábitos personalizados, rastreamento de progresso e visualização 
-                              de estatísticas.
-                          </p>
-                          <div class="project__tech">
-                              <span class="tech-tag">HTML5</span>
-                              <span class="tech-tag">CSS3</span>
-                              <span class="tech-tag">JavaScript ES6+</span>
-                              <span class="tech-tag">React.js</span>
-                              <span class="tech-tag">Cordova</span>
-                          </div>
-                      </div>
-                  </div>
+              <div class="floating-elements">
+                <div class="floating-icon" style="--delay: 0s">
+                  <i class="fab fa-react"></i>
+                </div>
+                <div class="floating-icon" style="--delay: 1s">
+                  <i class="fab fa-node-js"></i>
+                </div>
+                <div class="floating-icon" style="--delay: 2s">
+                  <i class="fab fa-python"></i>
+                </div>
+                <div class="floating-icon" style="--delay: 3s">
+                  <i class="fas fa-database"></i>
+                </div>
               </div>
-              <div class="projects__button">
-                  <a href="#" class="btn btn-outline">
-                      <span>VER TODOS OS PROJETOS (EM BREVE GITHUB)</span>
-                      <i class="fas fa-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- About -->
+    <section class="about section" id="about">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section__title">MINHA MARCA</h2>
+          <div class="section__line"></div>
+        </div>
+        <div class="about__container">
+          <div class="about__content">
+            <div class="about__text">
+              <h3 class="about__subtitle">ABTECH SOLUTIONS</h3>
+              <p class="about__description">
+                Na ABTech Solutions, sou movido pela inovação, eficiência e impacto. Com apenas 18 anos, já
+                desenvolvi mais de 15 projetos entregues com sucesso a clientes satisfeitos, consolidando minha
+                experiência como desenvolvedor Full-Stack e freelancer. A marca nasceu da paixão por tecnologia e
+                do desejo de transformar ideias em soluções reais e funcionais. Cada linha de código é pensada para
+                resolver problemas e facilitar a vida de pessoas e empresas. Utilizo as tecnologias mais modernas do
+                mercado, sempre buscando excelência em cada detalhe — do visual à performance.
+              </p>
+              <p class="about__description">
+                Além da experiência prática, invisto continuamente em minha formação, com **diversos cursos e
+                certificações concluídos** que aprimoram minhas habilidades e me mantêm atualizado com as últimas
+                tendências. Acredito que tecnologia de verdade é aquela que faz a diferença na vida das pessoas, e é
+                isso que ofereço em cada projeto: entrega de alto impacto, com foco humano e visão de futuro.
+              </p>
+              <div class="about__stats">
+                <div class="stat-item">
+                  <div class="stat-number" data-target="15">
+                    0
+                  </div>
+                  <div class="stat-label">PROJETOS CONCLUÍDOS COM CLIENTES SATISFEITOS</div>
+                </div>
+                <a href="#contact" class="btn btn-outline">
+                  <span>VAMOS CONVERSAR</span>
+                  <i class="fas fa-comments"></i>
+                </a>
+              </div>
+            </div>
+            <div class="about__image">
+              <div class="image-frame">
+                <img src="img/amt2.png" alt="Desenvolvedor trabalhando" class="about__img" />
+                <div class="frame-decoration"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Services -->
+    <section class="services section" id="services">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section__title">SERVIÇOS</h2>
+          <div class="section__line"></div>
+        </div>
+        <div class="services__container">
+          <div class="service__card">
+            <div class="service__icon">
+              <i class="fas fa-laptop-code"></i>
+            </div>
+            <h3 class="service__title">Desenvolvimento Web</h3>
+            <p class="service__description">
+              Criação de sites responsivos e aplicações web modernas, utilizando as mais recentes tecnologias e
+              melhores práticas do mercado. Foco em performance e experiência do usuário. Ideal para quem busca uma
+              presença digital forte e inovadora.
+            </p>
+            <ul class="service__features">
+              <li><i class="fas fa-check"></i> Sites Responsivos</li>
+              <li><i class="fas fa-check"></i> Aplicações Web Personalizadas</li>
+              <li><i class="fas fa-check"></i> E-commerce</li>
+              <li><i class="fas fa-check"></i> Landing Pages de Alta Conversão</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline">
+              <span>SOLICITAR ORÇAMENTO</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+          <div class="service__card">
+            <div class="service__icon">
+              <i class="fas fa-tools"></i>
+            </div>
+            <h3 class="service__title">Consultoria Tech & Freelance</h3>
+            <p class="service__description">
+              Consultoria especializada em tecnologia, arquitetura de projetos e otimização de sistemas existentes.
+              Atuo também como freelancer para projetos pontuais e sob demanda.
+            </p>
+            <ul class="service__features">
+              <li><i class="fas fa-check"></i> Análise de Projetos</li>
+              <li><i class="fas fa-check"></i> Otimização de Código</li>
+              <li><i class="fas fa-check"></i> Escolha de Tecnologias</li>
+              <li><i class="fas fa-check"></i> Code Review</li>
+              <li><i class="fas fa-check"></i> Mentoria Técnica</li>
+            </ul>
+            <a href="#contact" class="btn btn-outline">
+              <span>SOLICITAR ORÇAMENTO</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Education/Formações -->
+    <section class="education section" id="education">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section__title">FORMAÇÕES</h2>
+          <div class="section__line"></div>
+        </div>
+        <div class="education__container">
+          <div class="timeline">
+            <div class="timeline__item">
+              <div class="timeline__marker"></div>
+              <div class="timeline__content">
+                <div class="timeline__header">
+                  <div class="timeline__icon"><i class="fas fa-microchip"></i></div>
+                  <div>
+                    <div class="timeline__date">2025 - 2028</div>
+                    <h3 class="timeline__title glitch-text" data-text="BACHARELADO EM ENGENHARIA DE SOFTWARE">BACHARELADO EM ENGENHARIA DE SOFTWARE</h3>
+                    <h4 class="timeline__company">Centro Universitário Internacional</h4>
+                  </div>
+                </div>
+                <p class="timeline__description">
+                  Cursando Bacharelado em Engenharia de Software, estou me capacitando para projetar, desenvolver e
+                  manter aplicações com foco em qualidade, eficiência e inovação. Este curso me aprofunda em
+                  metodologias ágeis, arquitetura de sistemas robustos e práticas de desenvolvimento de software de
+                  ponta.
+                </p>
+                <div class="timeline__skills">
+                  <span>Arquitetura de Software</span>
+                  <span>Gestão de Projetos</span>
+                  <span>Desenvolvimento Ágil</span>
+                  <span>Qualidade de Software</span>
+                  <span>DevOps</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline__item">
+              <div class="timeline__marker"></div>
+              <div class="timeline__content">
+                <div class="timeline__header">
+                  <div class="timeline__icon"><i class="fas fa-laptop-code"></i></div>
+                  <div>
+                    <div class="timeline__date">2022 - 2024</div>
+                    <h3 class="timeline__title glitch-text" data-text="ETEC - ESCOLA TÉCNICA ESTADUAL">ETEC - Escola Técnica Estadual</h3>
+                    <h4 class="timeline__company">Centro Paula Souza</h4>
+                  </div>
+                </div>
+                <p class="timeline__description">
+                  Capacitado para desenvolver, implantar e manter sites, sistemas web e aplicações digitais, com foco
+                  em programação, design e banco de dados. O Curso Técnico em Informática para Internet me proporcionou
+                  uma base sólida em desenvolvimento front-end e back-end, além de princípios de UX/UI.
+                </p>
+                <div class="timeline__skills">
+                  <span>Desenvolvimento Web</span>
+                  <span>Banco de Dados</span>
+                  <span>UX/UI</span>
+                  <span>Front-end</span>
+                  <span>Back-end</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline__item">
+              <div class="timeline__marker"></div>
+              <div class="timeline__content">
+                <div class="timeline__header">
+                  <div class="timeline__icon"><i class="fas fa-mobile-alt"></i></div>
+                  <div>
+                    <div class="timeline__date">2024</div>
+                    <h3 class="timeline__title glitch-text" data-text="DEVMEDIA - DESENVOLVEDOR WEB">DevMedia - Desenvolvedor Web</h3>
+                    <h4 class="timeline__company">DevMedia</h4>
+                  </div>
+                </div>
+                <p class="timeline__description">
+                  Foco em desenvolvimento de aplicações Mobile e Front-end com design responsivo e tecnologias
+                  modernas. Este curso aprofundou meus conhecimentos em frameworks e bibliotecas atuais, permitindo a
+                  criação de interfaces dinâmicas e otimizadas para diversas plataformas.
+                </p>
+                <div class="timeline__skills">
+                  <span>Front-end</span>
+                  <span>Mobile Development</span>
+                  <span>Responsive Design</span>
+                  <span>React.js</span>
+                  <span>JavaScript</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Skills/Habilidades -->
+    <section class="skills section" id="skills">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section__title">HABILIDADES TÉCNICAS</h2>
+          <div class="section__line"></div>
+        </div>
+        <div class="skills__container">
+          <!-- Linguagens de Marcação -->
+          <div class="skills__category">
+            <h3 class="category__title">
+              <i class="fas fa-code"></i>
+              LINGUAGENS DE MARCAÇÃO
+            </h3>
+            <div class="skills__grid">
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fab fa-html5"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>HTML5</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="100%"></div>
+                  </div>
+                  <span class="skill__percentage">100%</span>
+                </div>
+              </div>
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fab fa-css3-alt"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>CSS3</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="100%"></div>
+                  </div>
+                  <span class="skill__percentage">100%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Linguagens de Programação -->
+          <div class="skills__category">
+            <h3 class="category__title">
+              <i class="fas fa-laptop-code"></i>
+              LINGUAGENS DE PROGRAMAÇÃO
+            </h3>
+            <div class="skills__grid">
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fab fa-js-square"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>JavaScript</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="98%"></div>
+                  </div>
+                  <span class="skill__percentage">98%</span>
+                </div>
+              </div>
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fab fa-python"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>Python</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="30%"></div>
+                  </div>
+                  <span class="skill__percentage">30%</span>
+                </div>
+              </div>
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fab fa-java"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>Java</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="30%"></div>
+                  </div>
+                  <span class="skill__percentage">30%</span>
+                </div>
+              </div>
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fab fa-php"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>PHP</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="90%"></div>
+                  </div>
+                  <span class="skill__percentage">90%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Banco de Dados -->
+          <div class="skills__category">
+            <h3 class="category__title">
+              <i class="fas fa-database"></i>
+              BANCO DE DADOS
+            </h3>
+            <div class="skills__grid">
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fas fa-database"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>MySQL</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="95%"></div>
+                  </div>
+                  <span class="skill__percentage">90%</span>
+                </div>
+              </div>
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fas fa-database"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>PostgreSQL</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="50%"></div>
+                  </div>
+                  <span class="skill__percentage">50%</span>
+                </div>
+              </div>
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fas fa-database"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>MongoDB</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="50%"></div>
+                  </div>
+                  <span class="skill__percentage">50%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Frameworks e Bibliotecas -->
+          <div class="skills__category">
+            <h3 class="category__title">
+              <i class="fas fa-cogs"></i>
+              FRAMEWORKS & BIBLIOTECAS
+            </h3>
+            <div class="skills__grid">
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fab fa-react"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>React</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="85%"></div>
+                  </div>
+                  <span class="skill__percentage">85%</span>
+                </div>
+              </div>
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fab fa-node-js"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>Node.js</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="70%"></div>
+                  </div>
+                  <span class="skill__percentage">70%</span>
+                </div>
+              </div>
+              <div class="skill__item">
+                <div class="skill__icon">
+                  <i class="fab fa-bootstrap"></i>
+                </div>
+                <div class="skill__info">
+                  <h4>Bootstrap</h4>
+                  <div class="skill__bar">
+                    <div class="skill__progress" data-width="90%"></div>
+                  </div>
+                  <span class="skill__percentage">90%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- New Tools and Workflow Section -->
+    <section class="tools-workflow section" id="tools-workflow">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section__title">MINHAS FERRAMENTAS E FLUXO DE TRABALHO</h2>
+          <div class="section__line"></div>
+        </div>
+        <div class="tools-workflow__container">
+          <div class="workflow__category">
+            <h3 class="category__title">
+              <i class="fas fa-desktop"></i>
+              AMBIENTE DE DESENVOLVIMENTO
+            </h3>
+            <div class="tools__grid">
+              <div class="tool__item">
+                <div class="tool__icon"><i class="fas fa-code"></i></div>
+                <div class="tool__info">
+                  <h4>VS Code</h4>
+                  <p>Meu editor de código principal, com extensões para produtividade e depuração.</p>
+                </div>
+              </div>
+              <div class="tool__item">
+                <div class="tool__icon"><i class="fas fa-terminal"></i></div>
+                <div class="tool__info">
+                  <h4>Terminal (Zsh/Oh My Zsh)</h4>
+                  <p>Para linha de comando eficiente e scripts personalizados.</p>
+                </div>
+              </div>
+              <div class="tool__item">
+                <div class="tool__icon"><i class="fab fa-git-alt"></i></div>
+                <div class="tool__info">
+                  <h4>Git & GitHub Desktop</h4>
+                  <p>Controle de versão e colaboração em projetos.</p>
+                </div>
+              </div>
+              <div class="tool__ite">
+              
+                <div class="tool__info">
+                
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="workflow__category">
+            <h3 class="category__title">
+              <i class="fas fa-project-diagram"></i>
+              PROCESSO DE DESENVOLVIMENTO
+            </h3>
+            <div class="tools__grid">
+              <div class="tool__item">
+                <div class="tool__icon"><i class="fas fa-lightbulb"></i></div>
+                <div class="tool__info">
+                  <h4>Concepção e Planejamento</h4>
+                  <p>Início com brainstorming, wireframes (Figma) e definição de requisitos.</p>
+                </div>
+              </div>
+              <div class="tool__item">
+                <div class="tool__icon"><i class="fas fa-pencil-ruler"></i></div>
+                <div class="tool__info">
+                  <h4>Design e Prototipagem</h4>
+                  <p>Criação de interfaces no Figma e prototipagem de componentes.</p>
+                </div>
+              </div>
+              <div class="tool__item">
+                <div class="tool__icon"><i class="fas fa-laptop-code"></i></div>
+                <div class="tool__info">
+                  <h4>Desenvolvimento Ágil</h4>
+                  <p>Iterações rápidas, testes contínuos e integração de feedback.</p>
+                </div>
+              </div>
+              <div class="tool__item">
+                <div class="tool__icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <div class="tool__info">
+                  <h4>Deploy e Manutenção</h4>
+                  <p>Implantação em plataformas como Vercel/AWS e monitoramento pós-lançamento.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- New Testimonials Section -->
+    <section class="testimonials section" id="testimonials">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section__title">O QUE DIZEM SOBRE MIM</h2>
+          <div class="section__line"></div>
+        </div>
+        <div class="testimonials__container">
+          <div class="testimonial__card">
+            <p class="testimonial__quote">
+              "Abimael entregou um trabalho excepcional! Sua dedicação e conhecimento técnico superaram minhas
+              expectativas. Recomendo fortemente para qualquer projeto web."
+            </p>
+            <div class="testimonial__author">
+              
+              <div class="author__info">
+               
+              </div>
+            </div>
+          </div>
+          <div class="testimonial__card">
+            <p class="testimonial__quote">
+              "Profissionalismo e agilidade definem o trabalho do bima. Ele deu uma bela ajuda a ter  a essência do meu projeto e o
+              transformou em realidade o que eu queria. Muito satisfeito!"
+            </p>
+            <div class="testimonial__author">
+              
+              <div class="author__info">
+               
+              </div>
+            </div>
+          </div>
+          <div class="testimonial__card">
+            <p class="testimonial__quote">
+              "A colaboração com Abimael foi fantástica. Ele é proativo resolve problemas com criatividade e entrega
+              soluções muito boas área de design e elementos graficos em um site. Um verdadeiro talento!"
+            </p>
+            <div class="testimonial__author">
+              
+              <div class="author__info">
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Projects -->
+    <section class="projects section" id="projects">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section__title">PROJETOS PARA DEMONSTRAÇÃO</h2>
+          <div class="section__line"></div>
+        </div>
+        <div class="projects__container">
+          <!-- AMETHYSA -->
+          <div class="project__card">
+            <div class="project__image">
+              <img src="img/amhtome.jpeg" alt="AMETHYSA" />
+              <div class="project__overlay">
+                <div class="project__links">
+                  <a href="#" class="project__link" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-external-link-alt"></i>
                   </a>
+                  <a href="#" class="project__link" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github"></i>
+                  </a>
+                </div>
               </div>
+            </div>
+            <div class="project__content">
+              <div class="project__category">PLATAFORMA MUSICAL</div>
+              <h3 class="project__title">AMETHYSA</h3>
+              <p class="project__description">
+                AMETHYSA é uma plataforma online que ajuda artistas independentes a divulgar músicas, organizá-las em
+                rankings e interagir com o público. Focada em visibilidade e engajamento, oferece envio rápido e
+                categorias como músicas mais ouvidas. (TCC ETEC DE PRAIA GRANDE EQUIPE AMT TEAM)
+              </p>
+              <div class="project__tech">
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">PHP</span>
+                <span class="tech-tag">MySQL</span>
+                <span class="tech-tag">Amazon Cloud</span>
+              </div>
+              <div class="project__date">
+                <span>Software em reestruturação: novidades em breve.</span>
+              </div>
+            </div>
           </div>
-      </section>
-      <!-- Services -->
-    
-      <!-- Contact -->
-      <section class="contact section" id="contact">
-          <div class="container">
-              <div class="section-header">
-                  <h2 class="section__title">VAMOS CONVERSAR!</h2>
-                  <div class="section__line"></div>
+          <!-- Gerenciamento de Tarefas -->
+          <div class="project__card">
+            <div class="project__image">
+              <img src="img/taf.jpeg" alt="Gerenciamento de Tarefas" />
+              <div class="project__overlay">
+                <div class="project__links">
+                  <a href="projetos/grtatarefas.html" class="project__link" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                </div>
               </div>
-              <div class="contact__intro">
-                  <p class="contact__intro-text">
-                      Estou disponível para projetos freelance, oportunidades de trabalho 
-                      ou apenas para trocar ideias sobre tecnologia. Entre em contato 
-                      através de uma das opções abaixo:
-                  </p>
+            </div>
+            <div class="project__content">
+              <div class="project__category">SISTEMA WEB</div>
+              <h3 class="project__title">Gerenciamento de Tarefas com Autenticação</h3>
+              <p class="project__description">
+                Um sistema de tarefas onde usuários podem gerenciar suas atividades com autenticação via JWT. O
+                front-end é feito em HTML, CSS e JavaScript, enquanto o back-end em Node.js usa MySQL para armazenar
+                as tarefas.
+              </p>
+              <div class="project__tech">
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">MySQL</span>
+                <span class="tech-tag">JWT</span>
               </div>
-              <div class="contact__container">
-                  <div class="contact__info">
-                      <div class="contact__card">
-                          <div class="contact__icon">
-                              <i class="fab fa-linkedin-in"></i>
-                          </div>
-                          <div class="contact__details">
-                              <h3>LinkedIn</h3>
-                              <p>Abimael de Menezes Pedro</p>
-                              <a href="https://www.linkedin.com/in/abimael-de-menezes-pedro-440987364/" class="contact__link" target="_blank">
-                                  Ver perfil →
-                              </a>
-                          </div>
-                      </div>
-                      <div class="contact__card">
-                          <div class="contact__icon">
-                              <i class="fab fa-instagram"></i>
-                          </div>
-                          <div class="contact__details">
-                              <h3>Instagram</h3>
-                              <p>@bima.script</p>
-                              <a href="https://instagram.com/bima.script" class="contact__link" target="_blank">
-                                  Seguir →
-                              </a>
-                          </div>
-                      </div>
-                      <div class="contact__card">
-                          <div class="contact__icon">
-                              <i class="fas fa-envelope"></i>
-                          </div>
-                          <div class="contact__details">
-                              <h3>Email</h3>
-                              <p>abimaeldevfull.stack@gmail.com</p>
-                              <a href="mailto:abimaeldevfull.stack@gmail.com" class="contact__link">
-                                  Enviar email →
-                              </a>
-                          </div>
-                      </div>
-                      <div class="contact__social">
-                          <h3>ME SIGA NAS REDES</h3>
-                          <div class="social__links">
-                              <a href="https://www.linkedin.com/in/bimadevfull/" class="social__link" target="_blank">
-                                  <i class="fab fa-linkedin-in"></i>
-                              </a>
-                              <a href="https://instagram.com/bima.menezes" class="social__link" target="_blank">
-                                  <i class="fab fa-instagram"></i>
-                              </a>
-                              <a href="https://wa.me/5513988814117" class="social__link" target="_blank">
-                                  <i class="fab fa-whatsapp"></i>
-                              </a>
-                          </div>
-                      </div>
-                  </div>
-                  <form class="contact__form" id="contact-form">
-                      <div class="form__group">
-                          <input type="text" id="name" name="name" required>
-                          <label for="name">SEU NOME</label>
-                          <div class="form__line"></div>
-                      </div>
-                      <div class="form__group">
-                          <input type="email" id="email" name="email" required>
-                          <label for="email">SEU EMAIL</label>
-                          <div class="form__line"></div>
-                      </div>
-                      <div class="form__group">
-                          <input type="text" id="subject" name="subject" required>
-                          <label for="subject">ASSUNTO</label>
-                          <div class="form__line"></div>
-                      </div>
-                      <div class="form__group">
-                          <textarea id="message" name="message" rows="5" required></textarea>
-                          <label for="message">SUA MENSAGEM</label>
-                          <div class="form__line"></div>
-                      </div>
-                      <button type="submit" class="btn btn-primary">
-                          <span>ENVIAR MENSAGEM</span>
-                          <i class="fas fa-paper-plane"></i>
-                      </button>
-                  </form>
-              </div>
+            </div>
           </div>
-      </section>
+          <!-- Loja Virtual Simples -->
+          <div class="project__card">
+            <div class="project__image">
+              <img src="img/loja.jpeg" alt="Loja Virtual Simples" />
+              <div class="project__overlay">
+                <div class="project__links">
+                  <a href="projetos/loja.html" class="project__link" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="project__content">
+              <div class="project__category">E-COMMERCE</div>
+              <h3 class="project__title">Loja Virtual Simples</h3>
+              <p class="project__description">
+                Uma loja online onde produtos são listados e os usuários podem adicionar itens ao carrinho. O back-end
+                em PHP gerencia o estoque, processa pedidos e armazena dados dos clientes no MySQL. O front-end é
+                feito com HTML, CSS e JavaScript.
+              </p>
+              <div class="project__tech">
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">PHP</span>
+                <span class="tech-tag">MySQL</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">CORDOVA</span>
+              </div>
+            </div>
+          </div>
+          <!-- Caça ao Tesouro -->
+          <div class="project__card">
+            <div class="project__image">
+              <img src="img/game.png" alt="Caça ao Tesouro" />
+              <div class="project__overlay">
+                <div class="project__links">
+                  <a href="projetos/game.html" class="project__link" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="project__content">
+              <div class="project__category">JOGO WEB</div>
+              <h3 class="project__title">Caça ao Tesouro (Treasure Hunt)</h3>
+              <p class="project__description">
+                Jogo interativo de caça ao tesouro pirata, onde os jogadores buscam o tesouro do Capitão Barba Negra
+                em um mapa. Feito com HTML5, CSS3 (com animações) e JavaScript puro. Possui sistema de dicas por
+                proximidade, efeitos visuais, salvamento de progresso com localStorage e animação de vitória com fogos
+                de artifício.
+              </p>
+              <div class="project__tech">
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">JavaScript ES6+</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">React.js</span>
+                <span class="tech-tag">Java (Para estudos em jogos e sistemas Win 11, Kali Linux).</span>
+              </div>
+            </div>
+          </div>
+          <!-- Biblioteca Central -->
+          <div class="project__card">
+            <div class="project__image">
+              <img src="img/bli.png" alt="Biblioteca Central" />
+              <div class="project__overlay">
+                <div class="project__links">
+                  <a href="projetos/bli.html" class="project__link" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="project__content">
+              <div class="project__category">SISTEMA ACADÊMICO</div>
+              <h3 class="project__title">Biblioteca Central</h3>
+              <p class="project__description">
+                Um sistema de reservas de salas de estudo que permite aos usuários organizarem seu ambiente acadêmico
+                de forma eficiente. O front-end foi desenvolvido com HTML, CSS e JavaScript, proporcionando uma
+                interface intuitiva e responsiva, permitindo a criação de hábitos personalizados, rastreamento de
+                progresso e visualização de estatísticas.
+              </p>
+              <div class="project__tech">
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">JavaScript ES6+</span>
+              </div>
+            </div>
+          </div>
+          <!-- Dashboard de Hábitos -->
+          <div class="project__card">
+            <div class="project__image">
+              <img src="img/hab.png" alt="Dashboard de Hábitos" />
+              <div class="project__overlay">
+                <div class="project__links">
+                  <a href="projetos/hab.html" class="project__link" target="_blank" rel="noopener noreferrer">
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="project__content">
+              <div class="project__category">PRODUTIVIDADE</div>
+              <h3 class="project__title">Dashboard de Hábitos</h3>
+              <p class="project__description">
+                Um sistema de gerenciamento de hábitos que permite aos usuários acompanharem suas atividades diárias
+                de forma eficiente. O front-end foi desenvolvido com HTML, CSS e JavaScript, proporcionando uma
+                interface intuitiva e responsiva, permitindo a criação de hábitos personalizados, rastreamento de
+                progresso e visualização de estatísticas.
+              </p>
+              <div class="project__tech">
+                <span class="tech-tag">HTML5</span>
+                <span class="tech-tag">CSS3</span>
+                <span class="tech-tag">JavaScript ES6+</span>
+                <span class="tech-tag">React.js</span>
+                <span class="tech-tag">Cordova</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="projects__button">
+          <a href="#" class="btn btn-outline">
+            <span>VER TODOS OS PROJETOS (EM BREVE GITHUB)</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+    <!-- Contact -->
+    <section class="contact section" id="contact">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section__title">VAMOS CONVERSAR!</h2>
+          <div class="section__line"></div>
+        </div>
+        <div class="contact__intro">
+          <p class="contact__intro-text">
+            Estou disponível para projetos freelance, oportunidades de trabalho em equipe ou apenas para trocar ideias
+            sobre tecnologia. Entre em contato através de uma das opções abaixo:
+          </p>
+        </div>
+        <div class="contact__container">
+          <div class="contact__info">
+            <div class="contact__card">
+              <div class="contact__icon">
+                <i class="fab fa-linkedin-in"></i>
+              </div>
+              <div class="contact__details">
+                <h3>LinkedIn</h3>
+                <p>Abimael de Menezes Pedro</p>
+                <a
+                  href="https://www.linkedin.com/in/abimael-de-menezes-pedro-440987364/"
+                  class="contact__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Ver perfil →
+                </a>
+              </div>
+            </div>
+            <div class="contact__card">
+              <div class="contact__icon">
+                <i class="fab fa-instagram"></i>
+              </div>
+              <div class="contact__details">
+                <h3>Instagram</h3>
+                <p>@bima.script</p>
+                <a
+                  href="https://instagram.com/bima.script"
+                  class="contact__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Seguir →
+                </a>
+              </div>
+            </div>
+            <div class="contact__card">
+              <div class="contact__icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact__details">
+                <h3>Email</h3>
+                <p id="contact-email">abimaeldevfull.stack@gmail.com</p>
+                <button class="copy-email-btn" data-email="abimaeldevfull.stack@gmail.com">
+                  Copiar Email <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+            <div class="contact__social">
+              <h3>ME SIGA NAS REDES</h3>
+              <div class="social__links">
+                <a
+                  href="https://www.linkedin.com/in/bimadevfull/"
+                  class="social__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a
+                  href="https://instagram.com/bima.script"
+                  class="social__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i class="fab fa-instagram"></i>
+                </a>
+                <a
+                  href="https://wa.me/5513988814117"
+                  class="social__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <i class="fab fa-whatsapp"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <form class="contact__form" id="contact-form">
+            <div class="form__group">
+              <input type="text" id="name" name="name" required />
+              <label for="name">SEU NOME</label>
+              <div class="form__line"></div>
+            </div>
+            <div class="form__group">
+              <input type="email" id="email" name="email" required />
+              <label for="email">SEU EMAIL</label>
+              <div class="form__line"></div>
+            </div>
+            <div class="form__group">
+              <input type="text" id="subject" name="subject" required />
+              <label for="subject">ASSUNTO</label>
+              <div class="form__line"></div>
+            </div>
+            <div class="form__group">
+              <textarea id="message" name="message" rows="5" required></textarea>
+              <label for="message">SUA MENSAGEM</label>
+              <div class="form__line"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              <span>ENVIAR MENSAGEM</span>
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
   </main>
   <!-- Footer -->
   <footer class="footer">
-      <div class="container">
-          <div class="footer__content">
-              <div class="footer__info">
-                  <div class="footer__section">
-                      <h3>Sobre Mim</h3>
-                      <p>Desenvolvedor Full-Stack apaixonado por criar soluções inovadoras e eficientes para a web.</p>
-                  </div>
-                  <div class="footer__section">
-                      <h3>Links Rápidos</h3>
-                      <ul class="footer__links">
-                          <li><a href="#about">Sobre</a></li>
-                          <li><a href="#education">Formações</a></li>
-                          <li><a href="#skills">Habilidades</a></li>
-                          <li><a href="#services">Serviços</a></li>
-                          <li><a href="#projects">Projetos</a></li>
-                          <li><a href="#contact">Contato</a></li>
-                      </ul>
-                  </div>
-                  <div class="footer__section">
-                      <h3>Contato</h3>
-                      <p>Email: abimaeldevfull.stack@gmail.com</p>
-                      <p>Praia Grande, SP - Brasil</p>
-                      <p>Campinas, SP - Brasil</p>
-                  </div>
-              </div>
-              <div class="footer__logo">
-                  <span class="logo-glitch" data-text="BIMA DEV">BIMA DEV</span>
-              </div>
-              <div class="footer__social">
-                  <a href="https://www.linkedin.com/in/bimadevfull/" class="footer__link" target="_blank">
-                      <i class="fab fa-linkedin-in"></i>
-                  </a>
-                  <a href="https://instagram.com/bima.script" class="footer__link" target="_blank">
-                      <i class="fab fa-instagram"></i>
-                  </a>
-              </div>
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__info">
+          <div class="footer__section">
+            <h3>Sobre Mim</h3>
+            <p>
+              Desenvolvedor Full-Stack focado em   criar soluções inovadoras e eficientes para a web, atuando como
+              freelancer empresarial.
+            </p>
           </div>
-          <div class="footer__bottom">
-              <p>&copy; 2025 Abimael.script / Todos os direitos reservados.</p>
+          <div class="footer__section">
+            <h3>Links Rápidos</h3>
+            <ul class="footer__links">
+              <li><a href="#about">Sobre</a></li>
+              <li><a href="#services">Serviços</a></li>
+              <li><a href="#education">Formações</a></li>
+              <li><a href="#skills">Habilidades</a></li>
+              <li><a href="#projects">Projetos</a></li>
+              <li><a href="#testimonials">Depoimentos</a></li>
+              <li><a href="#contact">Contato</a></li>
+            </ul>
           </div>
+          <div class="footer__section">
+            <h3>Contato</h3>
+            <p>Email: abimaeldevfull.stack@gmail.com</p>
+            <p>Praia Grande, SP - Brasil</p>
+            <p>Campinas, SP - Brasil</p>
+          </div>
+        </div>
+        <div class="footer__logo">
+          <span class="logo-glitch" data-text="BIMA DEV">BIMA DEV</span>
+        </div>
+        <div class="footer__social">
+          <a
+            href="https://www.linkedin.com/in/bimadevfull/"
+            class="footer__link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a
+            href="https://instagram.com/bima.script"
+            class="footer__link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="fab fa-instagram"></i>
+          </a>
+        </div>
       </div>
+      <div class="footer__bottom">
+        <p>&copy; 2025 Abimael.script / Todos os direitos reservados.</p>
+      </div>
+    </div>
   </footer>
   <!-- Scroll to Top -->
   <button class="scroll-top" id="scroll-top">
-      <i class="fas fa-chevron-up"></i>
+    <i class="fas fa-chevron-up"></i>
   </button>
   <!-- VLibras -->
   <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper>
-          <div class="vw-plugin-top-wrapper"></div>
-      </div>
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
   </div>
   <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
   <script>
-      new window.VLibras.Widget('https://vlibras.gov.br/app');
+    new window.VLibras.Widget("https://vlibras.gov.br/app");
   </script>
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
