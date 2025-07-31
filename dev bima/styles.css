@@ -1801,3 +1801,72 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--secondary-color);
 }
+
+/* ===== TOOLS AND WORKFLOW ===== */
+.tools-workflow__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); /* Ajustado para melhor visual */
+  gap: 4rem;
+}
+
+.workflow__category {
+  background: var(--bg-secondary);
+  padding: 2.5rem; /* Aumentado o padding */
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.workflow__category:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-primary);
+}
+
+.tools__grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.tool__item {
+  display: flex;
+  align-items: flex-start; /* Alinha o ícone e o texto no topo */
+  gap: 1rem;
+  padding: 1.2rem 1.5rem; /* Aumentado o padding */
+  background: var(--bg-tertiary);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.tool__item:hover {
+  transform: translateX(10px);
+  background: rgba(0, 212, 255, 0.1);
+}
+
+.tool__icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: var(--bg-color);
+  flex-shrink: 0; /* Evita que o ícone encolha */
+}
+
+.tool__info {
+  flex: 1;
+}
+
+.tool__info h4 {
+  font-family: var(--font-primary);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.tool__info p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
