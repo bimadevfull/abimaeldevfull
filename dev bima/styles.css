@@ -9,7 +9,7 @@
   --accent-color: #00b0d0; /* Matches primary */
   --bg-color: #0a0a0a;
   --bg-secondary: #111111;
-  --bg-tertiary: #1a1a1a;
+  --bg_tertiary: #1a1a1a;
   --text-primary: #ffffff;
   --text-secondary: #cccccc;
   --text-muted: #888888;
@@ -19,11 +19,9 @@
   --shadow-primary: 0 0 20px rgba(0, 176, 208, 0.3); /* Adjusted shadow intensity */
   --shadow-secondary: 0 0 20px rgba(0, 80, 224, 0.3); /* Adjusted shadow intensity */
   --shadow-accent: 0 0 20px rgba(0, 176, 208, 0.3); /* Adjusted shadow intensity */
-
   /* Typography */
   --font-primary: "Orbitron", monospace;
   --font-secondary: "Rajdhani", sans-serif;
-
   /* Sizes */
   --header-height: 80px;
   --container-width: 1200px;
@@ -1227,30 +1225,6 @@ body {
   transform: scale(1.1);
 }
 
-.project__links {
-  display: flex;
-  gap: 1rem;
-}
-
-.project__link {
-  width: 50px;
-  height: 50px;
-  background: var(--primary-color);
-  color: var(--bg-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  text-decoration: none;
-  font-size: 1.2rem;
-  transition: var(--transition);
-}
-
-.project__link:hover {
-  background: var(--accent-color);
-  transform: scale(1.1);
-}
-
 .project__content {
   padding: 2rem;
 }
@@ -1859,6 +1833,9 @@ body {
   .section__title {
     font-size: 2rem;
   }
+  .home {
+    margin-top: var(--header-height); /* FIX: Push the home section down to clear the fixed header */
+  }
   .home__name {
     font-size: 2.5rem;
   }
@@ -1900,6 +1877,7 @@ body {
   .nav {
     padding: 0 1rem; /* Ajusta o padding para telas menores */
     gap: 1.5rem; /* Ajusta o gap para mobile */
+    justify-content: flex-start; /* Adicionado para alinhar logo e toggle à esquerda */
   }
 }
 
