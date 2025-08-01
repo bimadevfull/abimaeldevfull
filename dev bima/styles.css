@@ -19,9 +19,11 @@
   --shadow-primary: 0 0 20px rgba(0, 176, 208, 0.3); /* Adjusted shadow intensity */
   --shadow-secondary: 0 0 20px rgba(0, 80, 224, 0.3); /* Adjusted shadow intensity */
   --shadow-accent: 0 0 20px rgba(0, 176, 208, 0.3); /* Adjusted shadow intensity */
+
   /* Typography */
   --font-primary: "Orbitron", monospace;
   --font-secondary: "Rajdhani", sans-serif;
+
   /* Sizes */
   --header-height: 80px;
   --container-width: 1200px;
@@ -202,7 +204,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 1rem 2rem;
+  padding: 0.8rem 1.8rem;
   border: none;
   border-radius: var(--border-radius);
   font-family: var(--font-primary);
@@ -214,6 +216,7 @@ body {
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  font-size: 0.85rem;
 }
 
 .btn::before {
@@ -272,11 +275,17 @@ body {
   left: 0;
   width: 100%;
   height: var(--header-height);
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-color);
+  background: transparent; /* Inicialmente transparente */
+  backdrop-filter: blur(5px); /* Leve blur */
+  border-bottom: none; /* Sem borda inicial */
   z-index: 1000;
-  transition: var(--transition);
+  transition: background 0.3s ease, border-bottom 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header.scrolled {
+  background: rgba(10, 10, 10, 0.9); /* Fundo semi-transparente ao rolar */
+  border-bottom: 1px solid rgba(0, 176, 208, 0.2); /* Borda sutil ao rolar */
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5); /* Sombra para destacar ao rolar */
 }
 
 .nav {
@@ -287,7 +296,7 @@ body {
   max-width: var(--container-width);
   margin: 0 auto;
   padding: 0 1rem; /* Reduzido para mover mais para a esquerda */
-  gap: 2rem; /* Espaçamento entre logo e menu */
+  gap: 1.5rem; /* Espaçamento entre logo e menu */
 }
 
 .nav__logo {
@@ -296,8 +305,8 @@ body {
   font-weight: 900;
   white-space: nowrap;
   position: relative;
-  color: var(--text-primary); /* Ensure text color is white */
-  filter: drop-shadow(0 0 8px rgba(0, 176, 208, 0.6)); /* Softer glow, using new primary color */
+  color: var(--text-primary);
+  /* Removido o filter: drop-shadow para evitar o efeito "atrás" */
 }
 
 /* Removendo as animações de glitch do logo */
@@ -310,6 +319,7 @@ body {
   width: 100%;
   height: 100%;
   animation: none; /* Garantir que não há animação */
+  opacity: 0; /* Torna os pseudo-elementos invisíveis */
 }
 
 .logo-glitch::before {
@@ -387,12 +397,12 @@ body {
 
 /* ===== HOME ===== */
 .home {
-  min-height: calc(100vh - var(--header-height) - 4rem);
+  min-height: calc(100vh - var(--header-height)); /* Ajusta a altura para considerar o header */
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding-top: 10rem; /* Ajustado para descer um pouco menos o conteúdo */
+  padding-top: 10rem; /* Adiciona padding para o conteúdo descer */
 }
 
 .home__container {
@@ -408,7 +418,7 @@ body {
   gap: 4rem;
   align-items: center; /* Centraliza verticalmente */
   min-height: 80vh;
-  margin-top: 50px;
+  margin-top: 0; /* Remove margem superior */
 }
 
 .home__data {
@@ -428,7 +438,7 @@ body {
 
 .home__name {
   font-family: var(--font-primary);
-  font-size: 4.5rem; /* Aumentado o tamanho do nome */
+  font-size: 3.8rem;
   font-weight: 900;
   line-height: 1.1;
   margin-bottom: 1rem;
@@ -445,7 +455,7 @@ body {
 
 .home__profession {
   font-family: var(--font-primary);
-  font-size: 1.8rem; /* Aumentado o tamanho da profissão */
+  font-size: 1.5rem;
   color: var(--primary-color);
   margin-bottom: 2rem;
   min-height: 2rem;
@@ -467,7 +477,7 @@ body {
 }
 
 .home__description {
-  font-size: 1.1rem; /* Aumentado o tamanho da descrição */
+  font-size: 1rem;
   line-height: 1.8;
   color: var(--text-secondary);
   margin-bottom: 3rem;
@@ -494,7 +504,7 @@ body {
   gap: 0.5rem;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 1rem; /* Aumentado o tamanho da fonte dos links sociais */
+  font-size: 0.9rem;
   transition: var(--transition);
   position: relative;
   padding: 0.5rem;
@@ -530,15 +540,15 @@ body {
 }
 
 .tech-icon {
-  width: 45px; /* Aumentado o tamanho dos ícones de tecnologia */
-  height: 45px;
+  width: 40px;
+  height: 40px;
   background: rgba(0, 176, 208, 0.1);
   border: 1px solid var(--primary-color);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem; /* Aumentado o tamanho da fonte dos ícones de tecnologia */
+  font-size: 1.2rem;
   color: var(--primary-color);
   transition: var(--transition);
 }
@@ -559,8 +569,8 @@ body {
 
 .image-container {
   position: relative;
-  width: 450px; /* Aumentado o tamanho do container da imagem */
-  height: 550px; /* Aumentado o tamanho do container da imagem */
+  width: 380px;
+  height: 480px;
 }
 
 .hologram-effect {
@@ -634,15 +644,15 @@ body {
 
 .floating-icon {
   position: absolute;
-  width: 65px; /* Aumentado o tamanho dos ícones flutuantes */
-  height: 65px;
+  width: 50px;
+  height: 50px;
   background: rgba(0, 176, 208, 0.1);
   border: 1px solid var(--primary-color);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem; /* Aumentado o tamanho da fonte dos ícones flutuantes */
+  font-size: 1.4rem;
   color: var(--primary-color);
   animation: float 3s ease-in-out infinite;
   animation-delay: var(--delay);
