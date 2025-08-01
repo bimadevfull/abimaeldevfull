@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Typing effect for profession
   const professionText = document.getElementById("profession-text")
-  const professions = ["Desenvolvedor Full-Stack", "Freelancer",]
+  const professions = ["Desenvolvedor Full-Stack", "Freelancer"]
   let professionIndex = 0
   let charIndex = 0
   let isDeleting = false
@@ -197,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
       professionText.textContent = currentProfession.substring(0, charIndex + 1)
       charIndex++
     }
-
     if (!isDeleting && charIndex === currentProfession.length) {
       typingSpeed = 2000 // Pause at end of typing
       isDeleting = true
