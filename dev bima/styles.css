@@ -19,9 +19,11 @@
   --shadow-primary: 0 0 20px rgba(0, 176, 208, 0.3); /* Adjusted shadow intensity */
   --shadow-secondary: 0 0 20px rgba(0, 80, 224, 0.3); /* Adjusted shadow intensity */
   --shadow-accent: 0 0 20px rgba(0, 176, 208, 0.3); /* Adjusted shadow intensity */
+
   /* Typography */
   --font-primary: "Orbitron", monospace;
   --font-secondary: "Rajdhani", sans-serif;
+
   /* Sizes */
   --header-height: 80px;
   --container-width: 1200px;
@@ -48,7 +50,7 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
-  font-size: 95%; /* Ajuste para reduzir o "zoom" geral */
+  font-size: 100%; /* Reset para 100% e ajustar com rem/em */
 }
 
 /* ===== PARTICLES BACKGROUND ===== */
@@ -290,21 +292,19 @@ body {
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Alinha tudo à esquerda */
+  justify-content: space-between; /* Alinha logo à esquerda e toggle à direita */
   max-width: var(--container-width);
   margin: 0 auto;
-  padding: 0 1rem; /* Reduzido para mover mais para a esquerda */
-  gap: 1.5rem; /* Espaçamento entre logo e menu */
+  padding: 0 1rem;
 }
 
 .nav__logo {
   font-family: var(--font-primary);
-  font-size: 1.8rem; /* Reduzido o tamanho da logo */
+  font-size: 1.8rem;
   font-weight: 900;
   white-space: nowrap;
   position: relative;
   color: var(--text-primary);
-  /* Removido o filter: drop-shadow para evitar o efeito "atrás" */
 }
 
 /* Removendo as animações de glitch do logo */
@@ -333,7 +333,7 @@ body {
 .nav__list {
   display: flex;
   list-style: none;
-  gap: 1.5rem; /* Reduzido o espaçamento entre os links */
+  gap: 1.5rem;
 }
 
 .nav__link {
@@ -344,7 +344,7 @@ body {
   text-decoration: none;
   font-family: var(--font-primary);
   font-weight: 600;
-  font-size: 0.85rem; /* Reduzido o tamanho da fonte dos links */
+  font-size: 0.85rem;
   letter-spacing: 1px;
   transition: var(--transition);
   position: relative;
@@ -373,10 +373,11 @@ body {
 }
 
 .nav__toggle {
-  display: none;
+  display: none; /* Escondido por padrão em desktop */
   flex-direction: column;
   gap: 4px;
   cursor: pointer;
+  z-index: 1001; /* Garante que o toggle esteja acima do menu */
 }
 
 .nav__toggle span {
@@ -387,20 +388,24 @@ body {
 }
 
 .nav__close {
-  display: none;
+  display: none; /* Escondido por padrão em desktop */
   font-size: 1.5rem;
   color: var(--primary-color);
   cursor: pointer;
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  z-index: 1001; /* Garante que o close esteja acima do menu */
 }
 
 /* ===== HOME ===== */
 .home {
-  min-height: calc(100vh - var(--header-height)); /* Ajusta a altura para considerar o header */
+  min-height: calc(100vh - var(--header-height));
   display: flex;
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding-top: 10rem; /* Adiciona padding para o conteúdo descer */
+  padding-top: 10rem;
 }
 
 .home__container {
@@ -412,11 +417,11 @@ body {
 
 .home__content {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Ajustado para 50/50 */
+  grid-template-columns: 1fr 1fr;
   gap: 4rem;
-  align-items: center; /* Centraliza verticalmente */
+  align-items: center;
   min-height: 80vh;
-  margin-top: 0; /* Remove margem superior */
+  margin-top: 0;
 }
 
 .home__data {
@@ -484,14 +489,14 @@ body {
 
 .home__buttons {
   display: flex;
-  gap: 1.5rem; /* Aumentado o espaçamento entre os botões */
+  gap: 1.5rem;
   margin-bottom: 3rem;
   animation: fadeInUp 1s ease 0.6s both;
 }
 
 .home__social {
   display: flex;
-  gap: 1.5rem; /* Aumentado o espaçamento entre os links sociais */
+  gap: 1.5rem;
   margin-bottom: 2rem;
   animation: fadeInUp 1s ease 0.8s both;
 }
@@ -533,7 +538,7 @@ body {
 
 .home__tech-icons {
   display: flex;
-  gap: 1.2rem; /* Aumentado o espaçamento entre os ícones de tecnologia */
+  gap: 1.2rem;
   animation: fadeInUp 1s ease 1s both;
 }
 
@@ -577,7 +582,7 @@ body {
   height: 100%;
   border-radius: 20px;
   overflow: hidden;
-  background: var(--bg-secondary); /* Alterado para remover o fundo azul */
+  background: var(--bg-secondary);
   backdrop-filter: blur(10px);
   border: 1px solid var(--border-color);
   box-shadow: none;
@@ -597,8 +602,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: transparent; /* Alterado para remover o fundo azul */
-  animation: none; /* Garantir que não há animação */
+  background: transparent;
+  animation: none;
 }
 
 .hologram-grid {
@@ -607,9 +612,9 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: transparent; /* Alterado para remover o fundo azul */
+  background: transparent;
   background-size: 20px 20px;
-  animation: none; /* Garantir que não há animação */
+  animation: none;
 }
 
 /* Removendo as keyframes de animação para a imagem de perfil */
@@ -736,6 +741,10 @@ body {
   grid-template-columns: 2fr 1fr;
   gap: 4rem;
   align-items: center;
+}
+
+.about__text {
+  text-align: left; /* Alinha o texto à esquerda por padrão */
 }
 
 .about__subtitle {
@@ -957,11 +966,11 @@ body {
   border-radius: 50%;
   border: 4px solid var(--bg-color);
   box-shadow: var(--shadow-primary);
-  transition: transform 0.3s ease; /* Adicionado transição para o marker */
+  transition: transform 0.3s ease;
 }
 
 .timeline__item:hover .timeline__marker {
-  transform: scale(1.2); /* Efeito de zoom no marker ao passar o mouse */
+  transform: scale(1.2);
 }
 
 .timeline__content {
@@ -1029,7 +1038,6 @@ body {
   margin-bottom: 0.5rem;
   position: relative;
   display: inline-block;
-  /* Ensure no glitch-related styles remain here */
 }
 
 .timeline__company {
@@ -1070,7 +1078,7 @@ body {
 /* ===== SKILLS ===== */
 .skills__container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Ajustado para telas menores */
   gap: 4rem;
 }
 
@@ -1169,7 +1177,7 @@ body {
 /* ===== PROJECTS ===== */
 .projects__container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Ajustado para telas menores */
   gap: 2rem;
   margin-bottom: 3rem;
 }
@@ -1179,13 +1187,13 @@ body {
   border-radius: var(--border-radius);
   overflow: hidden;
   border: 1px solid var(--border-color);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Aumentado o tempo de transição */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  perspective: 1000px; /* Adicionado para efeito 3D */
+  perspective: 1000px;
 }
 
 .project__card:hover {
-  transform: translateY(-10px) rotateY(5deg); /* Efeito de rotação 3D */
+  transform: translateY(-10px) rotateY(5deg);
   border-color: var(--primary-color);
   box-shadow: var(--shadow-primary);
 }
@@ -1450,7 +1458,7 @@ body {
 .form__group input:focus,
 .form__group textarea:focus {
   border-bottom-color: var(--primary-color);
-  box-shadow: 0 2px 10px rgba(0, 176, 208, 0.2); /* Adicionado shadow no focus */
+  box-shadow: 0 2px 10px rgba(0, 176, 208, 0.2);
 }
 
 .form__group label {
@@ -1467,7 +1475,7 @@ body {
 
 .form__group input:focus ~ label,
 .form__group textarea:focus ~ label,
-.form__group input:not(:placeholder-shown):valid ~ label /* Adicionado :valid para inputs preenchidos */,
+.form__group input:not(:placeholder-shown):valid ~ label,
 .form__group textarea:not(:placeholder-shown):valid ~ label {
   top: -0.5rem;
   font-size: 0.75rem;
@@ -1656,13 +1664,13 @@ body {
 /* ===== TOOLS AND WORKFLOW ===== */
 .tools-workflow__container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); /* Ajustado para melhor visual */
-  gap: 4rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Ajustado para melhor visual */
+  gap: 2rem; /* Reduzido o gap */
 }
 
 .workflow__category {
   background: var(--bg-secondary);
-  padding: 2.5rem; /* Aumentado o padding */
+  padding: 2rem; /* Ajustado o padding */
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
   transition: var(--transition);
@@ -1680,9 +1688,9 @@ body {
 
 .tool__item {
   display: flex;
-  align-items: flex-start; /* Alinha o ícone e o texto no topo */
+  align-items: flex-start;
   gap: 1rem;
-  padding: 1.2rem 1.5rem; /* Aumentado o padding */
+  padding: 1rem; /* Ajustado o padding */
   background: var(--bg-tertiary);
   border-radius: var(--border-radius);
   transition: var(--transition);
@@ -1694,16 +1702,16 @@ body {
 }
 
 .tool__icon {
-  width: 50px;
-  height: 50px;
+  width: 45px; /* Levemente menor */
+  height: 45px; /* Levemente menor */
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--gradient-primary);
   border-radius: 50%;
-  font-size: 1.5rem;
+  font-size: 1.3rem; /* Levemente menor */
   color: var(--bg-color);
-  flex-shrink: 0; /* Evita que o ícone encolha */
+  flex-shrink: 0;
 }
 
 .tool__info {
@@ -1712,34 +1720,34 @@ body {
 
 .tool__info h4 {
   font-family: var(--font-primary);
-  font-size: 1.1rem;
+  font-size: 1rem; /* Levemente menor */
   margin-bottom: 0.5rem;
 }
 
 .tool__info p {
   color: var(--text-secondary);
-  font-size: 0.95rem;
+  font-size: 0.9rem; /* Levemente menor */
   line-height: 1.5;
 }
 
 /* ===== TESTIMONIALS ===== */
 .testimonials__container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Ajustado para telas menores */
+  gap: 1.5rem; /* Reduzido o gap */
 }
 
 .testimonial__card {
   background: var(--bg-secondary);
-  padding: 2.5rem;
+  padding: 2rem; /* Ajustado o padding */
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
   text-align: center;
   transition: var(--transition);
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically */
-  min-height: 200px; /* Ensure consistent height */
+  justify-content: center;
+  min-height: 180px; /* Ajustado min-height */
 }
 
 .testimonial__card:hover {
@@ -1749,24 +1757,24 @@ body {
 }
 
 .testimonial__quote {
-  font-size: 1.15rem; /* Slightly larger font for readability */
+  font-size: 1rem; /* Ajustado o tamanho da fonte */
   line-height: 1.8;
   color: var(--text-secondary);
-  margin-bottom: 0; /* No margin bottom as author is removed */
+  margin-bottom: 0;
   font-style: italic;
   position: relative;
-  padding-left: 0; /* Remove padding as quote mark is handled differently */
+  padding-left: 0;
 }
 
 .testimonial__quote::before {
-  content: "“"; /* Use proper curly quotes */
+  content: "“";
   font-family: var(--font-primary);
-  font-size: 3.5rem; /* Larger quote mark */
+  font-size: 3rem; /* Ajustado o tamanho da aspas */
   color: var(--primary-color);
   position: absolute;
-  left: 50%; /* Center the quote mark */
-  top: -1.5rem; /* Position above the text */
-  transform: translateX(-50%); /* Center horizontally */
+  left: 50%;
+  top: -1rem; /* Ajustado a posição */
+  transform: translateX(-50%);
   opacity: 0.5;
 }
 
@@ -1775,29 +1783,122 @@ body {
   .container {
     padding: 0 1.5rem;
   }
+
+  .section {
+    padding: 5rem 0; /* Reduzido padding para seções */
+  }
+
+  .section__title {
+    font-size: 2.5rem; /* Reduzido o tamanho do título da seção */
+  }
+
   .home__content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr; /* Empilha em uma coluna */
+    gap: 3rem; /* Ajustado o espaçamento */
     text-align: center;
+    min-height: auto; /* Remove min-height para flexibilidade */
+    padding-top: 2rem; /* Adiciona padding superior para o conteúdo */
   }
+
+  .home__data {
+    order: 2; /* Move o texto para baixo da imagem em mobile */
+  }
+
+  .home__image {
+    order: 1; /* Move a imagem para cima do texto em mobile */
+    margin-bottom: 2rem; /* Espaçamento entre imagem e texto */
+  }
+
+  .home__name {
+    font-size: 3rem; /* Ajustado para telas menores */
+  }
+
+  .home__profession {
+    font-size: 1.3rem; /* Ajustado para telas menores */
+  }
+
+  .home__buttons,
+  .home__social,
+  .home__tech-icons {
+    justify-content: center; /* Centraliza os itens */
+  }
+
   .about__content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr; /* Empilha em uma coluna */
+    gap: 3rem;
   }
-  .contact__container {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+
+  .about__text {
+    text-align: center; /* Centraliza o texto na seção About */
   }
+
+  .about__image {
+    order: -1; /* Move a imagem para cima do texto na seção About */
+    margin-bottom: 2rem;
+  }
+
+  .about__stats {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Permite 2 ou 3 colunas menores */
+    justify-content: center;
+  }
+
+  .services__container {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Ajustado para telas menores */
+  }
+
+  .education__container {
+    max-width: 100%; /* Permite que a timeline ocupe toda a largura */
+  }
+
+  .timeline {
+    padding-left: 1.5rem; /* Reduzido o padding para a linha da timeline */
+  }
+
+  .timeline__item {
+    padding-left: 1.5rem; /* Reduzido o padding para os itens da timeline */
+  }
+
+  .timeline__marker {
+    left: -0.5rem; /* Ajustado a posição do marcador */
+  }
+
   .skills__container {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ajustado para telas menores */
   }
+
+  .tools-workflow__container {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Ajustado para telas menores */
+  }
+
+  .contact__container {
+    grid-template-columns: 1fr; /* Empilha em uma coluna */
+    gap: 3rem;
+  }
+
+  .contact__info {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Permite 1 ou 2 colunas */
+    justify-content: center;
+  }
+
+  .contact__social {
+    margin-top: 2rem; /* Espaçamento extra para o social */
+  }
+
   .footer__info {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Empilha em uma coluna */
     text-align: center;
+  }
+
+  .footer__section {
+    margin-bottom: 1.5rem; /* Espaçamento entre as seções do footer */
   }
 }
 
 @media screen and (max-width: 768px) {
+  body {
+    font-size: 90%; /* Reduz a fonte base para telas menores */
+  }
+
   .nav__menu {
     position: fixed;
     top: 0;
@@ -1810,110 +1911,279 @@ body {
     align-items: center;
     justify-content: center;
     transition: var(--transition);
+    z-index: 999; /* Abaixo do toggle/close */
   }
+
   .nav__menu.show-menu {
     right: 0;
   }
+
   .nav__list {
     flex-direction: column;
-    gap: 3rem;
+    gap: 2.5rem; /* Ajustado o espaçamento */
   }
+
   .nav__link {
+    font-size: 1.1rem; /* Ajustado o tamanho da fonte dos links */
+  }
+
+  .nav__toggle {
+    display: flex; /* Mostra o toggle */
+  }
+
+  .nav__close {
+    display: block; /* Mostra o close */
+  }
+
+  .section {
+    padding: 4rem 0; /* Mais redução de padding */
+  }
+
+  .section__title {
+    font-size: 2rem; /* Mais redução do título */
+  }
+
+  .home__name {
+    font-size: 2.8rem;
+  }
+
+  .home__profession {
     font-size: 1.2rem;
   }
-  .nav__toggle {
-    display: flex;
-  }
-  .nav__close {
-    display: block;
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-  }
-  .section__title {
-    font-size: 2rem;
-  }
-  .home {
-    margin-top: var(--header-height); /* FIX: Push the home section down to clear the fixed header */
-  }
-  .home__name {
-    font-size: 2.5rem;
-  }
+
   .home__buttons {
     flex-direction: column;
     align-items: center;
+    gap: 1rem; /* Reduzido o espaçamento entre botões */
   }
-  .home__social {
-    justify-content: center;
-  }
-  .home__tech-icons {
-    justify-content: center;
-  }
-  .about__stats {
-    grid-template-columns: 1fr;
-  }
-  .about__buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-  .projects__container {
-    grid-template-columns: 1fr;
-  }
-  .timeline {
-    padding-left: 1rem;
-  }
-  .timeline__item {
-    padding-left: 1rem;
-  }
-  .timeline__marker {
-    left: -1rem;
-  }
-  /* Ajustes para o logo em telas menores */
-  .nav__logo {
-    font-size: 1.5rem; /* Tamanho de fonte menor para mobile */
-    margin-left: 0; /* Garante que não há margem negativa */
-    margin-right: 1.5rem; /* Ajuste para mobile */
-  }
-  .nav {
-    padding: 0 1rem; /* Ajusta o padding para telas menores */
-    gap: 1.5rem; /* Ajusta o gap para mobile */
-    justify-content: flex-start; /* Adicionado para alinhar logo e toggle à esquerda */
-  }
-}
 
-@media screen and (max-width: 480px) {
-  .container {
-    padding: 0 1rem;
+  .home__social {
+    flex-wrap: wrap; /* Permite que os links sociais quebrem */
+    justify-content: center;
+    gap: 1rem;
   }
-  .section {
-    padding: 4rem 0;
-  }
-  .home__name {
-    font-size: 2rem;
-  }
-  .image-container {
-    width: 300px;
-    height: 400px;
-  }
-  .floating-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
-  .btn {
-    padding: 0.8rem 1.5rem;
-    font-size: 0.9rem;
-  }
+
   .home__tech-icons {
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem; /* Reduzido o espaçamento */
   }
+
   .tech-icon {
     width: 35px;
     height: 35px;
     font-size: 1rem;
   }
-  /* Ajuste adicional para o logo em telas muito pequenas */
-  .nav__logo {
-    font-size: 1.2rem; /* Tamanho de fonte ainda menor */
+
+  .image-container {
+    width: 280px; /* Reduzido o tamanho da imagem */
+    height: 350px;
+  }
+
+  .floating-elements {
+    display: none; /* Esconde os elementos flutuantes para evitar poluição visual */
+  }
+
+  .about__stats {
+    grid-template-columns: 1fr; /* Empilha os stats em uma coluna */
+  }
+
+  .about__description {
+    font-size: 1rem; /* Ajustado para telas menores */
+  }
+
+  .timeline__header {
+    flex-direction: column; /* Empilha ícone e texto */
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .timeline__icon {
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline__title {
+    font-size: 1.1rem; /* Ajustado para telas menores */
+  }
+
+  .timeline__company {
+    font-size: 1rem;
+  }
+
+  .timeline__skills {
+    justify-content: flex-start; /* Alinha as tags à esquerda */
+  }
+
+  .skills__container {
+    grid-template-columns: 1fr; /* Empilha as categorias de habilidades */
+  }
+
+  .tools-workflow__container {
+    grid-template-columns: 1fr; /* Empilha as categorias de ferramentas */
+  }
+
+  .testimonials__container {
+    grid-template-columns: 1fr; /* Empilha os depoimentos */
+  }
+
+  .contact__card {
+    flex-direction: column; /* Empilha ícone e detalhes */
+    text-align: center;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .contact__icon {
+    margin-bottom: 0.5rem;
+  }
+
+  .contact__details h3 {
+    font-size: 1rem;
+  }
+
+  .contact__details p {
+    font-size: 0.9rem;
+  }
+
+  .contact__link {
+    font-size: 0.8rem;
+  }
+
+  .copy-email-btn {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .footer__logo {
+    font-size: 1.8rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 0 1rem; /* Padding mínimo para telas muito pequenas */
+  }
+
+  .section {
+    padding: 3rem 0; /* Padding ainda menor */
+  }
+
+  .section__title {
+    font-size: 1.8rem; /* Título ainda menor */
+  }
+
+  .home__name {
+    font-size: 2.2rem;
+  }
+
+  .home__profession {
+    font-size: 1rem;
+  }
+
+  .btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.8rem;
+  }
+
+  .image-container {
+    width: 250px; /* Tamanho mínimo para a imagem */
+    height: 320px;
+  }
+
+  .about__subtitle {
+    font-size: 1rem;
+  }
+
+  .about__description {
+    font-size: 0.9rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+  }
+
+  .service__title {
+    font-size: 1.1rem;
+  }
+
+  .service__description {
+    font-size: 0.9rem;
+  }
+
+  .timeline__title {
+    font-size: 1rem;
+  }
+
+  .timeline__company {
+    font-size: 0.9rem;
+  }
+
+  .timeline__description {
+    font-size: 0.9rem;
+  }
+
+  .category__title {
+    font-size: 1.2rem;
+  }
+
+  .category__title i {
+    font-size: 1.5rem;
+  }
+
+  .skill__info h4 {
+    font-size: 0.9rem;
+  }
+
+  .skill__percentage {
+    font-size: 0.8rem;
+  }
+
+  .project__title {
+    font-size: 1.1rem;
+  }
+
+  .project__description {
+    font-size: 0.9rem;
+  }
+
+  .tech-tag {
+    font-size: 0.7rem;
+  }
+
+  .contact__intro-text {
+    font-size: 1rem;
+  }
+
+  .form__group label {
+    font-size: 0.8rem;
+  }
+
+  .footer__section h3 {
+    font-size: 1rem;
+  }
+
+  .footer__section p,
+  .footer__links a {
+    font-size: 0.85rem;
+  }
+
+  .footer__logo {
+    font-size: 1.5rem;
+  }
+
+  .footer__bottom p {
+    font-size: 0.8rem;
+  }
+
+  .scroll-top {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    bottom: 1.5rem;
+    right: 1.5rem;
   }
 }
