@@ -149,16 +149,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const navMenu = document.getElementById("nav-menu")
   const navClose = document.getElementById("nav-close")
   const navLinks = document.querySelectorAll(".nav__link")
-
   if (navToggle && navMenu && navClose) {
     navToggle.addEventListener("click", () => {
       navMenu.classList.add("show-menu")
     })
-
     navClose.addEventListener("click", () => {
       navMenu.classList.remove("show-menu")
     })
-
     navLinks.forEach((link) => {
       link.addEventListener("click", () => {
         navMenu.classList.remove("show-menu")
@@ -168,16 +165,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Active link on scroll
   const sections = document.querySelectorAll("section[id]")
-
   function scrollActive() {
     const scrollY = window.pageYOffset
-
     sections.forEach((current) => {
       const sectionHeight = current.offsetHeight
       const sectionTop = current.offsetTop - 50
       const sectionId = current.getAttribute("id")
       const navLink = document.querySelector(`.nav__menu a[href*=${sectionId}]`)
-
       if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
         navLink?.classList.add("active-link")
       } else {
@@ -194,7 +188,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let charIndex = 0
   let isDeleting = false
   let typingSpeed = 150
-
   function typeProfession() {
     const currentProfession = professions[professionIndex]
     if (isDeleting) {
@@ -204,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
       professionText.textContent = currentProfession.substring(0, charIndex + 1)
       charIndex++
     }
-
     if (!isDeleting && charIndex === currentProfession.length) {
       typingSpeed = 2000 // Pause at end of typing
       isDeleting = true
@@ -215,10 +207,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       typingSpeed = isDeleting ? 75 : 150
     }
-
     setTimeout(typeProfession, typingSpeed)
   }
-
   if (professionText) {
     typeProfession()
   }
@@ -230,7 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
     rootMargin: "0px",
     threshold: 0.5, // Trigger when 50% of the item is visible
   }
-
   const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -239,7 +228,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let current = 0
         const duration = 2000 // 2 seconds
         const increment = target / (duration / 10) // Calculate increment per 10ms
-
         const updateCounter = () => {
           current += increment
           if (current < target) {
@@ -254,7 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
   }, observerOptions)
-
   statItems.forEach((item) => {
     observer.observe(item)
   })
@@ -266,7 +253,6 @@ document.addEventListener("DOMContentLoaded", () => {
     rootMargin: "0px",
     threshold: 0.7, // Trigger when 70% of the skill bar is visible
   }
-
   const skillObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -277,7 +263,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
   }, skillObserverOptions)
-
   skillProgressBars.forEach((bar) => {
     skillObserver.observe(bar)
   })
@@ -292,7 +277,6 @@ document.addEventListener("DOMContentLoaded", () => {
         scrollTopButton.classList.remove("show")
       }
     })
-
     scrollTopButton.addEventListener("click", () => {
       window.scrollTo({
         top: 0,
