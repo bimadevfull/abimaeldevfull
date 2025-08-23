@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Typing effect for profession
   const professionText = document.getElementById("profession-text")
-  const professions = ["Desenvolvedor Full-Stack", "Freelancer"]
+  const professions = ["Dev Full-Stack","Engenheiro de software" , "Freelancer" , ]
   let professionIndex = 0
   let charIndex = 0
   let isDeleting = false
@@ -306,3 +306,4 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
 })
+
