@@ -27,16 +27,20 @@
     --primary:#6c5ce7; --primary-600:#5a4bd6; --accent:#22c55e;
     --border:#e5e7eb; --radius:16px; --shadow:0 10px 25px rgba(0,0,0,.07);
     --overlay-bg: rgba(0,0,0,.4);
+    --grid: rgba(0,0,0,.08);
+    --space: 24px;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg:#0f1220; --panel:#181a2b; --text:#e5e7eb; --muted:#a1a7b5; --primary:#8b7cf6; --primary-600:#7d6ef0; --accent:#34d399; --border:#2a2f45; --shadow:0 10px 25px rgba(0,0,0,.25); --overlay-bg: rgba(0,0,0,.6); }
+    :root { --bg:#0f1220; --panel:#181a2b; --text:#e5e7eb; --muted:#a1a7b5; --primary:#8b7cf6; --primary-600:#7d6ef0; --accent:#34d399; --border:#2a2f45; --shadow:0 10px 25px rgba(0,0,0,.25); --overlay-bg: rgba(0,0,0,.6); --grid: rgba(255,255,255,.12); }
   }
   body.dark {
     --bg:#0f1220; --panel:#181a2b; --text:#e5e7eb; --muted:#a1a7b5;
     --primary:#8b7cf6; --primary-600:#7d6ef0; --accent:#34d399;
     --border:#2a2f45; --shadow:0 10px 25px rgba(0,0,0,.25);
     --overlay-bg: rgba(0,0,0,.6);
+    --grid: rgba(255,255,255,.12);
   }
+  body.no-scroll { overflow: hidden; }
 
   /* ===================== LAYOUT ===================== */
   .app { display: grid; grid-template-columns: 280px 1fr; grid-template-rows: 64px 1fr; grid-template-areas: "sidebar header" "sidebar main"; min-height: 100vh; }
@@ -66,11 +70,11 @@
 
   /* Header */
   .header { grid-area: header; display: flex; align-items: center; gap: 12px; justify-content: space-between; padding: 12px 18px; background: var(--panel); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
-  .left-head { display: flex; align-items: center; gap: 10px; }
-  .btn-burger { display: none; width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); display: grid; place-items: center; }
+  .left-head { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .btn-burger { display: none; width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); place-items: center; }
   .search { flex: 1; display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 8px 12px; min-width: 180px; }
-  .search input { flex: 1; border: none; outline: none; background: transparent; color: var(--text); }
-  .header-actions { display: flex; align-items: center; gap: 8px; }
+  .search input { flex: 1; border: none; outline: none; background: transparent; color: var(--text); min-width: 80px; }
+  .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
   .icon-btn { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; border: 1px solid var(--border); background: var(--bg); transition: transform .2s, background .2s; position: relative; overflow: hidden; }
   .icon-btn:hover { transform: translateY(-2px); background: var(--panel); }
   .btn.primary { background: var(--primary); color: #fff; border: none; }
@@ -78,7 +82,7 @@
   .icon-btn:hover .tooltip { opacity: 1; bottom: -32px; }
 
   /* Main */
-  main { grid-area: main; padding: 24px; display: grid; gap: 24px; }
+  main { grid-area: main; padding: var(--space); display: grid; gap: var(--space); min-width: 0; }
 
   /* Cards */
   .cards { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
@@ -97,7 +101,7 @@
   .panel p.desc { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
   .chart-wrap { position: relative; width: 100%; height: 320px; }
 
-  /* Secondary UI (drawers, dropdowns, modal) */
+  /* Secondary UI (dropdowns, modal) */
   .dropdown { position: relative; }
   .menu { position: absolute; right: 0; top: calc(100% + 8px); background: var(--panel); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); min-width: 220px; padding: 8px; display: none; z-index: 25; }
   .menu.show { display: block; }
@@ -110,8 +114,12 @@
   .modal .footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
   .chip { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); padding: 6px 10px; border-radius: 999px; background: var(--bg); }
 
+  /* Densidade compacta */
+  body.dense { --space: 16px; }
+  body.dense .card, body.dense .panel { padding: 14px; }
+  body.dense .icon-btn, body.dense .chip { border-radius: 10px; }
+
   /* ===================== RESPONSIVE BREAKPOINTS ===================== */
-  /* 1200px+ already covered by default grid (3 cards) */
   @media (max-width: 1200px) {
     .cards .card { grid-column: span 6; } /* 2 por linha */
   }
@@ -122,16 +130,17 @@
   }
   @media (max-width: 768px) {
     .app { grid-template-columns: 1fr; grid-template-areas: "header" "main"; }
-    .sidebar { position: fixed; }
-    .sidebar:not(.drawer) { display: none; }
-    .sidebar.drawer { display: flex; }
-    .btn-burger { display: grid; }
+    .sidebar { position: fixed; }           /* fixa para drawer */
+    .sidebar:not(.drawer) { display: none; }/* esconde versão sticky */
+    .sidebar.drawer { display: flex; }      /* mostra o drawer */
+    .btn-burger { display: grid; }          /* mostra o botão no mobile */
     main { padding: 16px; }
     .cards { grid-template-columns: repeat(12, 1fr); }
-    .cards .card { grid-column: span 12; } /* 1 por linha */
-    .header { flex-wrap: wrap; }
-    .search { flex: 1 1 100%; order: 2; }
-    .header-actions { order: 3; width: 100%; justify-content: flex-end; }
+    .cards .card { grid-column: span 12; }  /* 1 por linha */
+    .header { flex-wrap: wrap; gap: 10px; }
+    .left-head { order: 1; }
+    .search { flex: 1 1 100%; order: 3; }   /* search ocupa a linha toda */
+    .header-actions { order: 2; margin-left: auto; }
   }
   @media (max-width: 420px) {
     .brand-name { display: none; }
@@ -153,8 +162,8 @@
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
     <div class="brand">
-      <div class="brand-logo" aria-hidden="true"></div>
-      <div class="brand-name"></div>
+      <div class="brand-logo" aria-hidden="true">UI</div>
+      <div class="brand-name">Dashboard</div>
       <button class="toggle" id="btnSidebar" aria-label="Recolher/expandir sidebar" title="Alternar sidebar"><i class="fa-solid fa-angles-left" aria-hidden="true"></i></button>
     </div>
     <nav class="nav" role="navigation">
@@ -280,6 +289,10 @@
     sidebar.classList.toggle('collapsed', sidebarCollapsed);
   }
   btnSidebar.addEventListener('click', ()=>{
+    if (window.innerWidth <= 768) { // no mobile, abrir o drawer em vez de colapsar
+      openDrawer();
+      return;
+    }
     sidebarCollapsed = !sidebarCollapsed;
     applySidebarState();
     if ($('#persistSidebar').checked) storage.set('sidebarCollapsed', sidebarCollapsed);
@@ -293,25 +306,50 @@
     if (window.innerWidth <= 768){
       sidebar.classList.add('drawer');
       sidebar.classList.remove('collapsed');
+      // Se estava aberto no desktop, garante fechado ao entrar no mobile
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('show');
+      document.body.classList.remove('no-scroll');
     } else {
       sidebar.classList.remove('drawer', 'open');
       backdrop.classList.remove('show');
+      document.body.classList.remove('no-scroll');
       applySidebarState();
     }
   }
   ensureDrawerMode();
   window.addEventListener('resize', ensureDrawerMode);
+  window.addEventListener('orientationchange', ensureDrawerMode);
 
-  btnBurger.addEventListener('click', ()=>{
+  function openDrawer(){
     if (!sidebar.classList.contains('drawer')) return;
     sidebar.classList.add('open');
     backdrop.classList.add('show');
     backdrop.setAttribute('aria-hidden','false');
-  });
-  backdrop.addEventListener('click', ()=>{
+    document.body.classList.add('no-scroll');
+  }
+  function closeDrawer(){
     sidebar.classList.remove('open');
     backdrop.classList.remove('show');
     backdrop.setAttribute('aria-hidden','true');
+    document.body.classList.remove('no-scroll');
+  }
+
+  btnBurger.addEventListener('click', openDrawer);
+  backdrop.addEventListener('click', closeDrawer);
+
+  // fecha drawer ao clicar em links
+  $$('.nav a', sidebar).forEach(a => a.addEventListener('click', () => {
+    if (window.innerWidth <= 768) closeDrawer();
+  }));
+
+  // ESC fecha drawer/menus/modais
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape'){
+      closeDrawer();
+      closeAllDropdowns();
+      closeSettings();
+    }
   });
 
   // ===================== THEME =====================
@@ -320,15 +358,15 @@
 
   function setTheme(mode){
     // mode: 'light' | 'dark' | 'system'
-    if (mode === 'dark' || (mode === 'system' && prefersDark())){
-      document.body.classList.add('dark');
-      btnTheme.innerHTML = '<i class="fa-solid fa-moon" aria-hidden="true"></i><span class="tooltip">Tema (T)</span>';
-    } else {
-      document.body.classList.remove('dark');
-      btnTheme.innerHTML = '<i class="fa-solid fa-sun" aria-hidden="true"></i><span class="tooltip">Tema (T)</span>';
-    }
+    const dark = (mode === 'dark') || (mode === 'system' && prefersDark());
+    document.body.classList.toggle('dark', dark);
+    btnTheme.innerHTML = dark
+      ? '<i class="fa-solid fa-moon" aria-hidden="true"></i><span class="tooltip">Tema (T)</span>'
+      : '<i class="fa-solid fa-sun" aria-hidden="true"></i><span class="tooltip">Tema (T)</span>';
+
     if ($('#persistTheme').checked) storage.set('themeMode', mode);
-    document.documentElement.style.colorScheme = document.body.classList.contains('dark') ? 'dark' : 'light';
+    document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+    updateChartColors(); // mantém chart coerente com o tema
   }
 
   // Dropdown generic
@@ -338,12 +376,13 @@
       const open = menu.classList.toggle('show');
       trigger.setAttribute('aria-expanded', String(open));
     });
-    document.addEventListener('click', ()=>{
-      menu.classList.remove('show');
-      trigger.setAttribute('aria-expanded','false');
-    });
+  }
+  function closeAllDropdowns(){
+    $$('.menu').forEach(m => m.classList.remove('show'));
+    $$('.dropdown > .icon-btn').forEach(b => b.setAttribute('aria-expanded','false'));
   }
   bindDropdown(btnTheme, menuTheme);
+  document.addEventListener('click', closeAllDropdowns);
 
   menuTheme.addEventListener('click', (e)=>{
     const btn = e.target.closest('[data-theme]');
@@ -372,11 +411,18 @@
   }
   searchInput.addEventListener('input', applySearch);
 
-  // Keyboard shortcuts: / focus search, T theme, S sidebar
+  // Keyboard shortcuts: / focus search, T theme, S sidebar/drawer
   document.addEventListener('keydown', (e)=>{
     if (e.key === '/'){ e.preventDefault(); searchInput.focus(); }
     if (e.key.toLowerCase() === 't'){ setTheme(document.body.classList.contains('dark') ? 'light' : 'dark'); }
-    if (e.key.toLowerCase() === 's'){ btnSidebar.click(); }
+    if (e.key.toLowerCase() === 's'){
+      if (window.innerWidth <= 768){
+        // toggle drawer
+        if (sidebar.classList.contains('open')) closeDrawer(); else openDrawer();
+      } else {
+        btnSidebar.click();
+      }
+    }
   });
 
   // ===================== HEADER MENUS =====================
@@ -398,7 +444,6 @@
   function closeSettings(){ modalSettings.classList.remove('show'); modalSettings.setAttribute('aria-hidden','true'); }
   btnCloseSettings.addEventListener('click', closeSettings);
   modalSettings.addEventListener('click', (e)=>{ if (e.target === modalSettings) closeSettings(); });
-
   $('#actionSettings').addEventListener('click', ()=>{ openSettings(); });
 
   // Load persisted options
@@ -407,12 +452,14 @@
     const savedSidebar = storage.get('sidebarCollapsed');
     const savedPersistTheme = storage.get('persistTheme') ?? true; // default on
     const savedPersistSidebar = storage.get('persistSidebar') ?? true; // default on
+    const savedDense = storage.get('dense') ?? false;
 
     persistTheme.checked = !!savedPersistTheme;
     persistSidebar.checked = !!savedPersistSidebar;
 
     if (savedPersistTheme && savedTheme) setTheme(savedTheme); else setTheme('system');
     if (savedPersistSidebar && typeof savedSidebar === 'boolean') { sidebarCollapsed = savedSidebar; applySidebarState(); }
+    document.body.classList.toggle('dense', !!savedDense);
 
     persistTheme.addEventListener('change', ()=> storage.set('persistTheme', persistTheme.checked));
     persistSidebar.addEventListener('change', ()=> storage.set('persistSidebar', persistSidebar.checked));
@@ -423,18 +470,21 @@
   const datasets = {
     visitors: [1200,1500,1300,1800,1700,1900,2100],
     sales:    [100,140,120,180,160,190,210],
-    profit:   [3.2,3.8,3.5,4.1,3.9,4.3,4.6]
+    profit:   [3200,3800,3500,4100,3900,4300,4600] // em R$, para escala coerente
   };
   const labels = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
   let activeDataset = 'visitors';
 
-  const chart = new Chart(ctx,{
+  const css = () => getComputedStyle(document.body);
+  const color = (v) => css().getPropertyValue(v).trim() || '#6c5ce7';
+
+  let chart = new Chart(ctx,{
     type: 'line',
     data: { labels, datasets: [{
       label: 'Visitantes',
       data: datasets.visitors,
-      backgroundColor: 'rgba(108,92,231,0.12)',
-      borderColor: 'rgba(108,92,231,1)',
+      backgroundColor: hexToRgba(color('--primary'), 0.12),
+      borderColor: color('--primary-600'),
       borderWidth: 2,
       tension: 0.4,
       fill: true,
@@ -447,11 +497,26 @@
       plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
       interaction: { mode: 'nearest', intersect: false },
       scales: {
-        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
-        x: { grid: { color: 'rgba(0,0,0,0.05)' } }
+        y: {
+          beginAtZero: true,
+          grid: { color: () => color('--grid') },
+          ticks: {
+            callback: (v) => (activeDataset === 'profit' ? 'R$ ' + v.toLocaleString('pt-BR') : v)
+          }
+        },
+        x: { grid: { color: () => color('--grid') } }
       }
     }
   });
+
+  function updateChartColors(){
+    const bg = hexToRgba(color('--primary'), 0.12);
+    chart.data.datasets[0].backgroundColor = bg;
+    chart.data.datasets[0].borderColor = color('--primary-600');
+    chart.options.scales.x.grid.color = color('--grid');
+    chart.options.scales.y.grid.color = color('--grid');
+    chart.update();
+  }
 
   function switchDataset(key){
     activeDataset = key;
@@ -474,19 +539,20 @@
 
   // ===================== METRICS: COUNT-UP & REFRESH =====================
   function animateCount(el, to, prefix='', duration=900){
-    const from = Number(String(el.textContent).replace(/\D/g, '')) || 0;
+    const fromText = String(el.textContent);
+    const from = Number(fromText.replace(/\D/g, '')) || 0;
     const start = performance.now();
     function frame(now){
       const p = Math.min(1, (now - start) / duration);
       const val = Math.floor(from + (to - from) * p);
-      el.textContent = prefix + (prefix ? ' ' : '') + (prefix === 'R$' ? formatBR(val) : formatBR(val));
+      el.textContent = prefix ? (prefix + ' ' + formatBR(val)) : formatBR(val);
       if (p < 1) requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
   }
 
   function refreshMetrics(){
-    // Simula novos dados
+    // Simula novos dados coerentes
     const newVisitors = Math.floor(11000 + Math.random()*4000);
     const newSales = Math.floor(900 + Math.random()*400);
     const newProfit = Math.floor(25000 + Math.random()*6000);
@@ -495,19 +561,55 @@
     animateCount(document.getElementById('sales'), newSales);
     animateCount(document.getElementById('profit'), newProfit, 'R$');
 
-    // Atualiza série ativa aleatoriamente
+    // Atualiza série ativa com ruído
     const k = ['visitors','sales','profit'][Math.floor(Math.random()*3)];
-    datasets[k] = datasets[k].map(v => Math.max(0, v + Math.round((Math.random()-.5)*200)));
+    datasets[k] = datasets[k].map(v => Math.max(0, Math.round(v + ((Math.random() - .5) * (k==='profit'?600:120)))));
     switchDataset(k);
   }
   document.getElementById('actionRefresh').addEventListener('click', refreshMetrics);
 
   // ===================== DENSIDADE =====================
-  let dense = false;
+  let dense = !!storage.get('dense');
   function applyDensity(){
-    document.body.style.setProperty('--radius', dense ? '12px' : '16px');
-    document.querySelectorAll('.card, .panel, .icon-btn, .chip').forEach(el => {
-      el.style.padding = dense ? '12px' : '';
-    });
+    document.body.classList.toggle('dense', dense);
+    storage.set('dense', dense);
   }
-  documen
+  applyDensity();
+  document.getElementById('actionDensity').addEventListener('click', ()=>{
+    dense = !dense;
+    applyDensity();
+  });
+
+  // ===================== HELPERS =====================
+  function hexToRgba(hexOrCssVar, a){
+    // aceita cor já computada (rgb/rgba) ou hex
+    const val = hexOrCssVar.startsWith('#') ? hexOrCssVar : getComputedStyle(document.body).getPropertyValue(hexOrCssVar).trim();
+    if (val.startsWith('rgb')) {
+      // rgb(…)
+      const nums = val.replace(/[^\d.,]/g,'').split(',').map(Number);
+      const [r,g,b] = nums;
+      return `rgba(${r},${g},${b},${a})`;
+    }
+    let hex = val.replace('#','');
+    if (hex.length===3){ hex = hex.split('').map(c=>c+c).join(''); }
+    const r = parseInt(hex.slice(0,2),16);
+    const g = parseInt(hex.slice(2,4),16);
+    const b = parseInt(hex.slice(4,6),16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  // ===================== AÇÕES RÁPIDAS (finalizar binds) =====================
+  document.getElementById('actionSettings').addEventListener('click', ()=>{
+    closeAllDropdowns();
+    openSettings();
+  });
+
+  // ===================== INICIALIZAÇÃO =====================
+  // Foca search com / mesmo após clique fora
+  window.addEventListener('click', (e)=>{
+    if (!e.target.closest('.dropdown')) closeAllDropdowns();
+  });
+
+</script>
+</body>
+</html>
