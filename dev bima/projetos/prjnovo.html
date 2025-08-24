@@ -1,693 +1,166 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Interativo</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome (apenas para alguns ícones extras) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-8L0wKq3YlF1+3X5s8h6H9d9mHkVj3dO2Y9q4hKzS4r3w9Qqf4pWJwqP4pL8xk2y7ZpW1o8oZ4Y1J+gQ9wG6Q+w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    /* =====================
-       RESET & BASE
-    ====================== */
-    *, *::before, *::after { box-sizing: border-box; }
-    :root {
-      /* Paleta Light */
-      --bg: #f6f8fb;
-      --panel: #ffffff;
-      --text: #14161a;
-      --muted: #6a7280;
-      --primary: #6c5ce7; /* roxo suave */
-      --primary-600: #5a4bd6;
-      --accent: #22c55e; /* verde */
-      --warning: #f59e0b; /* amarelo */
-      --danger: #ef4444; /* vermelho */
-      --border: #e5e7eb;
-      --shadow: 0 10px 25px rgba(0,0,0,.07);
-      --radius: 16px;
-      --ring: 0 0 0 3px rgba(108,92,231,.25);
-    }
-    .dark {
-      /* Paleta Dark */
-      --bg: #0f1220;
-      --panel: #181a2b;
-      --text: #e5e7eb;
-      --muted: #a1a7b5;
-      --primary: #8b7cf6;
-      --primary-600: #7d6ef0;
-      --accent: #34d399;
-      --warning: #fbbf24;
-      --danger: #f87171;
-      --border: #2a2f45;
-      --shadow: 0 10px 25px rgba(0,0,0,.25);
-      --ring: 0 0 0 3px rgba(139,124,246,.25);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Interativo</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; font-family: Inter, sans-serif; background: #f6f8fb; color:#14161a; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; cursor: pointer; border:none; background:none; }
+  img { display: block; max-width:100%; }
+  .hidden { display:none !important; }
 
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
-      line-height: 1.45;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+  /* ===== VARIABLES ===== */
+  :root {
+    --bg:#f6f8fb; --panel:#fff; --text:#14161a; --muted:#6a7280; 
+    --primary:#6c5ce7; --primary-600:#5a4bd6; --accent:#22c55e; 
+    --border:#e5e7eb; --radius:16px; --shadow:0 10px 25px rgba(0,0,0,.07);
+  }
+  .dark {
+    --bg:#0f1220; --panel:#181a2b; --text:#e5e7eb; --muted:#a1a7b5;
+    --primary:#8b7cf6; --primary-600:#7d6ef0; --accent:#34d399;
+    --border:#2a2f45; --shadow:0 10px 25px rgba(0,0,0,.25);
+  }
 
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
-    img { display: block; max-width: 100%; }
+  /* ===== LAYOUT ===== */
+  .app { display:grid; grid-template-columns:260px 1fr; grid-template-rows:64px 1fr; grid-template-areas:"sidebar header" "sidebar main"; min-height:100vh;}
+  .sidebar { grid-area:sidebar; background:var(--panel); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:16px; position:sticky; top:0; transition:0.3s;}
+  .sidebar.collapsed { width:80px; padding:16px 10px; }
+  .brand { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+  .brand-logo { width:36px; height:36px; display:grid; place-items:center; background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; font-weight:800; border-radius:12px; }
+  .brand-name { font:700 18px Poppins; }
+  .toggle { margin-left:auto; padding:6px; border:1px solid var(--border); border-radius:12px; background:var(--bg);}
+  .nav { display:flex; flex-direction:column; gap:8px; }
+  .nav a { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:12px; transition:0.2s; }
+  .nav a:hover { background:rgba(108,92,231,.12);}
+  .nav a.active { background:rgba(108,92,231,.18);}
+  .icon { width:20px; height:20px; display:inline-block; }
+  .label { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sidebar.collapsed .label { display:none; }
 
-    /* =====================
-       LAYOUT PRINCIPAL
-    ====================== */
-    .app {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      grid-template-rows: 64px 1fr;
-      grid-template-areas:
-        "sidebar header"
-        "sidebar main";
-      min-height: 100vh;
-    }
+  .header { grid-area:header; display:flex; align-items:center; justify-content:space-between; padding:12px 18px; background:var(--panel); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:10; }
+  .search { flex:1; display:flex; align-items:center; gap:10px; background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:8px 12px; }
+  .search input { flex:1; border:none; outline:none; background:transparent; color:var(--text); }
+  .header-actions { display:flex; align-items:center; gap:8px; }
+  .icon-btn { width:40px; height:40px; border-radius:12px; display:grid; place-items:center; border:1px solid var(--border); background:var(--bg); transition:0.2s; position:relative; overflow:hidden;}
+  .icon-btn:hover { transform:translateY(-2px); background:var(--panel);}
+  .btn.primary { background:var(--primary); color:#fff; border:none; }
 
-    /* =====================
-       PRELOADER
-    ====================== */
-    .preloader {
-      position: fixed; inset: 0; display: grid; place-items: center;
-      background: var(--bg); z-index: 9999; transition: opacity .35s ease, visibility .35s ease;
-    }
-    .preloader.hidden { opacity: 0; visibility: hidden; }
-    .spinner {
-      width: 56px; height: 56px; border-radius: 50%;
-      border: 4px solid var(--border); border-top-color: var(--primary);
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+  main { grid-area:main; padding:24px; display:grid; gap:24px; }
 
-    /* =====================
-       SIDEBAR
-    ====================== */
-    .sidebar {
-      grid-area: sidebar;
-      background: var(--panel);
-      border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; gap: 12px;
-      padding: 16px;
-      position: sticky; top: 0; height: 100vh;
-      transition: width .3s ease, padding .3s ease;
-      box-shadow: var(--shadow);
-      width: 260px;
-      z-index: 15;
-    }
-    .sidebar.collapsed { width: 88px; padding: 16px 12px; }
+  /* ===== CARDS ===== */
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px;}
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); transition:0.2s; }
+  .card:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,.08);}
+  .card .title { font:600 14px; color:var(--muted); margin-bottom:8px; display:flex; align-items:center; gap:6px;}
+  .card .value { font:800 26px Poppins; }
 
-    .brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px; }
-    .brand-logo {
-      width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center;
-      background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; font-weight: 800;
-      box-shadow: 0 8px 20px rgba(108,92,231,.35);
-    }
-    .brand-name { font: 700 18px Poppins, Inter, sans-serif; letter-spacing: .3px; }
+  .trend { font-size:12px; font-weight:600; padding:4px 8px; border-radius:999px; display:inline-flex; align-items:center; gap:4px;}
+  .trend.up { background:rgba(34,197,94,.16); color:#065f46;}
+  .trend.down { background:rgba(239,68,68,.16); color:#7c2d12;}
 
-    .sidebar .toggle {
-      margin-left: auto; border: 1px solid var(--border); border-radius: 12px; padding: 8px 10px;
-      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
-      background: var(--bg);
-    }
-    .sidebar .toggle:focus-visible { outline: none; box-shadow: var(--ring); }
-    .sidebar .toggle:hover { transform: translateY(-1px); background: var(--panel); }
+  /* ===== PANELS ===== */
+  .panel { background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);}
+  .panel h3 { margin:0 0 8px; font:700 18px Poppins; }
+  .panel p.desc { margin:0 0 14px; color:var(--muted); font-size:14px; }
+  .chart-wrap { position:relative; width:100%; height:320px; }
 
-    .nav { display: flex; flex-direction: column; margin-top: 6px; gap: 6px; }
-    .nav-group { margin-top: 10px; }
-    .nav-title { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; padding: 8px 10px; }
-
-    .nav a {
-      border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; gap: 12px;
-      transition: background .2s ease, transform .05s ease; position: relative;
-    }
-    .nav a:hover { background: rgba(108,92,231,.12); }
-    .nav a.active { background: rgba(108,92,231,.18); }
-
-    .icon { width: 20px; height: 20px; display: inline-block; flex: 0 0 auto; }
-    .label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    .sidebar.collapsed .label { display: none; }
-    .sidebar.collapsed .nav-title { display: none; }
-
-    /* Tooltip minimalista para itens do menu quando colapsado */
-    .tooltip { position: fixed; z-index: 999; pointer-events: none; padding: 8px 10px; border-radius: 10px; font-size: 12px; color: #fff; background: rgba(20,22,26,.92); transform: translate(-50%, -140%); opacity: 0; transition: opacity .15s ease; }
-    .tooltip.show { opacity: 1; }
-
-    /* =====================
-       HEADER
-    ====================== */
-    .header {
-      grid-area: header; display: flex; align-items: center; gap: 12px; padding: 12px 18px;
-      border-bottom: 1px solid var(--border); background: var(--panel); position: sticky; top: 0; z-index: 10;
-    }
-    .search {
-      flex: 1; display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--border);
-      border-radius: 14px; padding: 10px 14px; transition: box-shadow .2s ease, background .2s ease;
-    }
-    .search:focus-within { box-shadow: var(--ring); background: var(--panel); }
-    .search input { width: 100%; border: none; outline: none; background: transparent; color: var(--text); }
-
-    .header-actions { display: flex; align-items: center; gap: 8px; }
-    .icon-btn {
-      position: relative; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
-      border: 1px solid var(--border); background: var(--bg); transition: transform .12s ease, background .2s ease, box-shadow .2s ease;
-    }
-    .icon-btn:hover { transform: translateY(-1px); background: var(--panel); }
-    .icon-btn:active { transform: translateY(0); }
-    .icon-btn:focus-visible { outline: none; box-shadow: var(--ring); }
-
-    .avatar { width: 40px; height: 40px; border-radius: 12px; overflow: hidden; border: 2px solid transparent; }
-    .avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-    /* =====================
-       MAIN
-    ====================== */
-    main {
-      grid-area: main; padding: 24px; display: grid; gap: 24px;
-      grid-template-columns: 1fr; grid-auto-rows: min-content;
-    }
-
-    .cards {
-      display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px;
-    }
-    .card {
-      grid-column: span 3; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
-      box-shadow: var(--shadow); padding: 18px; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-    }
-    .card:hover { transform: translateY(-2px); border-color: rgba(108,92,231,.4); box-shadow: 0 12px 30px rgba(0,0,0,.08); }
-
-    .card .title { font: 600 14px Inter, sans-serif; color: var(--muted); display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-    .card .value { font: 800 26px Poppins, Inter, sans-serif; letter-spacing: .2px; }
-    .trend { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 12px; margin-top: 6px; padding: 4px 8px; border-radius: 999px; }
-    .trend.up { color: #065f46; background: rgba(34,197,94,.16); }
-    .trend.down { color: #7c2d12; background: rgba(239,68,68,.16); }
-
-    /* Gráfico */
-    .panel {
-      background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
-      box-shadow: var(--shadow); padding: 18px;
-    }
-    .panel h3 { margin: 0 0 8px; font: 700 18px Poppins, Inter, sans-serif; }
-    .panel p.desc { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
-    .chart-wrap { position: relative; width: 100%; height: 320px; }
-    canvas#chart { width: 100%; height: 100%; display: block; }
-
-    /* Últimas atividades */
-    .activities { display: grid; gap: 12px; }
-    .activity {
-      display: grid; grid-template-columns: 42px 1fr auto; align-items: center; gap: 12px;
-      padding: 12px; border: 1px solid var(--border); border-radius: 14px; background: linear-gradient(180deg, var(--panel), color-mix(in srgb, var(--panel) 85%, var(--bg) 15%));
-      transition: background .2s ease, border-color .2s ease, transform .12s ease;
-    }
-    .activity:hover { background: color-mix(in srgb, var(--panel) 85%, var(--bg) 15%); border-color: rgba(108,92,231,.35); transform: translateY(-1px); }
-    .activity .badge { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; }
-    .badge.info { background: rgba(108,92,231,.15); }
-    .badge.ok { background: rgba(34,197,94,.15); }
-    .badge.warn { background: rgba(245,158,11,.15); }
-
-    .chip { font-size: 12px; padding: 6px 10px; border-radius: 999px; border: 1px dashed var(--border); color: var(--muted); }
-
-    /* Botões com animação de clique (ripple) */
-    .btn {
-      display: inline-flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px;
-      border: 1px solid var(--border); background: var(--panel); transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
-      position: relative; overflow: hidden;
-    }
-    .btn:hover { box-shadow: 0 10px 22px rgba(0,0,0,.08); background: color-mix(in srgb, var(--panel) 94%, var(--bg) 6%); }
-    .btn:active { transform: translateY(1px); }
-    .btn.primary { border-color: transparent; background: var(--primary); color: #fff; }
-    .btn.primary:hover { filter: brightness(1.02); }
-
-    .ripple { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple .55s ease-out; background: rgba(255,255,255,.45); }
-    @keyframes ripple { to { transform: scale(6); opacity: 0; } }
-
-    /* Modal */
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(12,14,22,.6); display: none; place-items: center; z-index: 40; }
-    .modal { width: min(92vw, 460px); background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 18px; box-shadow: var(--shadow); }
-    .modal h4 { margin: 6px 0 8px; font: 700 20px Poppins, Inter, sans-serif; }
-    .modal p { color: var(--muted); margin: 0 0 16px; }
-    .modal .actions { display: flex; justify-content: flex-end; gap: 10px; }
-    .modal-backdrop.show { display: grid; animation: fadeIn .2s ease; }
-    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
-
-    /* RESPONSIVO */
-    @media (max-width: 1100px) {
-      .card { grid-column: span 4; }
-    }
-    @media (max-width: 820px) {
-      .app { grid-template-columns: 80px 1fr; }
-      .sidebar { width: 80px; padding: 16px 10px; }
-      .sidebar .label, .sidebar .nav-title { display: none; }
-      .card { grid-column: span 6; }
-      .header { gap: 8px; }
-    }
-    @media (max-width: 560px) {
-      .cards { display: grid; grid-template-columns: repeat(6, 1fr); }
-      .card { grid-column: span 6; }
-      .header { padding: 10px 12px; }
-      main { padding: 16px; }
-    }
-  </style>
+  /* ===== RESPONSIVO ===== */
+  @media(max-width:900px){ .app{grid-template-columns:80px 1fr;} .sidebar.collapsed{width:80px;} }
+  @media(max-width:600px){ main{padding:16px;} .header{flex-direction:column;align-items:flex-start;gap:8px;} }
+</style>
 </head>
 <body>
-  <!-- Preloader / Animação de carregamento -->
-  <div class="preloader" id="preloader" aria-hidden="true">
-    <div class="spinner" aria-label="carregando"></div>
-  </div>
-
-  <div class="app" id="app">
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
-      <div class="brand">
-        <div class="brand-logo" aria-hidden="true">UI</div>
-        <div class="brand-name">User Insights</div>
-        <button class="toggle" id="btnSidebar" aria-label="Colapsar menu" data-tooltip="Colapsar/Expandir">
-          <i class="fa-solid fa-angles-left"></i>
-        </button>
-      </div>
-
-      <nav class="nav" role="navigation">
-        <div class="nav-group">
-          <div class="nav-title">Principal</div>
-          <a href="#" class="active" data-tooltip="Dashboard">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 13h8V3H3v10zm10 8h8V3h-8v18zM3 21h8v-6H3v6z"/></svg>
-            <span class="label">Dashboard</span>
-          </a>
-          <a href="#" data-tooltip="Relatórios">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v16H4z"/><path d="M8 12h8M8 8h8M8 16h5"/></svg>
-            <span class="label">Relatórios</span>
-          </a>
-          <a href="#" data-tooltip="Analytics">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 17l5-5 4 4 8-8"/><path d="M21 21H3V3"/></svg>
-            <span class="label">Analytics</span>
-          </a>
-        </div>
-        <div class="nav-group">
-          <div class="nav-title">Gestão</div>
-          <a href="#" data-tooltip="Usuários">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0z"/><path d="M6 21a8 8 0 1112 0H6z"/></svg>
-            <span class="label">Usuários</span>
-          </a>
-          <a href="#" data-tooltip="Configurações">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z"/><path d="M19.4 15a1.7 1.7 0 00.34 1.87l.06.06a2 2 0 11-2.83 2.83l-.06-.06A1.7 1.7 0 0015 19.4a1.7 1.7 0 00-1.5.9 2 2 0 11-3 0A1.7 1.7 0 009 19.4a1.7 1.7 0 00-1.87-.34l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.7 1.7 0 004.6 15a1.7 1.7 0 00-.9-1.5 2 2 0 110-3 1.7 1.7 0 00.9-1.5 1.7 1.7 0 00-1.87-.34l-.06.06a2 2 0 102.83-2.83l.06-.06A1.7 1.7 0 009 4.6a1.7 1.7 0 001.5-.9 2 2 0 103 0 1.7 1.7 0 001.5.9 1.7 1.7 0 001.87-.34l.06-.06a2 2 0 112.83 2.83l-.06.06A1.7 1.7 0 0019.4 9c.5 0 1 .18 1.4.5a2 2 0 110 3c-.4.32-.9.5-1.4.5z"/></svg>
-            <span class="label">Configurações</span>
-          </a>
-        </div>
-      </nav>
-    </aside>
-
-    <!-- Header -->
-    <header class="header">
-      <div class="search" role="search">
-        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-        <input type="search" placeholder="Buscar... (Ctrl+/)" aria-label="Buscar" id="searchInput" />
-      </div>
-      <div class="header-actions">
-        <button class="icon-btn" id="btnTheme" aria-label="Alternar tema" data-tooltip="Tema claro/escuro">
-          <i class="fa-solid fa-sun" id="themeIcon"></i>
-        </button>
-        <button class="icon-btn" aria-label="Notificações" data-tooltip="Notificações">
-          <i class="fa-regular fa-bell"></i>
-        </button>
-        <button class="icon-btn btn primary" id="btnNew" data-tooltip="Novo relatório">
-          <i class="fa-solid fa-plus"></i>
-          <span class="label">Novo</span>
-        </button>
-        <div class="avatar" title="Perfil">
-          <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=200&auto=format&fit=crop" alt="Avatar do usuário"/>
-        </div>
-        <button class="icon-btn" id="btnLogout" aria-label="Sair" data-tooltip="Sair do sistema">
-          <i class="fa-solid fa-right-from-bracket"></i>
-        </button>
-      </div>
-    </header>
-
-    <!-- Main -->
-    <main>
-      <!-- Cards de estatísticas -->
-      <section class="cards" aria-label="Estatísticas">
-        <article class="card" tabindex="0">
-          <div class="title"><i class="fa-solid fa-users"></i> Visitantes</div>
-          <div class="value" id="visitorsValue">12.480</div>
-          <div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +12% mês</div>
-        </article>
-        <article class="card" tabindex="0">
-          <div class="title"><i class="fa-solid fa-bag-shopping"></i> Vendas</div>
-          <div class="value" id="salesValue">1.042</div>
-          <div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +8% mês</div>
-        </article>
-        <article class="card" tabindex="0">
-          <div class="title"><i class="fa-solid fa-coins"></i> Lucros</div>
-          <div class="value" id="profitValue">R$ 27.300</div>
-          <div class="trend down"><i class="fa-solid fa-arrow-trend-down"></i> -2% semana</div>
-        </article>
-        <article class="card" tabindex="0">
-          <div class="title"><i class="fa-solid fa-rocket"></i> Conversões</div>
-          <div class="value" id="convValue">4,6%</div>
-          <div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +0,4% dia</div>
-        </article>
-      </section>
-
-      <!-- Painel com gráfico -->
-      <section class="panel" aria-label="Gráfico de desempenho">
-        <h3>Desempenho Semanal</h3>
-        <p class="desc">Variação de métricas nos últimos 7 dias. Passe o mouse no gráfico para ver valores.</p>
-        <div class="chart-wrap">
-          <canvas id="chart" aria-label="Gráfico de linha"></canvas>
-        </div>
-      </section>
-
-      <!-- Últimas atividades -->
-      <section class="panel" aria-label="Últimas atividades">
-        <h3>Últimas atividades</h3>
-        <div class="activities">
-          <div class="activity">
-            <div class="badge info"><i class="fa-solid fa-chart-line"></i></div>
-            <div>
-              <strong>Relatório trimestral</strong>
-              <div class="muted" style="color: var(--muted)">Gerado por Ana • há 2h</div>
-            </div>
-            <span class="chip">PDF</span>
-          </div>
-          <div class="activity">
-            <div class="badge ok"><i class="fa-solid fa-circle-check"></i></div>
-            <div>
-              <strong>Meta semanal concluída</strong>
-              <div class="muted" style="color: var(--muted)">Equipe Marketing • há 6h</div>
-            </div>
-            <span class="chip">OK</span>
-          </div>
-          <div class="activity">
-            <div class="badge warn"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div>
-              <strong>Alerta de estoque baixo</strong>
-              <div class="muted" style="color: var(--muted)">SKU-2941 • há 1d</div>
-            </div>
-            <span class="chip">Atenção</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Ações rápidas só para brincar com interações -->
-      <section class="panel" aria-label="Ações rápidas">
-        <h3>Ações rápidas</h3>
-        <div style="display:flex; gap:10px; flex-wrap: wrap;">
-          <button class="btn" id="btnRefresh"><i class="fa-solid fa-rotate"></i>Atualizar</button>
-          <button class="btn" id="btnFilter"><i class="fa-solid fa-filter"></i>Filtrar</button>
-          <button class="btn primary" id="btnExport"><i class="fa-solid fa-file-export"></i>Exportar</button>
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <!-- Modal Sair do sistema -->
-  <div class="modal-backdrop" id="modalLogout" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="modal" role="document">
-      <h4>Deseja sair do sistema?</h4>
-      <p>Você poderá entrar novamente a qualquer momento. Confirme para continuar.</p>
-      <div class="actions">
-        <button class="btn" id="btnCancelModal">Cancelar</button>
-        <button class="btn primary" id="btnConfirmLogout">Sair</button>
-      </div>
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo">UI</div>
+      <div class="brand-name"></div>
+      <button class="toggle" id="btnSidebar"><i class="fa-solid fa-angles-left"></i></button>
     </div>
-  </div>
+    <nav class="nav">
+      <a href="#" class="active"><i class="fa-solid fa-chart-line icon"></i><span class="label">Dashboard</span></a>
+      <a href="#"><i class="fa-solid fa-users icon"></i><span class="label">Usuários</span></a>
+      <a href="#"><i class="fa-solid fa-gear icon"></i><span class="label">Configurações</span></a>
+    </nav>
+  </aside>
 
-  <!-- Tooltip global -->
-  <div id="tooltip" class="tooltip" role="tooltip" aria-hidden="true"></div>
+  <!-- Header -->
+  <header class="header">
+    <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input type="search" placeholder="Buscar..." id="searchInput"></div>
+    <div class="header-actions">
+      <button class="icon-btn" id="btnTheme"><i class="fa-solid fa-sun"></i></button>
+      <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+      <button class="icon-btn btn primary"><i class="fa-solid fa-plus"></i></button>
+    </div>
+  </header>
 
-  <script>
-    // =============================
-    // Utilidades de armazenamento
-    // =============================
-    const storage = {
-      get(key, fallback) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch { return fallback; } },
-      set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} }
-    };
+  <!-- Main -->
+  <main>
+    <section class="cards">
+      <div class="card"><div class="title"><i class="fa-solid fa-users"></i> Visitantes</div><div class="value" id="visitors">12.480</div><div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +12%</div></div>
+      <div class="card"><div class="title"><i class="fa-solid fa-bag-shopping"></i> Vendas</div><div class="value" id="sales">1.042</div><div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +8%</div></div>
+      <div class="card"><div class="title"><i class="fa-solid fa-coins"></i> Lucros</div><div class="value" id="profit">R$ 27.300</div><div class="trend down"><i class="fa-solid fa-arrow-trend-down"></i> -2%</div></div>
+    </section>
 
-    // =============================
-    // Tema claro/escuro com persistência
-    // =============================
-    (function initTheme(){
-      const saved = storage.get('ui-theme', null);
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const root = document.documentElement;
-      if (saved) root.classList.toggle('dark', saved === 'dark');
-      else root.classList.toggle('dark', prefersDark);
-      updateThemeIcon();
-    })();
+    <section class="panel">
+      <h3>Desempenho Semanal</h3>
+      <p class="desc">Variação de métricas nos últimos 7 dias.</p>
+      <div class="chart-wrap"><canvas id="chart"></canvas></div>
+    </section>
+  </main>
+</div>
 
-    function toggleTheme(){
-      const root = document.documentElement;
-      root.classList.toggle('dark');
-      const theme = root.classList.contains('dark') ? 'dark' : 'light';
-      storage.set('ui-theme', theme);
-      updateThemeIcon();
-    }
+<script>
+  // ===== SIDEBAR COLLAPSE =====
+  const sidebar = document.getElementById('sidebar');
+  const btnSidebar = document.getElementById('btnSidebar');
+  btnSidebar.addEventListener('click',()=>sidebar.classList.toggle('collapsed'));
 
-    function updateThemeIcon(){
-      const isDark = document.documentElement.classList.contains('dark');
-      const icon = document.getElementById('themeIcon');
-      icon.className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
-      icon.setAttribute('aria-label', isDark ? 'Tema escuro' : 'Tema claro');
-    }
+  // ===== THEME TOGGLE =====
+  const btnTheme = document.getElementById('btnTheme');
+  btnTheme.addEventListener('click',()=>{
+    document.body.classList.toggle('dark');
+    btnTheme.innerHTML = document.body.classList.contains('dark') ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+  });
 
-    // =============================
-    // Sidebar colapsável com persistência
-    // =============================
-    (function initSidebar(){
-      const collapsed = storage.get('sidebar-collapsed', false);
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('collapsed', collapsed);
-    })();
-
-    // =============================
-    // Preloader simples
-    // =============================
-    window.addEventListener('load', () => {
-      setTimeout(() => document.getElementById('preloader').classList.add('hidden'), 350);
-    });
-
-    // =============================
-    // Gráfico animado (Canvas 2D puro)
-    // =============================
-    const chartEl = document.getElementById('chart');
-    const ctx = chartEl.getContext('2d');
-    const dpr = Math.max(1, window.devicePixelRatio || 1);
-
-    function resizeCanvas(){
-      const { width, height } = chartEl.getBoundingClientRect();
-      chartEl.width = Math.floor(width * dpr);
-      chartEl.height = Math.floor(height * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      drawChart(animateProgress);
-    }
-
-    // Dados de exemplo (7 dias)
-    const labels = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-    const seriesA = [12, 14, 11, 16, 18, 17, 20]; // Visitantes (k)
-    const seriesB = [8, 9, 8, 10, 12, 11, 13];    // Vendas (centenas)
-
-    let animateProgress = 0; // 0..1
-
-    function drawChart(progress=1){
-      const w = chartEl.clientWidth;
-      const h = chartEl.clientHeight;
-      ctx.clearRect(0,0,w,h);
-
-      // Áreas e escalas
-      const pad = 32;
-      const x0 = pad*1.2, y0 = h - pad*1.2, x1 = w - pad, y1 = pad*1.2;
-
-      // Eixos
-      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--border');
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(x0, y0); ctx.lineTo(x0, y1); ctx.lineTo(x1, y1);
-      ctx.stroke();
-
-      // Grades horizontais
-      ctx.globalAlpha = .6;
-      const steps = 4;
-      for(let i=0;i<=steps;i++){
-        const y = y0 - (y0 - y1) * (i/steps);
-        ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke();
+  // ===== CHART =====
+  const ctx = document.getElementById('chart').getContext('2d');
+  const chart = new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+      datasets:[{
+        label:'Visitantes',
+        data:[1200,1500,1300,1800,1700,1900,2100],
+        backgroundColor:'rgba(108,92,231,0.1)',
+        borderColor:'rgba(108,92,231,1)',
+        borderWidth:2,
+        tension:0.4,
+        fill:true,
+        pointRadius:4,
+        pointHoverRadius:6
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{beginAtZero:true, grid:{color:'rgba(0,0,0,0.05)'}},
+        x:{grid:{color:'rgba(0,0,0,0.05)'}}
       }
-      ctx.globalAlpha = 1;
-
-      // Funções auxiliares
-      const maxY = 22; // valor máximo para escalar
-      const dx = (x1 - x0) / (labels.length - 1);
-      const toY = v => y0 - (v / maxY) * (y0 - y1);
-
-      // Desenha linhas com animação (progress)
-      function drawSeries(data, strokeStyle){
-        ctx.strokeStyle = strokeStyle; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-        ctx.beginPath();
-        for(let i=0;i<data.length;i++){
-          const p = Math.min(progress, i/(data.length-1));
-          const x = x0 + dx * i * p;
-          const y = toY(data[i] * p + data[0]*(1-p));
-          if(i===0) ctx.moveTo(x0, toY(data[0]*progress)); else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-      }
-
-      const styles = getComputedStyle(document.documentElement);
-      const colorA = styles.getPropertyValue('--primary-600').trim() || '#5a4bd6';
-      const colorB = styles.getPropertyValue('--accent').trim() || '#22c55e';
-
-      // Séries
-      drawSeries(seriesA, colorA);
-      drawSeries(seriesB, colorB);
-
-      // Pontos e labels
-      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text');
-      labels.forEach((lab, i)=>{
-        const x = x0 + dx * i;
-        const yA = toY(seriesA[i] * progress);
-        const yB = toY(seriesB[i] * progress);
-        // pontos
-        ctx.beginPath(); ctx.arc(x, yA, 3, 0, Math.PI*2); ctx.fill();
-        ctx.beginPath(); ctx.arc(x, yB, 3, 0, Math.PI*2); ctx.fill();
-        // labels do eixo X
-        ctx.font = '12px Inter, sans-serif'; ctx.textAlign = 'center'; ctx.fillText(lab, x, y0 + 16);
-      });
     }
-
-    // Animação suave de entrada do gráfico
-    function animate(){
-      animateProgress += 0.02;
-      drawChart(animateProgress);
-      if(animateProgress < 1) requestAnimationFrame(animate);
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-    requestAnimationFrame(animate);
-
-    // Interação básica de "hover" para exibir valores no gráfico
-    chartEl.addEventListener('mousemove', (e)=>{
-      const rect = chartEl.getBoundingClientRect();
-      const x = e.clientX - rect.left; const y = e.clientY - rect.top;
-      const pad = 32; const x0 = pad*1.2; const x1 = rect.width - pad; const dx = (x1 - x0) / (labels.length - 1);
-      const i = Math.max(0, Math.min(labels.length-1, Math.round((x - x0)/dx)));
-      chartEl.title = `${labels[i]} — Visitantes: ${seriesA[i]}k | Vendas: ${seriesB[i]*100}`;
-    });
-
-    // =============================
-    // Tooltip custom ([data-tooltip])
-    // =============================
-    const tooltip = document.getElementById('tooltip');
-    let tooltipTimer;
-    function showTooltip(target){
-      const text = target.getAttribute('data-tooltip');
-      if(!text) return;
-      tooltip.textContent = text;
-      const rect = target.getBoundingClientRect();
-      tooltip.style.left = `${rect.left + rect.width/2}px`;
-      tooltip.style.top = `${rect.top - 8}px`;
-      tooltip.classList.add('show');
-      tooltip.setAttribute('aria-hidden', 'false');
-      clearTimeout(tooltipTimer);
-    }
-    function hideTooltip(){
-      tooltipTimer = setTimeout(()=>{
-        tooltip.classList.remove('show');
-        tooltip.setAttribute('aria-hidden', 'true');
-      }, 80);
-    }
-
-    document.addEventListener('mouseover', e=>{
-      const t = e.target.closest('[data-tooltip]');
-      if(t) showTooltip(t); else hideTooltip();
-    });
-    document.addEventListener('mouseout', e=>{
-      if(!e.relatedTarget || !e.relatedTarget.closest('[data-tooltip]')) hideTooltip();
-    });
-
-    // =============================
-    // Botões com efeito ripple
-    // =============================
-    function attachRipple(el){
-      el.addEventListener('click', (e)=>{
-        const circle = document.createElement('span');
-        circle.className = 'ripple';
-        const rect = el.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        circle.style.width = circle.style.height = `${size}px`;
-        const x = e.clientX - rect.left - size/2;
-        const y = e.clientY - rect.top - size/2;
-        circle.style.left = `${x}px`; circle.style.top = `${y}px`;
-        el.appendChild(circle);
-        setTimeout(()=> circle.remove(), 550);
-      });
-    }
-    document.querySelectorAll('.btn, .icon-btn').forEach(attachRipple);
-
-    // =============================
-    // Ações e atalhos
-    // =============================
-    document.getElementById('btnTheme').addEventListener('click', toggleTheme);
-
-    document.getElementById('btnSidebar').addEventListener('click', ()=>{
-      const sidebar = document.getElementById('sidebar');
-      const collapsed = !sidebar.classList.contains('collapsed');
-      sidebar.classList.toggle('collapsed');
-      storage.set('sidebar-collapsed', collapsed);
-    });
-
-    // Modal de logout
-    const modal = document.getElementById('modalLogout');
-    document.getElementById('btnLogout').addEventListener('click', ()=>{
-      modal.classList.add('show');
-      modal.querySelector('.modal').focus();
-    });
-    document.getElementById('btnCancelModal').addEventListener('click', ()=> modal.classList.remove('show'));
-    document.getElementById('btnConfirmLogout').addEventListener('click', ()=>{
-      modal.classList.remove('show');
-      alert('✅ Sessão encerrada com sucesso (simulação).');
-    });
-    modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.classList.remove('show'); });
-
-    // Ações rápidas de demonstração
-    document.getElementById('btnRefresh').addEventListener('click', ()=>{
-      // atualiza valores fake
-      const v = Math.floor(12000 + Math.random()*2000);
-      const s = Math.floor(900 + Math.random()*400);
-      const p = (25000 + Math.random()*8000).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
-      document.getElementById('visitorsValue').textContent = v.toLocaleString('pt-BR');
-      document.getElementById('salesValue').textContent = s.toLocaleString('pt-BR');
-      document.getElementById('profitValue').textContent = p;
-      // reanima o gráfico
-      animateProgress = 0; requestAnimationFrame(animate);
-    });
-
-    document.getElementById('btnFilter').addEventListener('click', ()=>{
-      alert('🔎 Filtro aplicado! (exemplo)');
-    });
-
-    document.getElementById('btnExport').addEventListener('click', ()=>{
-      alert('📄 Exportação iniciada! (exemplo)');
-    });
-
-    document.getElementById('btnNew').addEventListener('click', ()=>{
-      alert('➕ Novo relatório criado! (exemplo)');
-    });
-
-    // Atalho de teclado para foco na busca
-    document.addEventListener('keydown', (e)=>{
-      if((e.ctrlKey || e.metaKey) && e.key === '/'){ e.preventDefault(); document.getElementById('searchInput').focus(); }
-      if(e.key === 'Escape') { document.getElementById('searchInput').blur(); modal.classList.remove('show'); }
-    });
-  </script>
+  });
+</script>
 </body>
 </html>
