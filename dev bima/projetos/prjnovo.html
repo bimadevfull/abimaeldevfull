@@ -1,166 +1,513 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Dashboard Interativo</title>
 <!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 <!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  /* ===== RESET & BASE ===== */
+  /* ===================== RESET & BASE ===================== */
   *, *::before, *::after { box-sizing: border-box; }
-  body { margin: 0; font-family: Inter, sans-serif; background: #f6f8fb; color:#14161a; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--text); }
   a { color: inherit; text-decoration: none; }
-  button { font: inherit; color: inherit; cursor: pointer; border:none; background:none; }
-  img { display: block; max-width:100%; }
-  .hidden { display:none !important; }
+  button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; }
+  img, svg { display: block; max-width: 100%; }
+  .hidden { display: none !important; }
+  :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 10px; }
 
-  /* ===== VARIABLES ===== */
+  /* ===================== THEME VARIABLES ===================== */
   :root {
-    --bg:#f6f8fb; --panel:#fff; --text:#14161a; --muted:#6a7280; 
-    --primary:#6c5ce7; --primary-600:#5a4bd6; --accent:#22c55e; 
+    --bg:#f6f8fb; --panel:#fff; --text:#14161a; --muted:#6a7280;
+    --primary:#6c5ce7; --primary-600:#5a4bd6; --accent:#22c55e;
     --border:#e5e7eb; --radius:16px; --shadow:0 10px 25px rgba(0,0,0,.07);
+    --overlay-bg: rgba(0,0,0,.4);
   }
-  .dark {
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f1220; --panel:#181a2b; --text:#e5e7eb; --muted:#a1a7b5; --primary:#8b7cf6; --primary-600:#7d6ef0; --accent:#34d399; --border:#2a2f45; --shadow:0 10px 25px rgba(0,0,0,.25); --overlay-bg: rgba(0,0,0,.6); }
+  }
+  body.dark {
     --bg:#0f1220; --panel:#181a2b; --text:#e5e7eb; --muted:#a1a7b5;
     --primary:#8b7cf6; --primary-600:#7d6ef0; --accent:#34d399;
     --border:#2a2f45; --shadow:0 10px 25px rgba(0,0,0,.25);
+    --overlay-bg: rgba(0,0,0,.6);
   }
 
-  /* ===== LAYOUT ===== */
-  .app { display:grid; grid-template-columns:260px 1fr; grid-template-rows:64px 1fr; grid-template-areas:"sidebar header" "sidebar main"; min-height:100vh;}
-  .sidebar { grid-area:sidebar; background:var(--panel); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:16px; position:sticky; top:0; transition:0.3s;}
-  .sidebar.collapsed { width:80px; padding:16px 10px; }
-  .brand { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
-  .brand-logo { width:36px; height:36px; display:grid; place-items:center; background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; font-weight:800; border-radius:12px; }
-  .brand-name { font:700 18px Poppins; }
-  .toggle { margin-left:auto; padding:6px; border:1px solid var(--border); border-radius:12px; background:var(--bg);}
-  .nav { display:flex; flex-direction:column; gap:8px; }
-  .nav a { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:12px; transition:0.2s; }
-  .nav a:hover { background:rgba(108,92,231,.12);}
-  .nav a.active { background:rgba(108,92,231,.18);}
-  .icon { width:20px; height:20px; display:inline-block; }
-  .label { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .sidebar.collapsed .label { display:none; }
+  /* ===================== LAYOUT ===================== */
+  .app { display: grid; grid-template-columns: 280px 1fr; grid-template-rows: 64px 1fr; grid-template-areas: "sidebar header" "sidebar main"; min-height: 100vh; }
 
-  .header { grid-area:header; display:flex; align-items:center; justify-content:space-between; padding:12px 18px; background:var(--panel); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:10; }
-  .search { flex:1; display:flex; align-items:center; gap:10px; background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:8px 12px; }
-  .search input { flex:1; border:none; outline:none; background:transparent; color:var(--text); }
-  .header-actions { display:flex; align-items:center; gap:8px; }
-  .icon-btn { width:40px; height:40px; border-radius:12px; display:grid; place-items:center; border:1px solid var(--border); background:var(--bg); transition:0.2s; position:relative; overflow:hidden;}
-  .icon-btn:hover { transform:translateY(-2px); background:var(--panel);}
-  .btn.primary { background:var(--primary); color:#fff; border:none; }
+  /* Sidebar */
+  .sidebar { grid-area: sidebar; background: var(--panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 16px; position: sticky; top: 0; height: 100vh; transition: transform .3s ease, width .3s ease, padding .3s ease; z-index: 20; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .brand-logo { width: 36px; height: 36px; display: grid; place-items: center; background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; font-weight: 800; border-radius: 12px; }
+  .brand-name { font: 700 18px Poppins, system-ui; }
+  .toggle { margin-left: auto; padding: 6px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); }
+  .nav { display: flex; flex-direction: column; gap: 8px; }
+  .nav a { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; transition: background .2s; }
+  .nav a:hover { background: rgba(108,92,231,.12); }
+  .nav a.active { background: rgba(108,92,231,.18); }
+  .icon { width: 20px; height: 20px; display: inline-block; }
+  .label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  main { grid-area:main; padding:24px; display:grid; gap:24px; }
+  /* Collapsed (desktop/tablet) */
+  .sidebar.collapsed { width: 88px; padding: 16px 10px; }
+  .sidebar.collapsed .label { display: none; }
 
-  /* ===== CARDS ===== */
-  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px;}
-  .card { background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow); transition:0.2s; }
-  .card:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(0,0,0,.08);}
-  .card .title { font:600 14px; color:var(--muted); margin-bottom:8px; display:flex; align-items:center; gap:6px;}
-  .card .value { font:800 26px Poppins; }
+  /* Off-canvas (mobile) */
+  .sidebar.drawer { position: fixed; left: 0; top: 0; height: 100vh; width: 280px; transform: translateX(-100%); box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+  .sidebar.drawer.open { transform: translateX(0); }
+  .backdrop { position: fixed; inset: 0; background: var(--overlay-bg); opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 15; }
+  .backdrop.show { opacity: 1; pointer-events: auto; }
 
-  .trend { font-size:12px; font-weight:600; padding:4px 8px; border-radius:999px; display:inline-flex; align-items:center; gap:4px;}
-  .trend.up { background:rgba(34,197,94,.16); color:#065f46;}
-  .trend.down { background:rgba(239,68,68,.16); color:#7c2d12;}
+  /* Header */
+  .header { grid-area: header; display: flex; align-items: center; gap: 12px; justify-content: space-between; padding: 12px 18px; background: var(--panel); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+  .left-head { display: flex; align-items: center; gap: 10px; }
+  .btn-burger { display: none; width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); display: grid; place-items: center; }
+  .search { flex: 1; display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 8px 12px; min-width: 180px; }
+  .search input { flex: 1; border: none; outline: none; background: transparent; color: var(--text); }
+  .header-actions { display: flex; align-items: center; gap: 8px; }
+  .icon-btn { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; border: 1px solid var(--border); background: var(--bg); transition: transform .2s, background .2s; position: relative; overflow: hidden; }
+  .icon-btn:hover { transform: translateY(-2px); background: var(--panel); }
+  .btn.primary { background: var(--primary); color: #fff; border: none; }
+  .tooltip { position: absolute; bottom: -26px; left: 50%; transform: translateX(-50%); background: var(--panel); border: 1px solid var(--border); padding: 4px 8px; border-radius: 8px; font-size: 12px; color: var(--muted); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .2s, bottom .2s; }
+  .icon-btn:hover .tooltip { opacity: 1; bottom: -32px; }
 
-  /* ===== PANELS ===== */
-  .panel { background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);}
-  .panel h3 { margin:0 0 8px; font:700 18px Poppins; }
-  .panel p.desc { margin:0 0 14px; color:var(--muted); font-size:14px; }
-  .chart-wrap { position:relative; width:100%; height:320px; }
+  /* Main */
+  main { grid-area: main; padding: 24px; display: grid; gap: 24px; }
 
-  /* ===== RESPONSIVO ===== */
-  @media(max-width:900px){ .app{grid-template-columns:80px 1fr;} .sidebar.collapsed{width:80px;} }
-  @media(max-width:600px){ main{padding:16px;} .header{flex-direction:column;align-items:flex-start;gap:8px;} }
+  /* Cards */
+  .cards { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+  .card { grid-column: span 4; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s; min-width: 0; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+  .card .title { font: 600 14px/1.2 Inter, sans-serif; color: var(--muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .card .value { font: 800 26px/1.1 Poppins, system-ui; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+
+  .trend { font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px; }
+  .trend.up { background: rgba(34,197,94,.16); color: #065f46; }
+  .trend.down { background: rgba(239,68,68,.16); color: #7c2d12; }
+
+  /* Panels */
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+  .panel h3 { margin: 0 0 8px; font: 700 18px Poppins, system-ui; }
+  .panel p.desc { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+  .chart-wrap { position: relative; width: 100%; height: 320px; }
+
+  /* Secondary UI (drawers, dropdowns, modal) */
+  .dropdown { position: relative; }
+  .menu { position: absolute; right: 0; top: calc(100% + 8px); background: var(--panel); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); min-width: 220px; padding: 8px; display: none; z-index: 25; }
+  .menu.show { display: block; }
+  .menu a, .menu button { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; }
+  .menu a:hover, .menu button:hover { background: rgba(108,92,231,.12); }
+
+  .modal { position: fixed; inset: 0; display: none; place-items: center; z-index: 40; }
+  .modal.show { display: grid; }
+  .modal .window { width: min(560px, 92vw); background: var(--panel); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); padding: 18px; }
+  .modal .footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); padding: 6px 10px; border-radius: 999px; background: var(--bg); }
+
+  /* ===================== RESPONSIVE BREAKPOINTS ===================== */
+  /* 1200px+ already covered by default grid (3 cards) */
+  @media (max-width: 1200px) {
+    .cards .card { grid-column: span 6; } /* 2 por linha */
+  }
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 88px 1fr; }
+    .sidebar { width: 88px; padding: 16px 10px; }
+    .sidebar .label { display: none; }
+  }
+  @media (max-width: 768px) {
+    .app { grid-template-columns: 1fr; grid-template-areas: "header" "main"; }
+    .sidebar { position: fixed; }
+    .sidebar:not(.drawer) { display: none; }
+    .sidebar.drawer { display: flex; }
+    .btn-burger { display: grid; }
+    main { padding: 16px; }
+    .cards { grid-template-columns: repeat(12, 1fr); }
+    .cards .card { grid-column: span 12; } /* 1 por linha */
+    .header { flex-wrap: wrap; }
+    .search { flex: 1 1 100%; order: 2; }
+    .header-actions { order: 3; width: 100%; justify-content: flex-end; }
+  }
+  @media (max-width: 420px) {
+    .brand-name { display: none; }
+    .icon-btn, .btn-burger { width: 36px; height: 36px; border-radius: 10px; }
+    .search { padding: 6px 10px; }
+    .panel, .card { padding: 14px; }
+    .chart-wrap { height: 260px; }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
 </style>
 </head>
 <body>
+<div class="backdrop" id="backdrop" aria-hidden="true"></div>
 <div class="app">
   <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
+  <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
     <div class="brand">
-      <div class="brand-logo">UI</div>
+      <div class="brand-logo" aria-hidden="true"></div>
       <div class="brand-name"></div>
-      <button class="toggle" id="btnSidebar"><i class="fa-solid fa-angles-left"></i></button>
+      <button class="toggle" id="btnSidebar" aria-label="Recolher/expandir sidebar" title="Alternar sidebar"><i class="fa-solid fa-angles-left" aria-hidden="true"></i></button>
     </div>
-    <nav class="nav">
-      <a href="#" class="active"><i class="fa-solid fa-chart-line icon"></i><span class="label">Dashboard</span></a>
-      <a href="#"><i class="fa-solid fa-users icon"></i><span class="label">Usuários</span></a>
-      <a href="#"><i class="fa-solid fa-gear icon"></i><span class="label">Configurações</span></a>
+    <nav class="nav" role="navigation">
+      <a href="#" class="active"><i class="fa-solid fa-chart-line icon" aria-hidden="true"></i><span class="label">Dashboard</span></a>
+      <a href="#"><i class="fa-solid fa-users icon" aria-hidden="true"></i><span class="label">Usuários</span></a>
+      <a href="#"><i class="fa-solid fa-gear icon" aria-hidden="true"></i><span class="label">Configurações</span></a>
     </nav>
   </aside>
 
   <!-- Header -->
-  <header class="header">
-    <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input type="search" placeholder="Buscar..." id="searchInput"></div>
+  <header class="header" role="banner">
+    <div class="left-head">
+      <button id="btnBurger" class="btn-burger" aria-label="Abrir menu"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
+      <div class="chip" id="clock" aria-live="polite"><i class="fa-regular fa-clock"></i><span>--:--</span></div>
+    </div>
+    <div class="search" role="search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input type="search" placeholder="Buscar cards e painéis... (atalho: /)" id="searchInput" aria-label="Buscar" /></div>
     <div class="header-actions">
-      <button class="icon-btn" id="btnTheme"><i class="fa-solid fa-sun"></i></button>
-      <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
-      <button class="icon-btn btn primary"><i class="fa-solid fa-plus"></i></button>
+      <div class="dropdown">
+        <button class="icon-btn" id="btnTheme" aria-expanded="false" aria-haspopup="menu"><i class="fa-solid fa-sun" aria-hidden="true"></i><span class="tooltip">Tema (T)</span></button>
+        <div class="menu" id="menuTheme" role="menu" aria-label="Tema">
+          <button role="menuitem" data-theme="light"><i class="fa-regular fa-sun"></i> Claro</button>
+          <button role="menuitem" data-theme="dark"><i class="fa-regular fa-moon"></i> Escuro</button>
+          <button role="menuitem" data-theme="system"><i class="fa-solid fa-circle-half-stroke"></i> Sistema</button>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="icon-btn" id="btnBell" aria-expanded="false" aria-haspopup="menu"><i class="fa-regular fa-bell" aria-hidden="true"></i><span class="tooltip">Notificações</span></button>
+        <div class="menu" id="menuBell" role="menu" aria-label="Notificações">
+          <div style="padding:8px 10px; color:var(--muted); font-size:13px;">Sem novas notificações</div>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="icon-btn btn primary" id="btnNew"><i class="fa-solid fa-plus" aria-hidden="true"></i><span class="tooltip">Ações rápidas</span></button>
+        <div class="menu" id="menuNew" role="menu" aria-label="Ações rápidas">
+          <button role="menuitem" id="actionExport"><i class="fa-solid fa-download"></i> Exportar gráfico (PNG)</button>
+          <button role="menuitem" id="actionDensity"><i class="fa-solid fa-minimize"></i> Alternar densidade</button>
+          <button role="menuitem" id="actionRefresh"><i class="fa-solid fa-rotate-right"></i> Atualizar métricas</button>
+          <button role="menuitem" id="actionSettings"><i class="fa-solid fa-sliders"></i> Configurações</button>
+        </div>
+      </div>
     </div>
   </header>
 
   <!-- Main -->
-  <main>
-    <section class="cards">
-      <div class="card"><div class="title"><i class="fa-solid fa-users"></i> Visitantes</div><div class="value" id="visitors">12.480</div><div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +12%</div></div>
-      <div class="card"><div class="title"><i class="fa-solid fa-bag-shopping"></i> Vendas</div><div class="value" id="sales">1.042</div><div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +8%</div></div>
-      <div class="card"><div class="title"><i class="fa-solid fa-coins"></i> Lucros</div><div class="value" id="profit">R$ 27.300</div><div class="trend down"><i class="fa-solid fa-arrow-trend-down"></i> -2%</div></div>
+  <main id="mainContent">
+    <section class="cards" id="cards">
+      <div class="card" data-title="Visitantes">
+        <div class="title"><i class="fa-solid fa-users"></i> Visitantes</div>
+        <div class="value" id="visitors" data-value="12480">12.480</div>
+        <div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +12%</div>
+      </div>
+      <div class="card" data-title="Vendas">
+        <div class="title"><i class="fa-solid fa-bag-shopping"></i> Vendas</div>
+        <div class="value" id="sales" data-value="1042">1.042</div>
+        <div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +8%</div>
+      </div>
+      <div class="card" data-title="Lucros">
+        <div class="title"><i class="fa-solid fa-coins"></i> Lucros</div>
+        <div class="value" id="profit" data-value="27300">R$ 27.300</div>
+        <div class="trend down"><i class="fa-solid fa-arrow-trend-down"></i> -2%</div>
+      </div>
     </section>
 
-    <section class="panel">
-      <h3>Desempenho Semanal</h3>
-      <p class="desc">Variação de métricas nos últimos 7 dias.</p>
-      <div class="chart-wrap"><canvas id="chart"></canvas></div>
+    <section class="panel" data-title="Desempenho Semanal">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+        <div>
+          <h3>Desempenho Semanal</h3>
+          <p class="desc">Variação de métricas nos últimos 7 dias.</p>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="chip" data-dataset="visitors"><i class="fa-solid fa-users"></i> Visitantes</button>
+          <button class="chip" data-dataset="sales"><i class="fa-solid fa-bag-shopping"></i> Vendas</button>
+          <button class="chip" data-dataset="profit"><i class="fa-solid fa-coins"></i> Lucros</button>
+        </div>
+      </div>
+      <div class="chart-wrap"><canvas id="chart" aria-label="Gráfico de linhas semanal"></canvas></div>
     </section>
   </main>
 </div>
 
+<!-- Modal de Configurações -->
+<div class="modal" id="modalSettings" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="window">
+    <h3 id="modalTitle">Configurações</h3>
+    <div style="display:grid; gap:12px; margin-top:10px;">
+      <label style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+        <span>Persistir estado do tema</span>
+        <input type="checkbox" id="persistTheme" />
+      </label>
+      <label style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+        <span>Persistir estado da sidebar</span>
+        <input type="checkbox" id="persistSidebar" />
+      </label>
+    </div>
+    <div class="footer">
+      <button id="btnCloseSettings" class="chip"><i class="fa-solid fa-xmark"></i> Fechar</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  // ===== SIDEBAR COLLAPSE =====
+  // ===================== UTIL =====================
+  const $ = (sel, root=document) => root.querySelector(sel);
+  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const prefersDark = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  const storage = {
+    get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+    set(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+  };
+
+  function formatBR(num){
+    return num.toLocaleString('pt-BR');
+  }
+
+  // ===================== SIDEBAR (desktop) =====================
   const sidebar = document.getElementById('sidebar');
   const btnSidebar = document.getElementById('btnSidebar');
-  btnSidebar.addEventListener('click',()=>sidebar.classList.toggle('collapsed'));
+  let sidebarCollapsed = false;
 
-  // ===== THEME TOGGLE =====
-  const btnTheme = document.getElementById('btnTheme');
-  btnTheme.addEventListener('click',()=>{
-    document.body.classList.toggle('dark');
-    btnTheme.innerHTML = document.body.classList.contains('dark') ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+  function applySidebarState(){
+    if (window.innerWidth <= 768) return; // tablet/mobile usam drawer
+    sidebar.classList.toggle('collapsed', sidebarCollapsed);
+  }
+  btnSidebar.addEventListener('click', ()=>{
+    sidebarCollapsed = !sidebarCollapsed;
+    applySidebarState();
+    if ($('#persistSidebar').checked) storage.set('sidebarCollapsed', sidebarCollapsed);
   });
 
-  // ===== CHART =====
+  // ===================== DRAWER (mobile) =====================
+  const backdrop = document.getElementById('backdrop');
+  const btnBurger = document.getElementById('btnBurger');
+
+  function ensureDrawerMode(){
+    if (window.innerWidth <= 768){
+      sidebar.classList.add('drawer');
+      sidebar.classList.remove('collapsed');
+    } else {
+      sidebar.classList.remove('drawer', 'open');
+      backdrop.classList.remove('show');
+      applySidebarState();
+    }
+  }
+  ensureDrawerMode();
+  window.addEventListener('resize', ensureDrawerMode);
+
+  btnBurger.addEventListener('click', ()=>{
+    if (!sidebar.classList.contains('drawer')) return;
+    sidebar.classList.add('open');
+    backdrop.classList.add('show');
+    backdrop.setAttribute('aria-hidden','false');
+  });
+  backdrop.addEventListener('click', ()=>{
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('show');
+    backdrop.setAttribute('aria-hidden','true');
+  });
+
+  // ===================== THEME =====================
+  const btnTheme = document.getElementById('btnTheme');
+  const menuTheme = document.getElementById('menuTheme');
+
+  function setTheme(mode){
+    // mode: 'light' | 'dark' | 'system'
+    if (mode === 'dark' || (mode === 'system' && prefersDark())){
+      document.body.classList.add('dark');
+      btnTheme.innerHTML = '<i class="fa-solid fa-moon" aria-hidden="true"></i><span class="tooltip">Tema (T)</span>';
+    } else {
+      document.body.classList.remove('dark');
+      btnTheme.innerHTML = '<i class="fa-solid fa-sun" aria-hidden="true"></i><span class="tooltip">Tema (T)</span>';
+    }
+    if ($('#persistTheme').checked) storage.set('themeMode', mode);
+    document.documentElement.style.colorScheme = document.body.classList.contains('dark') ? 'dark' : 'light';
+  }
+
+  // Dropdown generic
+  function bindDropdown(trigger, menu){
+    trigger.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const open = menu.classList.toggle('show');
+      trigger.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', ()=>{
+      menu.classList.remove('show');
+      trigger.setAttribute('aria-expanded','false');
+    });
+  }
+  bindDropdown(btnTheme, menuTheme);
+
+  menuTheme.addEventListener('click', (e)=>{
+    const btn = e.target.closest('[data-theme]');
+    if (!btn) return;
+    setTheme(btn.dataset.theme);
+  });
+
+  // ===================== CLOCK =====================
+  const clock = document.getElementById('clock').querySelector('span');
+  function tick(){
+    const d = new Date();
+    clock.textContent = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  }
+  tick();
+  setInterval(tick, 1000 * 30);
+
+  // ===================== SEARCH FILTER =====================
+  const searchInput = document.getElementById('searchInput');
+  function applySearch(){
+    const q = searchInput.value.trim().toLowerCase();
+    const sections = $$('#mainContent [data-title]');
+    sections.forEach(sec=>{
+      const text = (sec.dataset.title || '').toLowerCase();
+      sec.style.display = text.includes(q) ? '' : 'none';
+    });
+  }
+  searchInput.addEventListener('input', applySearch);
+
+  // Keyboard shortcuts: / focus search, T theme, S sidebar
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === '/'){ e.preventDefault(); searchInput.focus(); }
+    if (e.key.toLowerCase() === 't'){ setTheme(document.body.classList.contains('dark') ? 'light' : 'dark'); }
+    if (e.key.toLowerCase() === 's'){ btnSidebar.click(); }
+  });
+
+  // ===================== HEADER MENUS =====================
+  const btnBell = document.getElementById('btnBell');
+  const menuBell = document.getElementById('menuBell');
+  bindDropdown(btnBell, menuBell);
+
+  const btnNew = document.getElementById('btnNew');
+  const menuNew = document.getElementById('menuNew');
+  bindDropdown(btnNew, menuNew);
+
+  // ===================== SETTINGS MODAL =====================
+  const modalSettings = document.getElementById('modalSettings');
+  const btnCloseSettings = document.getElementById('btnCloseSettings');
+  const persistTheme = document.getElementById('persistTheme');
+  const persistSidebar = document.getElementById('persistSidebar');
+
+  function openSettings(){ modalSettings.classList.add('show'); modalSettings.setAttribute('aria-hidden','false'); }
+  function closeSettings(){ modalSettings.classList.remove('show'); modalSettings.setAttribute('aria-hidden','true'); }
+  btnCloseSettings.addEventListener('click', closeSettings);
+  modalSettings.addEventListener('click', (e)=>{ if (e.target === modalSettings) closeSettings(); });
+
+  $('#actionSettings').addEventListener('click', ()=>{ openSettings(); });
+
+  // Load persisted options
+  (function initPersistence(){
+    const savedTheme = storage.get('themeMode');
+    const savedSidebar = storage.get('sidebarCollapsed');
+    const savedPersistTheme = storage.get('persistTheme') ?? true; // default on
+    const savedPersistSidebar = storage.get('persistSidebar') ?? true; // default on
+
+    persistTheme.checked = !!savedPersistTheme;
+    persistSidebar.checked = !!savedPersistSidebar;
+
+    if (savedPersistTheme && savedTheme) setTheme(savedTheme); else setTheme('system');
+    if (savedPersistSidebar && typeof savedSidebar === 'boolean') { sidebarCollapsed = savedSidebar; applySidebarState(); }
+
+    persistTheme.addEventListener('change', ()=> storage.set('persistTheme', persistTheme.checked));
+    persistSidebar.addEventListener('change', ()=> storage.set('persistSidebar', persistSidebar.checked));
+  })();
+
+  // ===================== CHART =====================
   const ctx = document.getElementById('chart').getContext('2d');
+  const datasets = {
+    visitors: [1200,1500,1300,1800,1700,1900,2100],
+    sales:    [100,140,120,180,160,190,210],
+    profit:   [3.2,3.8,3.5,4.1,3.9,4.3,4.6]
+  };
+  const labels = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  let activeDataset = 'visitors';
+
   const chart = new Chart(ctx,{
-    type:'line',
-    data:{
-      labels:['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
-      datasets:[{
-        label:'Visitantes',
-        data:[1200,1500,1300,1800,1700,1900,2100],
-        backgroundColor:'rgba(108,92,231,0.1)',
-        borderColor:'rgba(108,92,231,1)',
-        borderWidth:2,
-        tension:0.4,
-        fill:true,
-        pointRadius:4,
-        pointHoverRadius:6
-      }]
-    },
-    options:{
-      responsive:true,
-      plugins:{legend:{display:false}},
-      scales:{
-        y:{beginAtZero:true, grid:{color:'rgba(0,0,0,0.05)'}},
-        x:{grid:{color:'rgba(0,0,0,0.05)'}}
+    type: 'line',
+    data: { labels, datasets: [{
+      label: 'Visitantes',
+      data: datasets.visitors,
+      backgroundColor: 'rgba(108,92,231,0.12)',
+      borderColor: 'rgba(108,92,231,1)',
+      borderWidth: 2,
+      tension: 0.4,
+      fill: true,
+      pointRadius: 4,
+      pointHoverRadius: 6
+    }]},
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+      interaction: { mode: 'nearest', intersect: false },
+      scales: {
+        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+        x: { grid: { color: 'rgba(0,0,0,0.05)' } }
       }
     }
   });
-</script>
-</body>
-</html>
+
+  function switchDataset(key){
+    activeDataset = key;
+    const map = { visitors: 'Visitantes', sales: 'Vendas', profit: 'Lucros' };
+    chart.data.datasets[0].label = map[key];
+    chart.data.datasets[0].data = datasets[key];
+    chart.update();
+  }
+
+  $$('.chip[data-dataset]').forEach(btn=>{
+    btn.addEventListener('click', ()=> switchDataset(btn.dataset.dataset));
+  });
+
+  // Export chart as PNG
+  document.getElementById('actionExport').addEventListener('click', ()=>{
+    const url = chart.toBase64Image('image/png', 1);
+    const a = document.createElement('a');
+    a.href = url; a.download = `grafico-${activeDataset}.png`; a.click();
+  });
+
+  // ===================== METRICS: COUNT-UP & REFRESH =====================
+  function animateCount(el, to, prefix='', duration=900){
+    const from = Number(String(el.textContent).replace(/\D/g, '')) || 0;
+    const start = performance.now();
+    function frame(now){
+      const p = Math.min(1, (now - start) / duration);
+      const val = Math.floor(from + (to - from) * p);
+      el.textContent = prefix + (prefix ? ' ' : '') + (prefix === 'R$' ? formatBR(val) : formatBR(val));
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function refreshMetrics(){
+    // Simula novos dados
+    const newVisitors = Math.floor(11000 + Math.random()*4000);
+    const newSales = Math.floor(900 + Math.random()*400);
+    const newProfit = Math.floor(25000 + Math.random()*6000);
+
+    animateCount(document.getElementById('visitors'), newVisitors);
+    animateCount(document.getElementById('sales'), newSales);
+    animateCount(document.getElementById('profit'), newProfit, 'R$');
+
+    // Atualiza série ativa aleatoriamente
+    const k = ['visitors','sales','profit'][Math.floor(Math.random()*3)];
+    datasets[k] = datasets[k].map(v => Math.max(0, v + Math.round((Math.random()-.5)*200)));
+    switchDataset(k);
+  }
+  document.getElementById('actionRefresh').addEventListener('click', refreshMetrics);
+
+  // ===================== DENSIDADE =====================
+  let dense = false;
+  function applyDensity(){
+    document.body.style.setProperty('--radius', dense ? '12px' : '16px');
+    document.querySelectorAll('.card, .panel, .icon-btn, .chip').forEach(el => {
+      el.style.padding = dense ? '12px' : '';
+    });
+  }
+  documen
