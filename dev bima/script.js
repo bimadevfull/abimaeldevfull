@@ -1,6 +1,3 @@
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
   // Loading Screen
   const loader = document.getElementById("loader")
@@ -15,13 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
           loader.style.opacity = "0"
           loader.addEventListener("transitionend", () => loader.remove())
-        }, 200)
+        }, 200) // Tempo de transição diminuído para 200ms
       }
-    }, 10)
+    }, 10) // Intervalo diminuído para 10ms para acelerar o carregamento
   }
 
   // Particles.js initialization
-  const particlesJS = window.particlesJS
+  const particlesJS = window.particlesJS // Declare the variable before using it
   if (typeof particlesJS !== "undefined") {
     particlesJS("particles-js", {
       particles: {
@@ -33,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
           },
         },
         color: {
-          value: "#00d4ff",
+          value: "#00d4ff", // Primary color
         },
         shape: {
           type: "circle",
@@ -73,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         line_linked: {
           enable: true,
           distance: 150,
-          color: "#0066ff",
+          color: "#0066ff", // Secondary color
           opacity: 0.4,
           width: 1,
         },
@@ -186,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Typing effect for profession
   const professionText = document.getElementById("profession-text")
-  const professions = ["Engenheiro de Software", "Dev Full-Stack", "Freelancer"]
+  const professions = [ "Engenheiro de Software" , "Dev Full-Stack",  "Freelancer" , ]
   let professionIndex = 0
   let charIndex = 0
   let isDeleting = false
@@ -201,12 +198,12 @@ document.addEventListener("DOMContentLoaded", () => {
       charIndex++
     }
     if (!isDeleting && charIndex === currentProfession.length) {
-      typingSpeed = 2000
+      typingSpeed = 2000 // Pause at end of typing
       isDeleting = true
     } else if (isDeleting && charIndex === 0) {
       isDeleting = false
       professionIndex = (professionIndex + 1) % professions.length
-      typingSpeed = 150
+      typingSpeed = 150 // Resume normal typing speed
     } else {
       typingSpeed = isDeleting ? 75 : 150
     }
@@ -221,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const observerOptions = {
     root: null,
     rootMargin: "0px",
-    threshold: 0.5,
+    threshold: 0.5, // Trigger when 50% of the item is visible
   }
   const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
@@ -229,8 +226,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const statNumber = entry.target.querySelector(".stat-number")
         const target = Number.parseInt(statNumber.dataset.target)
         let current = 0
-        const duration = 2000
-        const increment = target / (duration / 10)
+        const duration = 2000 // 2 seconds
+        const increment = target / (duration / 10) // Calculate increment per 10ms
         const updateCounter = () => {
           current += increment
           if (current < target) {
@@ -241,12 +238,33 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
         updateCounter()
-        observer.unobserve(entry.target)
+        observer.unobserve(entry.target) // Stop observing once animated
       }
     })
   }, observerOptions)
   statItems.forEach((item) => {
     observer.observe(item)
+  })
+
+  // Skill bar animation on scroll
+  const skillProgressBars = document.querySelectorAll(".skill__progress")
+  const skillObserverOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.7, // Trigger when 70% of the skill bar is visible
+  }
+  const skillObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const progressBar = entry.target
+        const width = progressBar.dataset.width
+        progressBar.style.width = width
+        observer.unobserve(progressBar) // Stop observing once animated
+      }
+    })
+  }, skillObserverOptions)
+  skillProgressBars.forEach((bar) => {
+    skillObserver.observe(bar)
   })
 
   // Scroll to top button
@@ -287,104 +305,6 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
   }
-
-  const filterButtons = document.querySelectorAll(".filter__btn")
-  const projectCards = document.querySelectorAll(".project__card")
-
-  if (filterButtons.length > 0 && projectCards.length > 0) {
-    filterButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        // Remove active class from all buttons
-        filterButtons.forEach((btn) => btn.classList.remove("active"))
-        // Add active class to clicked button
-        button.classList.add("active")
-
-        const filterValue = button.getAttribute("data-filter")
-
-        projectCards.forEach((card) => {
-          if (filterValue === "all") {
-            card.style.display = "block"
-            card.style.animation = "fadeIn 0.5s ease"
-          } else {
-            const cardCategories = card.getAttribute("data-category")
-            if (cardCategories && cardCategories.includes(filterValue)) {
-              card.style.display = "block"
-              card.style.animation = "fadeIn 0.5s ease"
-            } else {
-              card.style.display = "none"
-            }
-          }
-        })
-      })
-    })
-  }
-
-  const projectObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.style.opacity = "1"
-            entry.target.style.transform = "translateY(0)"
-          }, index * 100)
-        }
-      })
-    },
-    { threshold: 0.1 },
-  )
-
-  projectCards.forEach((card) => {
-    card.style.opacity = "0"
-    card.style.transform = "translateY(30px)"
-    card.style.transition = "all 0.6s ease"
-    projectObserver.observe(card)
-  })
-
-  const testimonialCards = document.querySelectorAll(".testimonial__card")
-  const testimonialObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.style.opacity = "1"
-            entry.target.style.transform = "translateY(0)"
-          }, index * 150)
-        }
-      })
-    },
-    { threshold: 0.1 },
-  )
-
-  testimonialCards.forEach((card) => {
-    card.style.opacity = "0"
-    card.style.transform = "translateY(30px)"
-    card.style.transition = "all 0.6s ease"
-    testimonialObserver.observe(card)
-  })
-
-  const timelineItems = document.querySelectorAll(".timeline__item")
-  const timelineObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("animate")
-        }
-      })
-    },
-    { threshold: 0.3 },
-  )
-
-  timelineItems.forEach((item) => {
-    timelineObserver.observe(item)
-  })
-
-  const serviceCards = document.querySelectorAll(".service__card")
-  serviceCards.forEach((card) => {
-    card.addEventListener("mouseenter", () => {
-      card.style.transform = "translateY(-15px) scale(1.02)"
-    })
-    card.addEventListener("mouseleave", () => {
-      card.style.transform = "translateY(0) scale(1)"
-    })
-  })
 })
+
+
